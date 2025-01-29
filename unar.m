@@ -26,7 +26,7 @@
 
 #define VERSION_STRING @"v1.10.7"
 
-@interface Unarchiver:NSObject {}
+@interface Unarchiver:NSObject <XADSimpleUnarchiverDelegate> {}
 @end
 
 int numerrors;

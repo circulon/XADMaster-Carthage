@@ -30,8 +30,8 @@
 #import <sys/time.h>
 
 
-NSString *XADResourceDataKey=@"XADResourceData";
-NSString *XADFinderFlags=@"XADFinderFlags";
+NSString *const XADResourceDataKey=@"XADResourceData";
+NSString *const XADFinderFlags=@"XADFinderFlags";
 
 
 
@@ -81,8 +81,8 @@ NSString *XADFinderFlags=@"XADFinderFlags";
 		immediatesize=0;
 		parentarchive=nil;
 
-		dataentries=[[NSMutableArray array] retain];
-		resourceentries=[[NSMutableArray array] retain];
+		dataentries=[[NSMutableArray alloc] init];
+		resourceentries=[[NSMutableArray alloc] init];
 		namedict=nil;
  	}
 	return self;
@@ -1140,100 +1140,144 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 
 
 -(NSStringEncoding)archive:(XADArchive *)archive encodingForData:(NSData *)data guess:(NSStringEncoding)guess confidence:(float)confidence
-{ return [delegate archive:archive encodingForData:data guess:guess confidence:confidence]; }
+{
+	if ([delegate respondsToSelector:@selector(archive:encodingForData:guess:confidence:)]) {
+		return [delegate archive:archive encodingForData:data guess:guess confidence:confidence];
+	} else if ([delegate respondsToSelector:@selector(archive:encodingForName:guess:confidence:)]) {
+		// Default implementation calls old method
+		// ...if it's available
+		 NSMutableData *terminateddata=[[NSMutableData alloc] initWithData:data];
+		 [terminateddata increaseLengthBy:1]; // append a 0 byte
+		 #pragma clang diagnostic push
+		 #pragma clang diagnostic ignored "-Wdeprecated"
+		 NSStringEncoding enc=[delegate archive:archive encodingForName:terminateddata.bytes guess:guess confidence:confidence];
+		 #pragma clang diagnostic pop
+		[terminateddata release];
+		 return enc;
+	} else {
+		return guess;
+	}
+}
 
--(XADAction)archive:(XADArchive *)archive nameDecodingDidFailForEntry:(int)n data:(NSData *)data
-{ return [delegate archive:archive nameDecodingDidFailForEntry:n data:data]; }
+-(XADAction)archive:(XADArchive *)archive nameDecodingDidFailForEntry:(NSInteger)n data:(NSData *)data
+{
+	if ([delegate respondsToSelector:@selector(archive:nameDecodingDidFailForEntry:data:)]) {
+		return [delegate archive:archive nameDecodingDidFailForEntry:n data:data];
+	} else if ([delegate respondsToSelector:@selector(archive:nameDecodingDidFailForEntry:bytes:)]) {
+		// Default implementation calls old method
+		// ...if it's available
+		NSMutableData *terminateddata=[[NSMutableData alloc] initWithData:data];
+		[terminateddata increaseLengthBy:1]; // append a 0 byte
+		#pragma clang diagnostic push
+		#pragma clang diagnostic ignored "-Wdeprecated"
+		XADAction action=[delegate archive:archive nameDecodingDidFailForEntry:n bytes:terminateddata.bytes];
+		#pragma clang diagnostic pop
+		[terminateddata release];
+		return action;
+	} else {
+		return XADAbortAction;
+	}
+}
 
 -(BOOL)archiveExtractionShouldStop:(XADArchive *)arc
-{ return [delegate archiveExtractionShouldStop:arc]; }
+{
+	if ([delegate respondsToSelector:@selector(archiveExtractionShouldStop:)]) {
+		return [delegate archiveExtractionShouldStop:arc];
+	} else {
+		return NO;
+	}
+}
 
 -(BOOL)archive:(XADArchive *)arc shouldCreateDirectory:(NSString *)directory
-{ return [delegate archive:arc shouldCreateDirectory:directory]; }
+{
+	if ([delegate respondsToSelector:@selector(archive:shouldCreateDirectory:)]) {
+		return [delegate archive:arc shouldCreateDirectory:directory];
+	} else {
+		return YES;
+	}
+}
 
--(void)archive:(XADArchive *)arc didCreateDirectory:(NSString *)directory
-{ [delegate archive:arc didCreateDirectory:directory]; }
+-(XADAction)archive:(XADArchive *)arc entry:(NSInteger)n collidesWithFile:(NSString *)file newFilename:(NSString **)newname
+{
+	if ([delegate respondsToSelector:@selector(archive:entry:collidesWithFile:newFilename:)]) {
+		return [delegate archive:arc entry:n collidesWithFile:file newFilename:newname];
+	} else {
+		return XADOverwriteAction;
+	}
+}
 
--(XADAction)archive:(XADArchive *)arc entry:(int)n collidesWithFile:(NSString *)file newFilename:(NSString **)newname
-{ return [delegate archive:arc entry:n collidesWithFile:file newFilename:newname]; }
+-(XADAction)archive:(XADArchive *)arc entry:(NSInteger)n collidesWithDirectory:(NSString *)file newFilename:(NSString **)newname
+{
+	if ([delegate respondsToSelector:@selector(archive:entry:collidesWithDirectory:newFilename:)]) {
+		return [delegate archive:arc entry:n collidesWithDirectory:file newFilename:newname];
+	} else {
+		return XADSkipAction;
+	}
+}
 
--(XADAction)archive:(XADArchive *)arc entry:(int)n collidesWithDirectory:(NSString *)file newFilename:(NSString **)newname
-{ return [delegate archive:arc entry:n collidesWithDirectory:file newFilename:newname]; }
-
--(XADAction)archive:(XADArchive *)arc creatingDirectoryDidFailForEntry:(int)n
-{ return [delegate archive:arc creatingDirectoryDidFailForEntry:n]; }
+-(XADAction)archive:(XADArchive *)arc creatingDirectoryDidFailForEntry:(NSInteger)n
+{
+	if ([delegate respondsToSelector:@selector(archive:creatingDirectoryDidFailForEntry:)]) {
+		return [delegate archive:arc creatingDirectoryDidFailForEntry:n];
+	} else {
+		return XADAbortAction;
+	}
+}
 
 -(void)archiveNeedsPassword:(XADArchive *)arc
-{ [delegate archiveNeedsPassword:arc]; }
+{
+	if ([delegate respondsToSelector:@selector(archiveNeedsPassword:)]) {
+		[delegate archiveNeedsPassword:arc];
+	}
+}
 
--(void)archive:(XADArchive *)arc extractionOfEntryWillStart:(int)n
-{ [delegate archive:arc extractionOfEntryWillStart:n]; }
+-(void)archive:(XADArchive *)arc extractionOfEntryWillStart:(NSInteger)n
+{
+	if ([delegate respondsToSelector:@selector(archive:extractionOfEntryWillStart:)]) {
+		[delegate archive:arc extractionOfEntryWillStart:n];
+	}
+}
 
--(void)archive:(XADArchive *)arc extractionProgressForEntry:(int)n bytes:(off_t)bytes of:(off_t)total
-{ [delegate archive:arc extractionProgressForEntry:n bytes:bytes of:total]; }
+-(void)archive:(XADArchive *)arc extractionProgressForEntry:(NSInteger)n bytes:(off_t)bytes of:(off_t)total
+{
+	if ([delegate respondsToSelector:@selector(archive:extractionProgressForEntry:bytes:of:)]) {
+		[delegate archive:arc extractionProgressForEntry:n bytes:bytes of:total];
+	}
+}
 
--(void)archive:(XADArchive *)arc extractionOfEntryDidSucceed:(int)n
-{ [delegate archive:arc extractionOfEntryDidSucceed:n]; }
+-(void)archive:(XADArchive *)arc extractionOfEntryDidSucceed:(NSInteger)n
+{
+	if ([delegate respondsToSelector:@selector(archive:extractionOfEntryDidSucceed:)]) {
+		[delegate archive:arc extractionOfEntryDidSucceed:n];
+	}
+}
 
--(XADAction)archive:(XADArchive *)arc extractionOfEntryDidFail:(int)n error:(XADError)error
-{ return [delegate archive:arc extractionOfEntryDidFail:n error:error]; }
+-(XADAction)archive:(XADArchive *)arc extractionOfEntryDidFail:(NSInteger)n error:(XADError)error
+{
+	if ([delegate respondsToSelector:@selector(archive:extractionOfEntryDidFail:error:)]) {
+		return [delegate archive:arc extractionOfEntryDidFail:n error:error];
+	} else {
+		return XADAbortAction;
+	}
+}
 
--(XADAction)archive:(XADArchive *)arc extractionOfResourceForkForEntryDidFail:(int)n error:(XADError)error
-{ return [delegate archive:arc extractionOfResourceForkForEntryDidFail:n error:error]; }
+-(XADAction)archive:(XADArchive *)arc extractionOfResourceForkForEntryDidFail:(NSInteger)n error:(XADError)error
+{
+	if ([delegate respondsToSelector:@selector(archive:extractionOfResourceForkForEntryDidFail:error:)]) {
+		return [delegate archive:arc extractionOfResourceForkForEntryDidFail:n error:error];
+	} else {
+		return XADAbortAction;
+	}
+}
 
 -(void)archive:(XADArchive *)arc extractionProgressBytes:(off_t)bytes of:(off_t)total
-{ [delegate archive:arc extractionProgressBytes:bytes of:total]; }
-
-//-(void)archive:(XADArchive *)arc extractionProgressFiles:(int)files of:(int)total;
-//{}
-
-@end
-
-
-
-@implementation NSObject (XADArchiveDelegate)
-
--(NSStringEncoding)archive:(XADArchive *)archive encodingForData:(NSData *)data guess:(NSStringEncoding)guess confidence:(float)confidence
 {
-	// Default implementation calls old method
-	NSMutableData *terminateddata=[[NSMutableData alloc] initWithData:data];
-	[terminateddata increaseLengthBy:1]; // append a 0 byte
-	NSStringEncoding enc=[self archive:archive encodingForName:[terminateddata bytes] guess:guess confidence:confidence];
-	[terminateddata release];
-	return enc;
+	if ([delegate respondsToSelector:@selector(archive:extractionProgressBytes:of:)]) {
+		[delegate archive:arc extractionProgressBytes:bytes of:total];
+	}
 }
 
--(XADAction)archive:(XADArchive *)archive nameDecodingDidFailForEntry:(int)n data:(NSData *)data
-{
-	// Default implementation calls old method
-	NSMutableData *terminateddata=[[NSMutableData alloc] initWithData:data];
-	XADAction action=[self archive:archive nameDecodingDidFailForEntry:n bytes:[terminateddata bytes]];
-	[terminateddata release];
-	return action;
-}
-
--(BOOL)archiveExtractionShouldStop:(XADArchive *)archive { return NO; }
--(BOOL)archive:(XADArchive *)archive shouldCreateDirectory:(NSString *)directory { return YES; }
--(void)archive:(XADArchive *)archive didCreateDirectory:(NSString *)directory { }
--(XADAction)archive:(XADArchive *)archive entry:(int)n collidesWithFile:(NSString *)file newFilename:(NSString **)newname { return XADOverwriteAction; }
--(XADAction)archive:(XADArchive *)archive entry:(int)n collidesWithDirectory:(NSString *)file newFilename:(NSString **)newname { return XADSkipAction; }
--(XADAction)archive:(XADArchive *)archive creatingDirectoryDidFailForEntry:(int)n { return XADAbortAction; }
-
--(void)archiveNeedsPassword:(XADArchive *)archive {}
-
--(void)archive:(XADArchive *)archive extractionOfEntryWillStart:(int)n {}
--(void)archive:(XADArchive *)archive extractionProgressForEntry:(int)n bytes:(off_t)bytes of:(off_t)total {}
--(void)archive:(XADArchive *)archive extractionOfEntryDidSucceed:(int)n {}
--(XADAction)archive:(XADArchive *)archive extractionOfEntryDidFail:(int)n error:(XADError)error { return XADAbortAction; }
--(XADAction)archive:(XADArchive *)archive extractionOfResourceForkForEntryDidFail:(int)n error:(XADError)error { return XADAbortAction; }
-
--(void)archive:(XADArchive *)archive extractionProgressBytes:(off_t)bytes of:(off_t)total {}
--(void)archive:(XADArchive *)archive extractionProgressFiles:(int)files of:(int)total {}
-
-// Deprecated
--(NSStringEncoding)archive:(XADArchive *)archive encodingForName:(const char *)bytes guess:(NSStringEncoding)guess confidence:(float)confidence { return guess; }
--(XADAction)archive:(XADArchive *)archive nameDecodingDidFailForEntry:(int)n bytes:(const char *)bytes { return XADAbortAction; }
+-(void)archive:(XADArchive *)arc extractionProgressFiles:(NSInteger)files of:(NSInteger)total;
+{}
 
 @end
-
-

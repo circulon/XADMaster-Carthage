@@ -91,7 +91,7 @@
 
 -(BOOL)preservesPermissions { return preservepermissions; }
 
--(void)setPreserevesPermissions:(BOOL)preserveflag { preservepermissions=preserveflag; }
+-(void)setPreservesPermissions:(BOOL)preserveflag { preservepermissions=preserveflag; }
 
 -(double)updateInterval { return updateinterval; }
 
@@ -133,12 +133,16 @@
 
 -(void)archiveParserNeedsPassword:(XADArchiveParser *)parser
 {
-	[delegate unarchiverNeedsPassword:self];
+	if ([delegate respondsToSelector:@selector(unarchiverNeedsPassword:)]) {
+		[delegate unarchiverNeedsPassword:self];
+	}
 }
 
 -(void)archiveParser:(XADArchiveParser *)parser findsFileInterestingForReason:(NSString *)reason
 {
-	[delegate unarchiver:self findsFileInterestingForReason:reason];
+	if ([delegate respondsToSelector:@selector(unarchiver:findsFileInterestingForReason:)]) {
+		[delegate unarchiver:self findsFileInterestingForReason:reason];
+	}
 }
 
 
@@ -281,7 +285,7 @@
 
 	// Report success or failure
 	end:
-	if(delegate)
+	if(delegate && [delegate respondsToSelector:@selector(unarchiver:didExtractEntryWithDictionary:to:error:)])
 	{
 		[delegate unarchiver:self didExtractEntryWithDictionary:dict to:path error:error];
 	}
@@ -726,7 +730,15 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument
 	if(!delegate) return NO;
 	if(shouldstop) return YES;
 
-	return shouldstop=[delegate extractionShouldStopForUnarchiver:self];
+	if ([delegate respondsToSelector:@selector(extractionShouldStopForUnarchiver:)]) {
+		shouldstop=[delegate extractionShouldStopForUnarchiver:self];
+	}
+	return shouldstop;
+}
+
+-(void)setPreserevesPermissions:(BOOL)preserve
+{
+	self.preservesPermissions = preserve;
 }
 
 @end
@@ -734,8 +746,6 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument
 
 
 @implementation NSObject (XADUnarchiverDelegate)
-
--(void)unarchiverNeedsPassword:(XADUnarchiver *)unarchiver {}
 
 -(NSString *)unarchiver:(XADUnarchiver *)unarchiver pathForExtractingEntryWithDictionary:(NSDictionary *)dict { return nil; }
 
@@ -746,17 +756,13 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument
 	{
 		NSString *path=[self unarchiver:unarchiver pathForExtractingEntryWithDictionary:dict];
 		if(path) *pathptr=path;
-		return [self unarchiver:unarchiver shouldExtractEntryWithDictionary:dict to:*pathptr];
+		#pragma clang diagnostic push
+		#pragma clang diagnostic ignored "-Wdeprecated"
+		return [(NSObject<XADUnarchiverDelegate>*)self unarchiver:unarchiver shouldExtractEntryWithDictionary:dict to:*pathptr];
+		#pragma clang diagnostic pop
 	}
 	else return YES;
 }
-
--(void)unarchiver:(XADUnarchiver *)unarchiver willExtractEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path {}
--(void)unarchiver:(XADUnarchiver *)unarchiver didExtractEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path error:(XADError)error {}
-
--(BOOL)unarchiver:(XADUnarchiver *)unarchiver shouldCreateDirectory:(NSString *)directory { return YES; }
--(void)unarchiver:(XADUnarchiver *)unarchiver didCreateDirectory:(NSString *)directory { }
--(BOOL)unarchiver:(XADUnarchiver *)unarchiver shouldDeleteFileAndCreateDirectory:(NSString *)directory { return NO; }
 
 -(BOOL)unarchiver:(XADUnarchiver *)unarchiver shouldExtractArchiveEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path { return NO; }
 -(void)unarchiver:(XADUnarchiver *)unarchiver willExtractArchiveEntryWithDictionary:(NSDictionary *)dict withUnarchiver:(XADUnarchiver *)subunarchiver to:(NSString *)path {}
@@ -767,11 +773,14 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument
 	// Kludge to handle old-style interface.
 	if([self respondsToSelector:@selector(unarchiver:linkDestinationForEntryWithDictionary:from:)])
 	{
-		return [self unarchiver:unarchiver linkDestinationForEntryWithDictionary:
+		#pragma clang diagnostic push
+		#pragma clang diagnostic ignored "-Wdeprecated"
+		return [(NSObject<XADUnarchiverDelegate>*)self unarchiver:unarchiver linkDestinationForEntryWithDictionary:
 		[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			link,XADLinkDestinationKey,
 			[NSNumber numberWithBool:YES],XADIsLinkKey,
 		nil] from:path];
+		#pragma clang diagnostic pop
 	}
 	else return [link string];
 }

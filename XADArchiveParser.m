@@ -79,69 +79,69 @@
 
 #include <dirent.h>
 
-NSString *XADFileNameKey=@"XADFileName";
-NSString *XADCommentKey=@"XADComment";
-NSString *XADFileSizeKey=@"XADFileSize";
-NSString *XADCompressedSizeKey=@"XADCompressedSize";
-NSString *XADCompressionNameKey=@"XADCompressionName";
+NSString *const XADFileNameKey=@"XADFileName";
+NSString *const XADCommentKey=@"XADComment";
+NSString *const XADFileSizeKey=@"XADFileSize";
+NSString *const XADCompressedSizeKey=@"XADCompressedSize";
+NSString *const XADCompressionNameKey=@"XADCompressionName";
 
-NSString *XADIsDirectoryKey=@"XADIsDirectory";
-NSString *XADIsResourceForkKey=@"XADIsResourceFork";
-NSString *XADIsArchiveKey=@"XADIsArchive";
-NSString *XADIsHiddenKey=@"XADIsHidden";
-NSString *XADIsLinkKey=@"XADIsLink";
-NSString *XADIsHardLinkKey=@"XADIsHardLink";
-NSString *XADLinkDestinationKey=@"XADLinkDestination";
-NSString *XADIsCharacterDeviceKey=@"XADIsCharacterDevice";
-NSString *XADIsBlockDeviceKey=@"XADIsBlockDevice";
-NSString *XADDeviceMajorKey=@"XADDeviceMajor";
-NSString *XADDeviceMinorKey=@"XADDeviceMinor";
-NSString *XADIsFIFOKey=@"XADIsFIFO";
-NSString *XADIsEncryptedKey=@"XADIsEncrypted";
-NSString *XADIsCorruptedKey=@"XADIsCorrupted";
+NSString *const XADIsDirectoryKey=@"XADIsDirectory";
+NSString *const XADIsResourceForkKey=@"XADIsResourceFork";
+NSString *const XADIsArchiveKey=@"XADIsArchive";
+NSString *const XADIsHiddenKey=@"XADIsHidden";
+NSString *const XADIsLinkKey=@"XADIsLink";
+NSString *const XADIsHardLinkKey=@"XADIsHardLink";
+NSString *const XADLinkDestinationKey=@"XADLinkDestination";
+NSString *const XADIsCharacterDeviceKey=@"XADIsCharacterDevice";
+NSString *const XADIsBlockDeviceKey=@"XADIsBlockDevice";
+NSString *const XADDeviceMajorKey=@"XADDeviceMajor";
+NSString *const XADDeviceMinorKey=@"XADDeviceMinor";
+NSString *const XADIsFIFOKey=@"XADIsFIFO";
+NSString *const XADIsEncryptedKey=@"XADIsEncrypted";
+NSString *const XADIsCorruptedKey=@"XADIsCorrupted";
 
-NSString *XADLastModificationDateKey=@"XADLastModificationDate";
-NSString *XADLastAccessDateKey=@"XADLastAccessDate";
-NSString *XADLastAttributeChangeDateKey=@"XADLastAttributeChangeDate";
-NSString *XADLastBackupDateKey=@"XADLastBackupDate";
-NSString *XADCreationDateKey=@"XADCreationDate";
+NSString *const XADLastModificationDateKey=@"XADLastModificationDate";
+NSString *const XADLastAccessDateKey=@"XADLastAccessDate";
+NSString *const XADLastAttributeChangeDateKey=@"XADLastAttributeChangeDate";
+NSString *const XADLastBackupDateKey=@"XADLastBackupDate";
+NSString *const XADCreationDateKey=@"XADCreationDate";
 
-NSString *XADExtendedAttributesKey=@"XADExtendedAttributes";
-NSString *XADFileTypeKey=@"XADFileType";
-NSString *XADFileCreatorKey=@"XADFileCreator";
-NSString *XADFinderFlagsKey=@"XADFinderFlags";
-NSString *XADFinderInfoKey=@"XADFinderInfo";
-NSString *XADPosixPermissionsKey=@"XADPosixPermissions";
-NSString *XADPosixUserKey=@"XADPosixUser";
-NSString *XADPosixGroupKey=@"XADPosixGroup";
-NSString *XADPosixUserNameKey=@"XADPosixUserName";
-NSString *XADPosixGroupNameKey=@"XADPosixGroupName";
-NSString *XADDOSFileAttributesKey=@"XADDOSFileAttributes";
-NSString *XADWindowsFileAttributesKey=@"XADWindowsFileAttributes";
-NSString *XADAmigaProtectionBitsKey=@"XADAmigaProtectionBits";
+NSString *const XADExtendedAttributesKey=@"XADExtendedAttributes";
+NSString *const XADFileTypeKey=@"XADFileType";
+NSString *const XADFileCreatorKey=@"XADFileCreator";
+NSString *const XADFinderFlagsKey=@"XADFinderFlags";
+NSString *const XADFinderInfoKey=@"XADFinderInfo";
+NSString *const XADPosixPermissionsKey=@"XADPosixPermissions";
+NSString *const XADPosixUserKey=@"XADPosixUser";
+NSString *const XADPosixGroupKey=@"XADPosixGroup";
+NSString *const XADPosixUserNameKey=@"XADPosixUserName";
+NSString *const XADPosixGroupNameKey=@"XADPosixGroupName";
+NSString *const XADDOSFileAttributesKey=@"XADDOSFileAttributes";
+NSString *const XADWindowsFileAttributesKey=@"XADWindowsFileAttributes";
+NSString *const XADAmigaProtectionBitsKey=@"XADAmigaProtectionBits";
 
-NSString *XADIndexKey=@"XADIndex";
-NSString *XADDataOffsetKey=@"XADDataOffset";
-NSString *XADDataLengthKey=@"XADDataLength";
-NSString *XADSkipOffsetKey=@"XADSkipOffset";
-NSString *XADSkipLengthKey=@"XADSkipLength";
+NSString *const XADIndexKey=@"XADIndex";
+NSString *const XADDataOffsetKey=@"XADDataOffset";
+NSString *const XADDataLengthKey=@"XADDataLength";
+NSString *const XADSkipOffsetKey=@"XADSkipOffset";
+NSString *const XADSkipLengthKey=@"XADSkipLength";
 
-NSString *XADIsSolidKey=@"XADIsSolid";
-NSString *XADFirstSolidIndexKey=@"XADFirstSolidIndex";
-NSString *XADFirstSolidEntryKey=@"XADFirstSolidEntry";
-NSString *XADNextSolidIndexKey=@"XADNextSolidIndex";
-NSString *XADNextSolidEntryKey=@"XADNextSolidEntry";
-NSString *XADSolidObjectKey=@"XADSolidObject";
-NSString *XADSolidOffsetKey=@"XADSolidOffset";
-NSString *XADSolidLengthKey=@"XADSolidLength";
+NSString *const XADIsSolidKey=@"XADIsSolid";
+NSString *const XADFirstSolidIndexKey=@"XADFirstSolidIndex";
+NSString *const XADFirstSolidEntryKey=@"XADFirstSolidEntry";
+NSString *const XADNextSolidIndexKey=@"XADNextSolidIndex";
+NSString *const XADNextSolidEntryKey=@"XADNextSolidEntry";
+NSString *const XADSolidObjectKey=@"XADSolidObject";
+NSString *const XADSolidOffsetKey=@"XADSolidOffset";
+NSString *const XADSolidLengthKey=@"XADSolidLength";
 
-NSString *XADArchiveNameKey=@"XADArchiveName";
-NSString *XADVolumesKey=@"XADVolumes";
-NSString *XADVolumeScanningFailedKey=@"XADVolumeScanningFailed";
-NSString *XADDiskLabelKey=@"XADDiskLabel";
+NSString *const XADArchiveNameKey=@"XADArchiveName";
+NSString *const XADVolumesKey=@"XADVolumes";
+NSString *const XADVolumeScanningFailedKey=@"XADVolumeScanningFailed";
+NSString *const XADDiskLabelKey=@"XADDiskLabel";
 
-NSString *XADSignatureOffset=@"XADFoundSignatureOffset";
-NSString *XADParserClass=@"XADParserClass";
+NSString *const XADSignatureOffset=@"XADFoundSignatureOffset";
+NSString *const XADParserClass=@"XADParserClass";
 
 static NSComparisonResult CompareParserSignaturesLocations(id first,id second,void *context)
 {
@@ -164,7 +164,7 @@ static int maxheader=0;
 	if(hasinitialized) return;
 	hasinitialized=YES;
 
-	parserclasses=[[NSMutableArray arrayWithObjects:
+	parserclasses=[[NSMutableArray alloc] initWithObjects:
 		// Common formats
 		[XADZipParser class],
 		[XADRARParser class],
@@ -238,19 +238,17 @@ static int maxheader=0;
 
 		// LibXAD
 		[XADLibXADParser class],
-	nil] retain];
+	nil];
 
     // These classes can detect themselves incorrectly if one archive is placed in another
-    parsersWithFloatingSignaturesClasses = [[NSArray arrayWithObjects:
+    parsersWithFloatingSignaturesClasses = [[NSArray alloc] initWithObjects:
         [XADZipSFXParser class],
         [XADEmbeddedRARParser class],
         [XADEmbeddedRAR5Parser class],
      nil
-    ] retain];
+    ];
 
-	NSEnumerator *enumerator=[parserclasses objectEnumerator];
-	Class class;
-	while((class=[enumerator nextObject]))
+	for(Class class in parserclasses)
 	{
 		int header=[class requiredHeaderSize];
 		if(header>maxheader) maxheader=header;
@@ -648,7 +646,9 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 {
 	if(!password)
 	{
-		[delegate archiveParserNeedsPassword:self];
+		if([delegate respondsToSelector:@selector(archiveParserNeedsPassword:)]) {
+			[delegate archiveParserNeedsPassword:self];
+		}
 		if(!password) return @"";
 	}
 	return password;
@@ -662,7 +662,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 -(void)setPassword:(NSString *)newpassword
 {
 	[password autorelease];
-	password=[newpassword retain];
+	password=[newpassword copy];
 
 	// Make sure to invalidate any remaining solid handles, as they will need to change
 	// for the new password.
@@ -896,7 +896,9 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 	if(!delegate) return YES;
 	if(shouldstop) return NO;
 
-	shouldstop=[delegate archiveParsingShouldStop:self];
+	if ([delegate respondsToSelector:@selector(archiveParsingShouldStop:)]) {
+		shouldstop=[delegate archiveParsingShouldStop:self];
+	}
 	return !shouldstop;
 }
 
@@ -905,12 +907,12 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 -(CSHandle *)handleAtDataOffsetForDictionary:(NSDictionary *)dict
 {
 	NSNumber *skipoffs=[dict objectForKey:XADSkipOffsetKey];
-	if(skipoffs)
+	if(skipoffs != nil)
 	{
 		[skiphandle seekToFileOffset:[skipoffs longLongValue]];
 
 		NSNumber *length=[dict objectForKey:XADSkipLengthKey];
-		if(length) return [skiphandle nonCopiedSubHandleOfLength:[length longLongValue]];
+		if(length != nil) return [skiphandle nonCopiedSubHandleOfLength:[length longLongValue]];
 		else return skiphandle;
 	}
 	else
@@ -918,7 +920,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 		[sourcehandle seekToFileOffset:[[dict objectForKey:XADDataOffsetKey] longLongValue]];
 
 		NSNumber *length=[dict objectForKey:XADDataLengthKey];
-		if(length) return [sourcehandle nonCopiedSubHandleOfLength:[length longLongValue]];
+		if(length != nil) return [sourcehandle nonCopiedSubHandleOfLength:[length longLongValue]];
 		else return sourcehandle;
 	}
 }
@@ -1127,13 +1129,14 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 
 	NSAutoreleasePool *delegatepool=[NSAutoreleasePool new];
 
-	if(retainpos)
-	{
-		off_t pos=[sourcehandle offsetInFile];
-		[delegate archiveParser:self foundEntryWithDictionary:dict];
-		[sourcehandle seekToFileOffset:pos];
+	if ([delegate respondsToSelector:@selector(archiveParser:foundEntryWithDictionary:)]) {
+		if (retainpos) {
+			off_t pos=sourcehandle.offsetInFile;
+			[delegate archiveParser:self foundEntryWithDictionary:dict];
+			[sourcehandle seekToFileOffset:pos];
+		} else
+			[delegate archiveParser:self foundEntryWithDictionary:dict];
 	}
-	else [delegate archiveParser:self foundEntryWithDictionary:dict];
 
 	[delegatepool release];
 }
@@ -1255,14 +1258,20 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 {
 	va_list args;
 	va_start(args,reason);
-	NSString *fullreason=[[[NSString alloc] initWithFormat:reason arguments:args] autorelease];
+	[self reportInterestingFileWithReason:reason format:args];
 	va_end(args);
-
-	[delegate archiveParser:self findsFileInterestingForReason:[NSString stringWithFormat:
-	@"%@: %@",[self formatName],fullreason]];
 }
 
-
+-(void)reportInterestingFileWithReason:(NSString *)reason format:(va_list)args
+{
+	NSString *fullreason=[[NSString alloc] initWithFormat:reason arguments:args];
+	
+	if ([delegate respondsToSelector:@selector(archiveParser:findsFileInterestingForReason:)]) {
+		[delegate archiveParser:self findsFileInterestingForReason:[NSString stringWithFormat:
+																	@"%@: %@", self.formatName, fullreason]];
+	}
+	[fullreason release];
+}
 
 
 +(int)requiredHeaderSize { return 0; }
@@ -1312,15 +1321,5 @@ name:(NSString *)name { return nil; }
 
 	return nil;
 }
-
-@end
-
-
-@implementation NSObject (XADArchiveParserDelegate)
-
--(void)archiveParser:(XADArchiveParser *)parser foundEntryWithDictionary:(NSDictionary *)dict {}
--(BOOL)archiveParsingShouldStop:(XADArchiveParser *)parser { return NO; }
--(void)archiveParserNeedsPassword:(XADArchiveParser *)parser {}
--(void)archiveParser:(XADArchiveParser *)parser findsFileInterestingForReason:(NSString *)reason {}
 
 @end

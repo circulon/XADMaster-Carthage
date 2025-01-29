@@ -22,6 +22,7 @@
 
 #import "ClangAnalyser.h"
 
+//TODO: migrate to NS_ERROR, use custom macro?
 typedef int XADError;
 
 #define XADNoError               0x0000 /* no error */

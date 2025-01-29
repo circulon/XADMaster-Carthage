@@ -28,70 +28,72 @@
 #import "XADResourceFork.h"
 #import "Checksums.h"
 
-extern NSString *XADFileNameKey;
-extern NSString *XADCommentKey;
-extern NSString *XADFileSizeKey;
-extern NSString *XADCompressedSizeKey;
-extern NSString *XADCompressionNameKey;
+extern NSString *const XADFileNameKey;
+extern NSString *const XADCommentKey;
+extern NSString *const XADFileSizeKey;
+extern NSString *const XADCompressedSizeKey;
+extern NSString *const XADCompressionNameKey;
 
-extern NSString *XADLastModificationDateKey;
-extern NSString *XADLastAccessDateKey;
-extern NSString *XADLastAttributeChangeDateKey;
-extern NSString *XADLastBackupDateKey;
-extern NSString *XADCreationDateKey;
+extern NSString *const XADLastModificationDateKey;
+extern NSString *const XADLastAccessDateKey;
+extern NSString *const XADLastAttributeChangeDateKey;
+extern NSString *const XADLastBackupDateKey;
+extern NSString *const XADCreationDateKey;
 
-extern NSString *XADIsDirectoryKey;
-extern NSString *XADIsResourceForkKey;
-extern NSString *XADIsArchiveKey;
-extern NSString *XADIsHiddenKey;
-extern NSString *XADIsLinkKey;
-extern NSString *XADIsHardLinkKey;
-extern NSString *XADLinkDestinationKey;
-extern NSString *XADIsCharacterDeviceKey;
-extern NSString *XADIsBlockDeviceKey;
-extern NSString *XADDeviceMajorKey;
-extern NSString *XADDeviceMinorKey;
-extern NSString *XADIsFIFOKey;
-extern NSString *XADIsEncryptedKey;
-extern NSString *XADIsCorruptedKey;
+extern NSString *const XADIsDirectoryKey;
+extern NSString *const XADIsResourceForkKey;
+extern NSString *const XADIsArchiveKey;
+extern NSString *const XADIsHiddenKey;
+extern NSString *const XADIsLinkKey;
+extern NSString *const XADIsHardLinkKey;
+extern NSString *const XADLinkDestinationKey;
+extern NSString *const XADIsCharacterDeviceKey;
+extern NSString *const XADIsBlockDeviceKey;
+extern NSString *const XADDeviceMajorKey;
+extern NSString *const XADDeviceMinorKey;
+extern NSString *const XADIsFIFOKey;
+extern NSString *const XADIsEncryptedKey;
+extern NSString *const XADIsCorruptedKey;
 
-extern NSString *XADExtendedAttributesKey;
-extern NSString *XADFileTypeKey;
-extern NSString *XADFileCreatorKey;
-extern NSString *XADFinderFlagsKey;
-extern NSString *XADFinderInfoKey;
-extern NSString *XADPosixPermissionsKey;
-extern NSString *XADPosixUserKey;
-extern NSString *XADPosixGroupKey;
-extern NSString *XADPosixUserNameKey;
-extern NSString *XADPosixGroupNameKey;
-extern NSString *XADDOSFileAttributesKey;
-extern NSString *XADWindowsFileAttributesKey;
-extern NSString *XADAmigaProtectionBitsKey;
+extern NSString *const XADExtendedAttributesKey;
+extern NSString *const XADFileTypeKey;
+extern NSString *const XADFileCreatorKey;
+extern NSString *const XADFinderFlagsKey;
+extern NSString *const XADFinderInfoKey;
+extern NSString *const XADPosixPermissionsKey;
+extern NSString *const XADPosixUserKey;
+extern NSString *const XADPosixGroupKey;
+extern NSString *const XADPosixUserNameKey;
+extern NSString *const XADPosixGroupNameKey;
+extern NSString *const XADDOSFileAttributesKey;
+extern NSString *const XADWindowsFileAttributesKey;
+extern NSString *const XADAmigaProtectionBitsKey;
 
-extern NSString *XADIndexKey;
-extern NSString *XADDataOffsetKey;
-extern NSString *XADDataLengthKey;
-extern NSString *XADSkipOffsetKey;
-extern NSString *XADSkipLengthKey;
+extern NSString *const XADIndexKey;
+extern NSString *const XADDataOffsetKey;
+extern NSString *const XADDataLengthKey;
+extern NSString *const XADSkipOffsetKey;
+extern NSString *const XADSkipLengthKey;
 
-extern NSString *XADIsSolidKey;
-extern NSString *XADFirstSolidIndexKey;
-extern NSString *XADFirstSolidEntryKey;
-extern NSString *XADNextSolidIndexKey;
-extern NSString *XADNextSolidEntryKey;
-extern NSString *XADSolidObjectKey;
-extern NSString *XADSolidOffsetKey;
-extern NSString *XADSolidLengthKey;
+extern NSString *const XADIsSolidKey;
+extern NSString *const XADFirstSolidIndexKey;
+extern NSString *const XADFirstSolidEntryKey;
+extern NSString *const XADNextSolidIndexKey;
+extern NSString *const XADNextSolidEntryKey;
+extern NSString *const XADSolidObjectKey;
+extern NSString *const XADSolidOffsetKey;
+extern NSString *const XADSolidLengthKey;
 
 // Archive properties only
-extern NSString *XADArchiveNameKey;
-extern NSString *XADVolumesKey;
-extern NSString *XADVolumeScanningFailedKey;
-extern NSString *XADDiskLabelKey;
+extern NSString *const XADArchiveNameKey;
+extern NSString *const XADVolumesKey;
+extern NSString *const XADVolumeScanningFailedKey;
+extern NSString *const XADDiskLabelKey;
 
-extern NSString *XADSignatureOffset;
-extern NSString *XADParserClass;
+extern NSString *const XADSignatureOffset;
+extern NSString *const XADParserClass;
+
+@protocol XADArchiveParserDelegate;
 
 @interface XADArchiveParser:NSObject
 {
@@ -99,7 +101,7 @@ extern NSString *XADParserClass;
 	XADSkipHandle *skiphandle;
 	XADResourceFork *resourcefork;
 
-	id delegate;
+	id<XADArchiveParserDelegate> delegate;
 	NSString *password;
 	NSString *passwordencodingname;
 	BOOL caresaboutpasswordencoding;
@@ -153,8 +155,8 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 -(NSArray *)allFilenames;
 -(void)setAllFilenames:(NSArray *)newnames;
 
--(id)delegate;
--(void)setDelegate:(id)newdelegate;
+-(id<XADArchiveParserDelegate>)delegate;
+-(void)setDelegate:(id<XADArchiveParserDelegate>)newdelegate;
 
 -(NSDictionary *)properties;
 -(NSString *)currentFilename;
@@ -259,7 +261,8 @@ name:(NSString *)name;
 
 @end
 
-@interface NSObject (XADArchiveParserDelegate)
+@protocol XADArchiveParserDelegate <NSObject>
+@optional
 
 -(void)archiveParser:(XADArchiveParser *)parser foundEntryWithDictionary:(NSDictionary *)dict;
 -(BOOL)archiveParsingShouldStop:(XADArchiveParser *)parser;

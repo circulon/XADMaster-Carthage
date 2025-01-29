@@ -28,7 +28,9 @@
 #define XADAlwaysCreateEnclosingDirectory 1
 #define XADCreateEnclosingDirectoryWhenNeeded 2
 
-@interface XADSimpleUnarchiver:NSObject
+@protocol XADSimpleUnarchiverDelegate;
+
+@interface XADSimpleUnarchiver:NSObject <XADArchiveParserDelegate, XADUnarchiverDelegate>
 {
 	XADArchiveParser *parser;
 	XADUnarchiver *unarchiver,*subunarchiver;
@@ -70,8 +72,8 @@
 -(XADArchiveParser *)innerArchiveParser;
 -(NSArray *)reasonsForInterest;
 
--(id)delegate;
--(void)setDelegate:(id)newdelegate;
+-(id<XADSimpleUnarchiverDelegate>)delegate;
+-(void)setDelegate:(id<XADSimpleUnarchiverDelegate>)newdelegate;
 
 // TODO: Encoding wrappers?
 
@@ -160,8 +162,8 @@
 
 
 
-@interface NSObject (XADSimpleUnarchiverDelegate)
-
+@protocol XADSimpleUnarchiverDelegate <NSObject>
+@optional
 -(void)simpleUnarchiverNeedsPassword:(XADSimpleUnarchiver *)unarchiver;
 
 -(CSHandle *)simpleUnarchiver:(XADSimpleUnarchiver *)unarchiver outputHandleForEntryWithDictionary:(NSDictionary *)dict;

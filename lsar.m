@@ -39,10 +39,10 @@
 static int TestEntry(XADSimpleUnarchiver *unarchiver,NSDictionary *dict);
 
 
-@interface Lister:NSObject {}
+@interface Lister:NSObject <XADSimpleUnarchiverDelegate> {}
 @end
 
-@interface JSONLister:NSObject {}
+@interface JSONLister:NSObject <XADSimpleUnarchiverDelegate> {}
 @end
 
 int returncode;
