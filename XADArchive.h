@@ -35,7 +35,6 @@ typedef int XADAction;
 #define XADRenameAction 4
 
 extern NSString *const XADResourceDataKey;
-extern NSString *const XADResourceForkData;
 extern NSString *const XADFinderFlags;
 
 

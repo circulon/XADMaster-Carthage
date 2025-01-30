@@ -270,5 +270,3 @@ name:(NSString *)name;
 -(void)archiveParser:(XADArchiveParser *)parser findsFileInterestingForReason:(NSString *)reason;
 
 @end
-
-NSMutableArray *XADSortVolumes(NSMutableArray *volumes,NSString *firstfileextension);
