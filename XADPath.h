@@ -111,7 +111,7 @@ separators:(const char *)pathseparators;
 -(id)copyWithZone:(NSZone *)zone;
 
 // Deprecated.
--(XADPath *)safePath; // Deprecated. Use sanitizedPathString: instead.
+-(XADPath *)safePath DEPRECATED_ATTRIBUTE; // Deprecated. Use sanitizedPathString: instead.
 
 // Subclass methods.
 -(BOOL)_isPartAbsolute;

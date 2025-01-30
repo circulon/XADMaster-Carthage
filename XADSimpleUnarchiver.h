@@ -35,7 +35,7 @@
 	XADArchiveParser *parser;
 	XADUnarchiver *unarchiver,*subunarchiver;
 
-	id delegate;
+	id<XADSimpleUnarchiverDelegate> delegate;
 	BOOL shouldstop;
 
 	NSString *destination,*enclosingdir;
@@ -72,55 +72,42 @@
 -(XADArchiveParser *)innerArchiveParser;
 -(NSArray *)reasonsForInterest;
 
--(id<XADSimpleUnarchiverDelegate>)delegate;
--(void)setDelegate:(id<XADSimpleUnarchiverDelegate>)newdelegate;
+@property (assign) id<XADSimpleUnarchiverDelegate> delegate;
 
 // TODO: Encoding wrappers?
 
 -(NSString *)password;
 -(void)setPassword:(NSString *)password;
 
--(NSString *)destination;
--(void)setDestination:(NSString *)destpath;
+@property (nonatomic, copy) NSString *destination;
 
--(NSString *)enclosingDirectoryName;
--(void)setEnclosingDirectoryName:(NSString *)dirname;
+@property (nonatomic, copy) NSString *enclosingDirectoryName;
 
--(BOOL)removesEnclosingDirectoryForSoloItems;
--(void)setRemovesEnclosingDirectoryForSoloItems:(BOOL)removeflag;
+@property BOOL removesEnclosingDirectoryForSoloItems;
 
--(BOOL)alwaysOverwritesFiles;
--(void)setAlwaysOverwritesFiles:(BOOL)overwriteflag;
+@property BOOL alwaysOverwritesFiles;
 
--(BOOL)alwaysRenamesFiles;
--(void)setAlwaysRenamesFiles:(BOOL)renameflag;
+@property BOOL alwaysRenamesFiles;
 
--(BOOL)alwaysSkipsFiles;
--(void)setAlwaysSkipsFiles:(BOOL)skipflag;
+@property BOOL alwaysSkipsFiles;
 
--(BOOL)extractsSubArchives;
--(void)setExtractsSubArchives:(BOOL)extractflag;
+@property BOOL extractsSubArchives;
 
--(BOOL)copiesArchiveModificationTimeToEnclosingDirectory;
--(void)setCopiesArchiveModificationTimeToEnclosingDirectory:(BOOL)copyflag;
+@property BOOL copiesArchiveModificationTimeToEnclosingDirectory;
 
--(BOOL)copiesArchiveModificationTimeToSoloItems;
--(void)setCopiesArchiveModificationTimeToSoloItems:(BOOL)copyflag;
+@property BOOL copiesArchiveModificationTimeToSoloItems;
 
--(BOOL)resetsDateForSoloItems;
--(void)setResetsDateForSoloItems:(BOOL)resetflag;
+@property BOOL resetsDateForSoloItems;
 
--(BOOL)propagatesRelevantMetadata;
--(void)setPropagatesRelevantMetadata:(BOOL)propagateflag;
+@property BOOL propagatesRelevantMetadata;
 
 -(int)macResourceForkStyle;
 -(void)setMacResourceForkStyle:(int)style;
 
--(BOOL)preservesPermissions;
--(void)setPreserevesPermissions:(BOOL)preserveflag;
+@property (nonatomic) BOOL preservesPermissions;
+-(void)setPreserevesPermissions:(BOOL)preserveflag DEPRECATED_ATTRIBUTE;
 
--(double)updateInterval;
--(void)setUpdateInterval:(double)interval;
+@property (nonatomic) NSTimeInterval updateInterval;
 
 -(void)addGlobFilter:(NSString *)wildcard;
 -(void)addRegexFilter:(XADRegex *)regex;

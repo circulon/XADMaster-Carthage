@@ -70,32 +70,18 @@
 	[super dealloc];
 }
 
--(XADArchiveParser *)archiveParser { return parser; }
+@synthesize archiveParser = parser;
 
 
--(id)delegate { return delegate; }
+@synthesize delegate;
 
--(void)setDelegate:(id)newdelegate { delegate=newdelegate; }
+@synthesize destination;
 
--(NSString *)destination { return destination; }
+@synthesize macResourceForkStyle = forkstyle;
 
--(void)setDestination:(NSString *)destpath
-{
-	[destination autorelease];
-	destination=[destpath retain];
-}
+@synthesize preservesPermissions = preservepermissions;
 
--(int)macResourceForkStyle { return forkstyle; }
-
--(void)setMacResourceForkStyle:(int)style { forkstyle=style; }
-
--(BOOL)preservesPermissions { return preservepermissions; }
-
--(void)setPreservesPermissions:(BOOL)preserveflag { preservepermissions=preserveflag; }
-
--(double)updateInterval { return updateinterval; }
-
--(void)setUpdateInterval:(double)interval { updateinterval=interval; }
+@synthesize updateInterval = updateinterval;
 
 
 

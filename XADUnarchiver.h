@@ -58,23 +58,18 @@
 -(id)initWithArchiveParser:(XADArchiveParser *)archiveparser;
 -(void)dealloc;
 
--(XADArchiveParser *)archiveParser;
+@property (readonly, retain) XADArchiveParser *archiveParser;
 
--(id<XADUnarchiverDelegate>)delegate;
--(void)setDelegate:(id<XADUnarchiverDelegate>)newdelegate;
+@property (assign) id<XADUnarchiverDelegate> delegate;
 
--(NSString *)destination;
--(void)setDestination:(NSString *)destpath;
+@property (copy) NSString *destination;
 
--(int)macResourceForkStyle;
--(void)setMacResourceForkStyle:(int)style;
+@property int macResourceForkStyle;
 
--(BOOL)preservesPermissions;
--(void)setPreservesPermissions:(BOOL)preserveflag;
+@property BOOL preservesPermissions;
 -(void)setPreserevesPermissions:(BOOL)preserveflag DEPRECATED_ATTRIBUTE;
 
--(double)updateInterval;
--(void)setUpdateInterval:(double)interval;
+@property NSTimeInterval updateInterval;
 
 -(XADError)parseAndUnarchive;
 

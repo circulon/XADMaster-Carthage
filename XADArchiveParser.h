@@ -144,10 +144,8 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 -(id)init;
 -(void)dealloc;
 
--(CSHandle *)handle;
--(void)setHandle:(CSHandle *)newhandle;
--(XADResourceFork *)resourceFork;
--(void)setResourceFork:(XADResourceFork *)newfork;
+@property (nonatomic, retain) CSHandle *handle;
+@property (retain) XADResourceFork *resourceFork;
 -(NSString *)name;
 -(void)setName:(NSString *)newname;
 -(NSString *)filename;
@@ -155,24 +153,21 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 -(NSArray *)allFilenames;
 -(void)setAllFilenames:(NSArray *)newnames;
 
--(id<XADArchiveParserDelegate>)delegate;
--(void)setDelegate:(id<XADArchiveParserDelegate>)newdelegate;
+@property (assign) id<XADArchiveParserDelegate> delegate;
 
--(NSDictionary *)properties;
+@property (readonly, copy) NSDictionary *properties;
 -(NSString *)currentFilename;
 
--(BOOL)isEncrypted;
--(NSString *)password;
--(BOOL)hasPassword;
--(void)setPassword:(NSString *)newpassword;
+@property (readonly, nonatomic, getter=isEncrypted) BOOL encrypted;
+@property (nonatomic, copy) NSString *password;
+@property (nonatomic, readonly) BOOL hasPassword;
 
 -(NSString *)encodingName;
--(float)encodingConfidence;
+@property (nonatomic, readonly) float encodingConfidence;
 -(void)setEncodingName:(NSString *)encodingname;
--(BOOL)caresAboutPasswordEncoding;
--(NSString *)passwordEncodingName;
--(void)setPasswordEncodingName:(NSString *)encodingname;
--(XADStringSource *)stringSource;
+@property (readonly) BOOL caresAboutPasswordEncoding;
+@property (nonatomic, retain) NSString *passwordEncodingName;
+@property (readonly, retain) XADStringSource *stringSource;
 
 -(XADString *)linkDestinationForDictionary:(NSDictionary *)dict;
 -(XADString *)linkDestinationForDictionary:(NSDictionary *)dict error:(XADError *)errorptr;

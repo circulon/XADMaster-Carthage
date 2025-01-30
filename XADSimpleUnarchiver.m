@@ -151,8 +151,7 @@
 
 -(NSArray *)reasonsForInterest { return reasonsforinterest; }
 
--(id)delegate { return delegate; }
--(void)setDelegate:(id)newdelegate { delegate=newdelegate; }
+@synthesize delegate;
 
 -(NSString *)password { return [parser password]; }
 -(void)setPassword:(NSString *)password
@@ -161,52 +160,43 @@
 	[[subunarchiver archiveParser] setPassword:password];
 }
 
--(NSString *)destination { return destination; }
+@synthesize destination;
 -(void)setDestination:(NSString *)destpath
 {
 	if(destpath!=destination)
 	{
 		[destination release];
-		destination=[destpath retain];
+		destination=[destpath copy];
 	}
 }
 
--(NSString *)enclosingDirectoryName { return enclosingdir; }
+@synthesize enclosingDirectoryName = enclosingdir;
 -(void)setEnclosingDirectoryName:(NSString *)dirname
 {
 	if(dirname!=enclosingdir)
 	{
 		[enclosingdir release];
-		enclosingdir=[dirname retain];
+		enclosingdir=[dirname copy];
 	}
 }
 
--(BOOL)removesEnclosingDirectoryForSoloItems { return removesolo; }
--(void)setRemovesEnclosingDirectoryForSoloItems:(BOOL)removeflag { removesolo=removeflag; }
+@synthesize removesEnclosingDirectoryForSoloItems = removesolo;
 
--(BOOL)alwaysOverwritesFiles { return overwrite; }
--(void)setAlwaysOverwritesFiles:(BOOL)overwriteflag { overwrite=overwriteflag; }
+@synthesize alwaysOverwritesFiles = overwrite;
 
--(BOOL)alwaysRenamesFiles { return rename; }
--(void)setAlwaysRenamesFiles:(BOOL)renameflag { rename=renameflag; }
+@synthesize alwaysRenamesFiles = rename;
 
--(BOOL)alwaysSkipsFiles { return skip; }
--(void)setAlwaysSkipsFiles:(BOOL)skipflag { skip=skipflag; }
+@synthesize alwaysSkipsFiles = skip;
 
--(BOOL)extractsSubArchives { return extractsubarchives; }
--(void)setExtractsSubArchives:(BOOL)extractflag { extractsubarchives=extractflag; }
+@synthesize extractsSubArchives = extractsubarchives;
 
--(BOOL)copiesArchiveModificationTimeToEnclosingDirectory { return copydatetoenclosing; }
--(void)setCopiesArchiveModificationTimeToEnclosingDirectory:(BOOL)copyflag { copydatetoenclosing=copyflag; }
+@synthesize copiesArchiveModificationTimeToEnclosingDirectory = copydatetoenclosing;
 
--(BOOL)copiesArchiveModificationTimeToSoloItems { return copydatetosolo; }
--(void)setCopiesArchiveModificationTimeToSoloItems:(BOOL)copyflag { copydatetosolo=copyflag; }
+@synthesize copiesArchiveModificationTimeToSoloItems = copydatetosolo;
 
--(BOOL)resetsDateForSoloItems { return resetsolodate; }
--(void)setResetsDateForSoloItems:(BOOL)resetflag { resetsolodate=resetflag; }
+@synthesize resetsDateForSoloItems = resetsolodate;
 
--(BOOL)propagatesRelevantMetadata { return propagatemetadata; }
--(void)setPropagatesRelevantMetadata:(BOOL)propagateflag { propagatemetadata=propagateflag; }
+@synthesize propagatesRelevantMetadata = propagatemetadata;
 
 -(int)macResourceForkStyle { return [unarchiver macResourceForkStyle]; }
 -(void)setMacResourceForkStyle:(int)style
@@ -216,10 +206,14 @@
 }
 
 -(BOOL)preservesPermissions { return [unarchiver preservesPermissions]; }
--(void)setPreserevesPermissions:(BOOL)preserveflag
+-(void)setPreservesPermissions:(BOOL)preserveflag
 {
 	[unarchiver setPreserevesPermissions:preserveflag];
 	[subunarchiver setPreserevesPermissions:preserveflag];
+}
+-(void)setPreserevesPermissions:(BOOL)preserveflag
+{
+	self.preservesPermissions = preserveflag;
 }
 
 -(double)updateInterval { return [unarchiver updateInterval]; }

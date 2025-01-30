@@ -564,13 +564,14 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	[currsolidhandle release];
 	[firstsoliddict release];
 	[prevsoliddict release];
+	[resourcefork release];
 	[super dealloc];
 }
 
 
 
 
--(CSHandle *)handle { return sourcehandle; }
+@synthesize handle = sourcehandle;
 
 -(void)setHandle:(CSHandle *)newhandle
 {
@@ -587,13 +588,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	else forcesolid=NO;
 }
 
--(XADResourceFork *)resourceFork { return resourcefork; }
-
--(void)setResourceFork:(XADResourceFork *)newfork
-{
-	[resourcefork autorelease];
-	resourcefork=[newfork retain];
-}
+@synthesize resourceFork = resourcefork;
 
 -(NSString *)name { return [properties objectForKey:XADArchiveNameKey]; }
 
@@ -618,11 +613,9 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	[self setName:[newnames objectAtIndex:0]];
 }
 
--(id)delegate { return delegate; }
+@synthesize delegate;
 
--(void)setDelegate:(id)newdelegate { delegate=newdelegate; }
-
--(NSDictionary *)properties { return properties; }
+-(NSDictionary *)properties { return [[properties copy] autorelease]; }
 
 -(NSString *)currentFilename
 {
@@ -687,10 +680,8 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	[stringsource setFixedEncodingName:encodingname];
 }
 
--(BOOL)caresAboutPasswordEncoding
-{
-	return caresaboutpasswordencoding;
-}
+@synthesize caresAboutPasswordEncoding = caresaboutpasswordencoding;
+@synthesize passwordEncodingName = passwordencodingname;
 
 -(NSString *)passwordEncodingName
 {
@@ -707,7 +698,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	}
 }
 
--(XADStringSource *)stringSource { return stringsource; }
+@synthesize stringSource = stringsource;
 
 
 
