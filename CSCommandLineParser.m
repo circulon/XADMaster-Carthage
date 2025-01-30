@@ -27,27 +27,27 @@
 
 
 
-static NSString *NamesKey=@"NamesKey";
-static NSString *AllowedValuesKey=@"AllowedValuesKey";
-static NSString *DefaultValueKey=@"DefaultValueKey";
-static NSString *OptionTypeKey=@"OptionType";
-static NSString *DescriptionKey=@"DescriptionKey";
-static NSString *ArgumentDescriptionKey=@"ArgumentDescriptionKey";
-static NSString *AliasTargetKey=@"AliasTargetKey";
-static NSString *RequiredOptionsKey=@"RequiredOptionsKey";
+static NSString *const NamesKey=@"NamesKey";
+static NSString *const AllowedValuesKey=@"AllowedValuesKey";
+static NSString *const DefaultValueKey=@"DefaultValueKey";
+static NSString *const OptionTypeKey=@"OptionType";
+static NSString *const DescriptionKey=@"DescriptionKey";
+static NSString *const ArgumentDescriptionKey=@"ArgumentDescriptionKey";
+static NSString *const AliasTargetKey=@"AliasTargetKey";
+static NSString *const RequiredOptionsKey=@"RequiredOptionsKey";
 
-static NSString *NumberValueKey=@"NumberValue";
-static NSString *StringValueKey=@"StringValue";
-static NSString *ArrayValueKey=@"ArrayValue";
+static NSString *const NumberValueKey=@"NumberValue";
+static NSString *const StringValueKey=@"StringValue";
+static NSString *const ArrayValueKey=@"ArrayValue";
 
-static NSString *StringOptionType=@"StringOptionType";
-static NSString *MultipleChoiceOptionType=@"MultipleChoiceOptionType";
-static NSString *IntegerOptionType=@"IntegerOptionType";
-static NSString *FloatingPointOptionType=@"FloatingPointOptionType";
-static NSString *SwitchOptionType=@"SwitchOptionType";
-static NSString *HelpOptionType=@"HelpOptionType";
-static NSString *VersionOptionType=@"VersionOptionType";
-static NSString *AliasOptionType=@"AliasOptionType";
+static NSString *const StringOptionType=@"StringOptionType";
+static NSString *const MultipleChoiceOptionType=@"MultipleChoiceOptionType";
+static NSString *const IntegerOptionType=@"IntegerOptionType";
+static NSString *const FloatingPointOptionType=@"FloatingPointOptionType";
+static NSString *const SwitchOptionType=@"SwitchOptionType";
+static NSString *const HelpOptionType=@"HelpOptionType";
+static NSString *const VersionOptionType=@"VersionOptionType";
+static NSString *const AliasOptionType=@"AliasOptionType";
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED<1050
 @interface NSScanner (BuildKludge)

@@ -227,7 +227,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext;
 -(NSData *)encodedPassword;
 -(const char *)encodedCStringPassword;
 
--(void)reportInterestingFileWithReason:(NSString *)reason,...;
+-(void)reportInterestingFileWithReason:(NSString *)reason,... NS_FORMAT_FUNCTION(1,2);
 
 
 

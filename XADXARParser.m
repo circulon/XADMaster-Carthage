@@ -37,12 +37,12 @@
 #define ExtendedAttributeState 5
 #define OldExtendedAttributeState 6
 
-static const NSString *StringFormat=@"String";
-static const NSString *XADStringFormat=@"XADString";
-static const NSString *DecimalFormat=@"Decimal";
-static const NSString *OctalFormat=@"Octal";
-static const NSString *HexFormat=@"Hex";
-static const NSString *DateFormat=@"Date";
+static const NSString *const StringFormat=@"String";
+static const NSString *const XADStringFormat=@"XADString";
+static const NSString *const DecimalFormat=@"Decimal";
+static const NSString *const OctalFormat=@"Octal";
+static const NSString *const HexFormat=@"Hex";
+static const NSString *const DateFormat=@"Date";
 
 @implementation XADXARParser
 
