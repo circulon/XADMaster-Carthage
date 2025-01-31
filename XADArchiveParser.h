@@ -101,6 +101,7 @@ XADEXTERN XADArchiveKeys const XADParserClass;
 
 @protocol XADArchiveParserDelegate;
 
+XADEXPORT
 @interface XADArchiveParser:NSObject
 {
 	CSHandle *sourcehandle;
@@ -152,8 +153,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 
 @property (nonatomic, retain) CSHandle *handle;
 @property (retain) XADResourceFork *resourceFork;
--(NSString *)name;
--(void)setName:(NSString *)newname;
+@property (nonatomic, copy) NSString *name;
 -(NSString *)filename;
 -(void)setFilename:(NSString *)filename;
 -(NSArray *)allFilenames;
@@ -162,7 +162,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 @property (assign) id<XADArchiveParserDelegate> delegate;
 
 @property (readonly, copy) NSDictionary *properties;
--(NSString *)currentFilename;
+@property (nonatomic, readonly, copy) NSString *currentFilename;
 
 @property (readonly, nonatomic, getter=isEncrypted) BOOL encrypted;
 @property (nonatomic, copy) NSString *password;

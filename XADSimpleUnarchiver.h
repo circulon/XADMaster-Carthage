@@ -33,6 +33,7 @@
 
 @protocol XADSimpleUnarchiverDelegate;
 
+XADEXPORT
 @interface XADSimpleUnarchiver:NSObject <XADArchiveParserDelegate, XADUnarchiverDelegate>
 {
 	XADArchiveParser *parser;
@@ -104,8 +105,8 @@
 
 @property BOOL propagatesRelevantMetadata;
 
--(int)macResourceForkStyle;
--(void)setMacResourceForkStyle:(int)style;
+-(XADForkStyle)macResourceForkStyle;
+-(void)setMacResourceForkStyle:(XADForkStyle)style;
 
 @property (nonatomic) BOOL preservesPermissions;
 -(void)setPreserevesPermissions:(BOOL)preserveflag API_DEPRECATED_WITH_REPLACEMENT("-setPreservesPermissions:", macosx(10.0, 10.8), ios(3.0, 8.0));

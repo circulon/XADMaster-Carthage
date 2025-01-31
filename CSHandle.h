@@ -42,13 +42,13 @@
 #endif
 
 
-extern NSExceptionName const CSOutOfMemoryException;
-extern NSExceptionName const CSEndOfFileException;
-extern NSExceptionName const CSNotImplementedException;
-extern NSExceptionName const CSNotSupportedException;
+XADEXTERN NSExceptionName const CSOutOfMemoryException;
+XADEXTERN NSExceptionName const CSEndOfFileException;
+XADEXTERN NSExceptionName const CSNotImplementedException;
+XADEXTERN NSExceptionName const CSNotSupportedException;
 
 
-
+XADEXPORT
 @interface CSHandle:NSObject <NSCopying>
 {
 	CSHandle *parent;

@@ -24,6 +24,7 @@
 #import "XADException.h"
 #pragma clang diagnostic pop
 
+XADEXPORT
 @interface XADResourceFork:NSObject
 {
 	NSDictionary *resources;

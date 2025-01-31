@@ -22,6 +22,7 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wquoted-include-in-framework-header"
+#import "XADTypes.h"
 #import "ClangAnalyser.h"
 #pragma clang diagnostic pop
 
@@ -58,8 +59,9 @@ typedef int XADError;
 
 #define XADSubArchiveError 0x10000
 
-extern NSExceptionName const XADExceptionName;
+XADEXTERN NSExceptionName const XADExceptionName;
 
+XADEXPORT
 @interface XADException:NSObject
 {
 }

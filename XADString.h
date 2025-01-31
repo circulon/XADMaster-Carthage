@@ -104,7 +104,7 @@ XADEXTERN XADStringEncodingName const XADMacOSCroatianStringEncodingName NS_SWIF
 @end
 
 
-
+XADEXPORT
 @interface XADString:NSObject <XADString,NSCopying>
 {
 	NSData *data;
@@ -166,7 +166,7 @@ XADEXTERN XADStringEncodingName const XADMacOSCroatianStringEncodingName NS_SWIF
 
 
 
-
+XADEXPORT
 @interface XADStringSource:NSObject
 {
 	UniversalDetector *detector;
@@ -186,10 +186,10 @@ XADEXTERN XADStringEncodingName const XADMacOSCroatianStringEncodingName NS_SWIF
 -(BOOL)hasAnalyzedData;
 -(XADStringEncodingName)encodingName;
 -(float)confidence;
--(UniversalDetector *)detector;
+@property (readonly, retain) UniversalDetector *detector;
 
 -(void)setFixedEncodingName:(XADStringEncodingName)encodingname;
--(BOOL)hasFixedEncoding;
+@property (readonly, nonatomic) BOOL hasFixedEncoding;
 -(void)setPrefersMacEncodings:(BOOL)prefermac;
 
 #ifdef __APPLE__

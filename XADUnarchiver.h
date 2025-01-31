@@ -42,6 +42,7 @@ typedef NS_ENUM(int, XADForkStyle) {
 
 @protocol XADUnarchiverDelegate;
 
+XADEXPORT
 @interface XADUnarchiver:NSObject <XADArchiveParserDelegate>
 {
 	XADArchiveParser *parser;

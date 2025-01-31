@@ -402,10 +402,7 @@ encodingName:(NSString *)encoding
 	return [detector confidence];
 }
 
--(UniversalDetector *)detector
-{
-	return detector;
-}
+@synthesize detector;
 
 -(void)setFixedEncodingName:(NSString *)encoding
 {

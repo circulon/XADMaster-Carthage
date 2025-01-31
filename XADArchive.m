@@ -673,8 +673,8 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 				{
 					lasterror=[XADException parseException:e];
 					XADAction action=[delegate archive:self extractionOfResourceForkForEntryDidFail:n error:lasterror];
-					if(action==XADSkipAction) break;
-					else if(action!=XADRetryAction) return nil;
+					if(action==XADActionSkip) break;
+					else if(action!=XADActionRetry) return nil;
 				}
 			}
 		}
@@ -835,8 +835,8 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 		{
 			XADAction action=[delegate archive:self nameDecodingDidFailForEntry:n
 			data:[[[self dataForkParserDictionaryForEntry:n] objectForKey:XADFileNameKey] data]];
-			if(action==XADSkipAction) return YES;
-			else if(action!=XADRetryAction)
+			if(action==XADActionSkip) return YES;
+			else if(action!=XADActionRetry)
 			{
 				lasterror=XADBreakError;
 				return NO;
@@ -859,8 +859,8 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 		{
 			XADAction action=[delegate archive:self extractionOfEntryDidFail:n error:lasterror];
 
-			if(action==XADSkipAction) return YES;
-			else if(action!=XADRetryAction) return NO;
+			if(action==XADActionSkip) return YES;
+			else if(action!=XADActionRetry) return NO;
 		}
 		else return NO;
 	}
@@ -901,8 +901,8 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 		{
 			XADAction action=[delegate archive:self extractionOfEntryDidFail:n error:err];
 
-			if(action==XADSkipAction) return YES;
-			else if(action!=XADRetryAction) return NO;
+			if(action==XADActionSkip) return YES;
+			else if(action!=XADActionRetry) return NO;
 		}
 		else return NO;
 	}
@@ -924,8 +924,8 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 		else if(delegate)
 		{
 			XADAction action=[delegate archive:self creatingDirectoryDidFailForEntry:n];
-			if(action==XADSkipAction) return YES;
-			else if(action!=XADRetryAction)
+			if(action==XADActionSkip) return YES;
+			else if(action!=XADActionRetry)
 			{
 				lasterror=XADBreakError;
 				return NO;
@@ -955,10 +955,10 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 		}
 		else action=[delegate archive:self entry:n collidesWithFile:destfile newFilename:&newname];
 
-		if(action==XADOverwriteAction&&!dir) break;
-		else if(action==XADSkipAction) return YES;
-		else if(action==XADRenameAction) destfile=[[destfile stringByDeletingLastPathComponent] stringByAppendingPathComponent:newname];
-		else if(action!=XADRetryAction)
+		if(action==XADActionOverwrite&&!dir) break;
+		else if(action==XADActionSkip) return YES;
+		else if(action==XADActionRename) destfile=[[destfile stringByDeletingLastPathComponent] stringByAppendingPathComponent:newname];
+		else if(action!=XADActionRetry)
 		{
 			lasterror=XADBreakError;
 			return NO;
@@ -1175,7 +1175,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 		[terminateddata release];
 		return action;
 	} else {
-		return XADAbortAction;
+		return XADActionAbort;
 	}
 }
 
@@ -1202,7 +1202,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 	if ([delegate respondsToSelector:@selector(archive:entry:collidesWithFile:newFilename:)]) {
 		return [delegate archive:arc entry:n collidesWithFile:file newFilename:newname];
 	} else {
-		return XADOverwriteAction;
+		return XADActionOverwrite;
 	}
 }
 
@@ -1211,7 +1211,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 	if ([delegate respondsToSelector:@selector(archive:entry:collidesWithDirectory:newFilename:)]) {
 		return [delegate archive:arc entry:n collidesWithDirectory:file newFilename:newname];
 	} else {
-		return XADSkipAction;
+		return XADActionSkip;
 	}
 }
 
@@ -1220,7 +1220,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 	if ([delegate respondsToSelector:@selector(archive:creatingDirectoryDidFailForEntry:)]) {
 		return [delegate archive:arc creatingDirectoryDidFailForEntry:n];
 	} else {
-		return XADAbortAction;
+		return XADActionAbort;
 	}
 }
 
@@ -1257,7 +1257,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 	if ([delegate respondsToSelector:@selector(archive:extractionOfEntryDidFail:error:)]) {
 		return [delegate archive:arc extractionOfEntryDidFail:n error:error];
 	} else {
-		return XADAbortAction;
+		return XADActionAbort;
 	}
 }
 
@@ -1266,7 +1266,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 	if ([delegate respondsToSelector:@selector(archive:extractionOfResourceForkForEntryDidFail:error:)]) {
 		return [delegate archive:arc extractionOfResourceForkForEntryDidFail:n error:error];
 	} else {
-		return XADAbortAction;
+		return XADActionAbort;
 	}
 }
 

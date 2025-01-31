@@ -198,8 +198,8 @@
 
 @synthesize propagatesRelevantMetadata = propagatemetadata;
 
--(int)macResourceForkStyle { return [unarchiver macResourceForkStyle]; }
--(void)setMacResourceForkStyle:(int)style
+-(XADForkStyle)macResourceForkStyle { return [unarchiver macResourceForkStyle]; }
+-(void)setMacResourceForkStyle:(XADForkStyle)style
 {
 	[unarchiver setMacResourceForkStyle:style];
 	[subunarchiver setMacResourceForkStyle:style];

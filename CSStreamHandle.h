@@ -26,6 +26,7 @@
 
 #define CSStreamHandle XADStreamHandle
 
+XADEXPORT
 @interface CSStreamHandle:CSHandle
 {
 	off_t streampos,streamlength;

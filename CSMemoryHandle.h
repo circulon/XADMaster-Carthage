@@ -25,6 +25,7 @@
 
 #define CSMemoryHandle XADMemoryHandle
 
+XADEXPORT
 @interface CSMemoryHandle:CSHandle
 {
 	NSData *backingdata;

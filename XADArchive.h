@@ -27,18 +27,21 @@
 #import "XADException.h"
 #pragma clang diagnostic pop
 
-//TODO: wrap in an emum
-typedef int XADAction;
+#if __has_feature(modules)
+#  define XAD_NO_DEPRECATED
+#endif
+
+typedef NS_ENUM(int, XADAction) {
+	XADActionAbort = 0,
+	XADActionRetry = 1,
+	XADActionSkip = 2,
+	XADActionOverwrite = 3,
+	XADActionRename = 4
+};
 //typedef off_t xadSize; // deprecated
 
-#define XADAbortAction 0
-#define XADRetryAction 1
-#define XADSkipAction 2
-#define XADOverwriteAction 3
-#define XADRenameAction 4
-
-extern NSString *const XADResourceDataKey;
-extern NSString *const XADFinderFlags;
+XADEXTERN NSString *const XADResourceDataKey;
+XADEXTERN NSString *const XADFinderFlags;
 
 
 @class UniversalDetector;
@@ -76,6 +79,7 @@ extern NSString *const XADFinderFlags;
 
 @end
 
+XADEXPORT
 @interface XADArchive:NSObject <XADArchiveDelegate, XADUnarchiverDelegate, XADArchiveParserDelegate>
 {
 	XADArchiveParser *parser;
@@ -192,24 +196,24 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork;
 
 // Deprecated
 
-+(NSArray *)volumesForFile:(NSString *)filename;
++(NSArray *)volumesForFile:(NSString *)filename DEPRECATED_ATTRIBUTE;
 
--(int)sizeOfEntry:(int)n;
--(void *)xadFileInfoForEntry:(int)n;
--(BOOL)extractEntry:(int)n to:(NSString *)destination overrideWritePermissions:(BOOL)override;
--(BOOL)extractEntry:(int)n to:(NSString *)destination overrideWritePermissions:(BOOL)override resourceFork:(BOOL)resfork;
--(void)fixWritePermissions;
+-(int)sizeOfEntry:(int)n DEPRECATED_ATTRIBUTE;
+-(void *)xadFileInfoForEntry:(int)n DEPRECATED_ATTRIBUTE;
+-(BOOL)extractEntry:(int)n to:(NSString *)destination overrideWritePermissions:(BOOL)override DEPRECATED_ATTRIBUTE;
+-(BOOL)extractEntry:(int)n to:(NSString *)destination overrideWritePermissions:(BOOL)override resourceFork:(BOOL)resfork DEPRECATED_ATTRIBUTE;
+-(void)fixWritePermissions DEPRECATED_ATTRIBUTE;
 
 @end
 
 
 #ifndef XAD_NO_DEPRECATED
 
-#define XADAbort XADAbortAction
-#define XADRetry XADRetryAction
-#define XADSkip XADSkipAction
-#define XADOverwrite XADOverwriteAction
-#define XADRename XADRenameAction
+static const XADAction XADAbort API_DEPRECATED_WITH_REPLACEMENT("XADActionAbort", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionAbort;
+static const XADAction XADRetry API_DEPRECATED_WITH_REPLACEMENT("XADActionRetry", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionRetry;
+static const XADAction XADSkip API_DEPRECATED_WITH_REPLACEMENT("XADActionSkip", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionSkip;
+static const XADAction XADOverwrite API_DEPRECATED_WITH_REPLACEMENT("XADActionOverwrite", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionOverwrite;
+static const XADAction XADRename API_DEPRECATED_WITH_REPLACEMENT("XADActionRename", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionRename;
 
 typedef XADError xadERROR;
 typedef off_t xadSize;
@@ -243,10 +247,10 @@ typedef off_t xadSize;
 #define XADEncodingError         0x0019 /* text encoding was defective */
 #endif
 
-#define XADAbort XADAbortAction
-#define XADRetry XADRetryAction
-#define XADSkip XADSkipAction
-#define XADOverwrite XADOverwriteAction
-#define XADRename XADRenameAction
-
 #endif
+
+static const XADAction XADAbortAction API_DEPRECATED_WITH_REPLACEMENT("XADActionAbort", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionAbort;
+static const XADAction XADRetryAction API_DEPRECATED_WITH_REPLACEMENT("XADActionRetry", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionRetry;
+static const XADAction XADSkipAction API_DEPRECATED_WITH_REPLACEMENT("XADActionSkip", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionSkip;
+static const XADAction XADOverwriteAction API_DEPRECATED_WITH_REPLACEMENT("XADActionOverwrite", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionOverwrite;
+static const XADAction XADRenameAction API_DEPRECATED_WITH_REPLACEMENT("XADActionRename", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADActionRename;
