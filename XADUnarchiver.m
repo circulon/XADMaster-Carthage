@@ -49,7 +49,7 @@
 	{
 		parser=[archiveparser retain];
 		destination=nil;
-		forkstyle=XADDefaultForkStyle;
+		forkstyle=XADForkStyleDefault;
 		preservepermissions=NO;
 		updateinterval=0.1;
 		delegate=nil;
@@ -210,20 +210,20 @@
 	{
 		switch(forkstyle)
 		{
-			case XADIgnoredForkStyle:
+			case XADForkStyleIgnored:
 			break;
 
-			case XADMacOSXForkStyle:
+			case XADForkStyleMacOSX:
 				if(!isdir)
 				error=[XADPlatform extractResourceForkEntryWithDictionary:dict unarchiver:self toPath:path];
 			break;
 
-			case XADHiddenAppleDoubleForkStyle:
-			case XADVisibleAppleDoubleForkStyle:
+			case XADForkStyleHiddenAppleDouble:
+			case XADForkStyleVisibleAppleDouble:
 				error=[self _extractResourceForkEntryWithDictionary:dict asAppleDoubleFile:path];
 			break;
 
-			case XADHFVExplorerAppleDoubleForkStyle:
+			case XADForkStyleHFVExplorerAppleDouble:
 				// We need to make sure there is an empty file for the data fork in all
 				// cases, so just try to recover the original filename and create an empty
 				// file there in case one doesn't exist, and this isn't a directory.
@@ -385,7 +385,7 @@ resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum erro
 	[subunarchiver setDelegate:delegate];
 	[subunarchiver setDestination:destination];
 	[subunarchiver setMacResourceForkStyle:forkstyle];
-	[subunarchiver setPreserevesPermissions:preservepermissions];
+	[subunarchiver setPreservesPermissions:preservepermissions];
 	[subunarchiver setUpdateInterval:updateinterval];
 
 	return subunarchiver;
@@ -691,17 +691,17 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument
 	{
 		switch(forkstyle)
 		{
-			case XADHiddenAppleDoubleForkStyle:
+			case XADForkStyleHiddenAppleDouble:
 				// TODO: is this path generation correct?
 				return [[path stringByDeletingLastPathComponent] stringByAppendingPathComponent:
 				[@"._" stringByAppendingString:[path lastPathComponent]]];
 			break;
 
-			case XADVisibleAppleDoubleForkStyle:
+			case XADForkStyleVisibleAppleDouble:
 				return [path stringByAppendingPathExtension:@"rsrc"];
 			break;
 
-			case XADHFVExplorerAppleDoubleForkStyle:
+			case XADForkStyleHFVExplorerAppleDouble:
 				// TODO: is this path generation correct?
 				return [[path stringByDeletingLastPathComponent] stringByAppendingPathComponent:
 				[@"%" stringByAppendingString:[path lastPathComponent]]];

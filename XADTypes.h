@@ -76,6 +76,47 @@
 #define NS_DESIGNATED_INITIALIZER
 #endif
 
+// To make other compilers happy
+#ifndef __has_attribute
+#define __has_attribute(...) 0
+#endif
+#ifndef __has_extension
+#define __has_extension(...) 0
+#endif
+
+#ifndef NS_ENUM
+#if __has_attribute(enum_extensibility)
+#define __XAD_ENUM_ATTRIBUTES __attribute__((enum_extensibility(open)))
+#define __XAD_CLOSED_ENUM_ATTRIBUTES __attribute__((enum_extensibility(closed)))
+#define __XAD_OPTIONS_ATTRIBUTES __attribute__((flag_enum,enum_extensibility(open)))
+#else
+#define __XAD_ENUM_ATTRIBUTES
+#define __XAD_CLOSED_ENUM_ATTRIBUTES
+#define __XAD_OPTIONS_ATTRIBUTES
+#endif
+
+#define __XAD_ENUM_GET_MACRO(_1, _2, NAME, ...) NAME
+#define __XAD_ENUM_FIXED_IS_AVAILABLE (__cplusplus && __cplusplus >= 201103L && (__has_extension(cxx_strong_enums) || __has_feature(objc_fixed_enum))) || (!__cplusplus && __has_feature(objc_fixed_enum))
+
+#if __XAD_ENUM_FIXED_IS_AVAILABLE
+#define __XAD_NAMED_ENUM(_type, _name)     enum __XAD_ENUM_ATTRIBUTES _name : _type _name; enum _name : _type
+#define __XAD_ANON_ENUM(_type)             enum __XAD_ENUM_ATTRIBUTES : _type
+#define NS_CLOSED_ENUM(_type, _name)      enum __XAD_CLOSED_ENUM_ATTRIBUTES _name : _type _name; enum _name : _type
+#if (__cplusplus)
+#define NS_OPTIONS(_type, _name) __attribute__((availability(swift,unavailable))) _type _name; enum __XAD_OPTIONS_ATTRIBUTES : _name
+#else
+#define NS_OPTIONS(_type, _name) enum __XAD_OPTIONS_ATTRIBUTES _name : _type _name; enum _name : _type
+#endif
+#else
+#define __XAD_NAMED_ENUM(_type, _name) _type _name; enum
+#define __XAD_ANON_ENUM(_type) enum
+#define NS_CLOSED_ENUM(_type, _name) _type _name; enum
+#define NS_OPTIONS(_type, _name) _type _name; enum
+#endif
+
+#define NS_ENUM(...) __XAD_ENUM_GET_MACRO(__VA_ARGS__, __XAD_NAMED_ENUM, __XAD_ANON_ENUM, )(__VA_ARGS__)
+#endif
+
 #ifndef DEPRECATED_ATTRIBUTE
 #if defined(__has_feature) && defined(__has_attribute)
     #if __has_attribute(deprecated)
@@ -103,7 +144,11 @@
 #endif
 
 #ifndef API_DEPRECATED_WITH_REPLACEMENT
+#if __has_attribute(attribute_deprecated_with_replacement)
+#define API_DEPRECATED_WITH_REPLACEMENT(X, ...) __attribute__((deprecated("Use " #X " instead" ,X)))
+#else
 #define API_DEPRECATED_WITH_REPLACEMENT(...) DEPRECATED_ATTRIBUTE
+#endif
 #endif
 
 #if !defined(NSFoundationVersionNumber10_11_Max) && !defined(NSFoundationVersionNumber_iOS_9_x_Max)

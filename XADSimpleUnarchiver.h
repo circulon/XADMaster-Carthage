@@ -108,7 +108,7 @@
 -(void)setMacResourceForkStyle:(int)style;
 
 @property (nonatomic) BOOL preservesPermissions;
--(void)setPreserevesPermissions:(BOOL)preserveflag DEPRECATED_ATTRIBUTE;
+-(void)setPreserevesPermissions:(BOOL)preserveflag API_DEPRECATED_WITH_REPLACEMENT("-setPreservesPermissions:", macosx(10.0, 10.8), ios(3.0, 8.0));
 
 @property (nonatomic) NSTimeInterval updateInterval;
 

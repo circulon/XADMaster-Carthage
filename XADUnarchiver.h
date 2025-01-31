@@ -22,21 +22,23 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wquoted-include-in-framework-header"
+#import "XADTypes.h"
 #import "XADArchiveParser.h"
 #pragma clang diagnostic pop
 
-//TODO: migrate to NS_ENUM
-#define XADIgnoredForkStyle 0
-#define XADMacOSXForkStyle 1
-#define XADHiddenAppleDoubleForkStyle 2
-#define XADVisibleAppleDoubleForkStyle 3
-#define XADHFVExplorerAppleDoubleForkStyle 4
-
+typedef NS_ENUM(int, XADForkStyle) {
+	XADForkStyleIgnored = 0,
+	XADForkStyleMacOSX = 1,
+	XADForkStyleHiddenAppleDouble = 2,
+	XADForkStyleVisibleAppleDouble = 3,
+	XADForkStyleHFVExplorerAppleDouble = 4,
+	
 #if defined(__APPLE__) && TARGET_OS_OSX
-#define XADDefaultForkStyle XADMacOSXForkStyle
+	XADForkStyleDefault = XADForkStyleMacOSX,
 #else
-#define XADDefaultForkStyle XADVisibleAppleDoubleForkStyle
+	XADForkStyleDefault = XADForkStyleVisibleAppleDouble,
 #endif
+};
 
 @protocol XADUnarchiverDelegate;
 
@@ -44,7 +46,7 @@
 {
 	XADArchiveParser *parser;
 	NSString *destination;
-	int forkstyle;
+	XADForkStyle forkstyle;
 	BOOL preservepermissions;
 	double updateinterval;
 
@@ -67,10 +69,10 @@
 
 @property (copy) NSString *destination;
 
-@property int macResourceForkStyle;
+@property XADForkStyle macResourceForkStyle;
 
 @property BOOL preservesPermissions;
--(void)setPreserevesPermissions:(BOOL)preserveflag DEPRECATED_ATTRIBUTE;
+-(void)setPreserevesPermissions:(BOOL)preserveflag API_DEPRECATED_WITH_REPLACEMENT("-setPreservesPermissions:", macosx(10.0, 10.8), ios(3.0, 8.0));
 
 @property NSTimeInterval updateInterval;
 
@@ -149,3 +151,11 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress;
 -(BOOL)unarchiver:(XADUnarchiver *)unarchiver shouldExtractEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path DEPRECATED_ATTRIBUTE;
 -(NSString *)unarchiver:(XADUnarchiver *)unarchiver linkDestinationForEntryWithDictionary:(NSDictionary *)dict from:(NSString *)path DEPRECATED_ATTRIBUTE;
 @end
+
+
+static const XADForkStyle XADIgnoredForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleIgnored", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADForkStyleIgnored;
+static const XADForkStyle XADMacOSXForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleMacOSX", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADForkStyleMacOSX;
+static const XADForkStyle XADHiddenAppleDoubleForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleHiddenAppleDouble", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADForkStyleHiddenAppleDouble;
+static const XADForkStyle XADVisibleAppleDoubleForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleVisibleAppleDouble", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADForkStyleVisibleAppleDouble;
+static const XADForkStyle XADHFVExplorerAppleDoubleForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleHFVExplorerAppleDouble", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADForkStyleHFVExplorerAppleDouble;
+static const XADForkStyle XADDefaultForkStyle API_DEPRECATED_WITH_REPLACEMENT("XADForkStyleDefault", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADForkStyleDefault;
