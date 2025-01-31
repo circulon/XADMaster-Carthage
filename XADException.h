@@ -20,7 +20,10 @@
  */
 #import <Foundation/Foundation.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wquoted-include-in-framework-header"
 #import "ClangAnalyser.h"
+#pragma clang diagnostic pop
 
 //TODO: migrate to NS_ERROR, use custom macro?
 typedef int XADError;
@@ -55,7 +58,7 @@ typedef int XADError;
 
 #define XADSubArchiveError 0x10000
 
-extern NSString *XADExceptionName;
+extern NSExceptionName const XADExceptionName;
 
 @interface XADException:NSObject
 {

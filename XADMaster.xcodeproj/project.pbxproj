@@ -1367,6 +1367,10 @@
 		1BF3BA9013EE08A300BE7400 /* XADPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BF3BA8F13EE08A300BE7400 /* XADPlatform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1BF3BA9113EE08A300BE7400 /* XADPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BF3BA8F13EE08A300BE7400 /* XADPlatform.h */; };
 		1BF3BA9213EE08A300BE7400 /* XADPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BF3BA8F13EE08A300BE7400 /* XADPlatform.h */; };
+		5530A4AF2D4CCC3800CBD82D /* XADTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 5530A4AE2D4CCC3800CBD82D /* XADTypes.h */; };
+		5530A4B02D4CCC3800CBD82D /* XADTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 5530A4AE2D4CCC3800CBD82D /* XADTypes.h */; };
+		5530A4B12D4CCC3800CBD82D /* XADTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 5530A4AE2D4CCC3800CBD82D /* XADTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5530A4B22D4CCC3800CBD82D /* XADTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 5530A4AE2D4CCC3800CBD82D /* XADTypes.h */; };
 		73032E6C2626D3DD000C2751 /* XADWARCParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 73032E6B2626D3DD000C2751 /* XADWARCParserTests.m */; };
 		73032E6E2626DB7C000C2751 /* WARCFixtures in Resources */ = {isa = PBXBuildFile; fileRef = 73032E6D2626DB7C000C2751 /* WARCFixtures */; };
 		7318A41D248C67E400D327B9 /* XADRARParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7318A41C248C67E400D327B9 /* XADRARParserTests.m */; };
@@ -2127,6 +2131,7 @@
 		1BF0EE9D14031860007B8CF8 /* VariantI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VariantI.h; sourceTree = "<group>"; };
 		1BF3BA8F13EE08A300BE7400 /* XADPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADPlatform.h; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* XADMaster_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADMaster_Prefix.pch; sourceTree = "<group>"; };
+		5530A4AE2D4CCC3800CBD82D /* XADTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XADTypes.h; sourceTree = "<group>"; };
 		56FBC8DC0A57531D00BE98CF /* UniversalDetector.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UniversalDetector.xcodeproj; path = ../UniversalDetector/UniversalDetector.xcodeproj; sourceTree = SOURCE_ROOT; };
 		56FBC92B0A57541300BE98CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 		73032E6B2626D3DD000C2751 /* XADWARCParserTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XADWARCParserTests.m; sourceTree = "<group>"; };
@@ -2354,6 +2359,7 @@
 				1B349EF711BACA4F00396C26 /* XADPlatformWindows.m */,
 				1B349EF511BACA3C00396C26 /* XADPlatformLinux.m */,
 				1B83727C15CEA27000B0DC9D /* XADPlatformiOS.m */,
+				5530A4AE2D4CCC3800CBD82D /* XADTypes.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -3311,6 +3317,7 @@
 				1B7451AD13081B89008D80FE /* XADISO9660Parser.h in Headers */,
 				1B7F3CB413147CD6008238BF /* XADPaddedBlockHandle.h in Headers */,
 				1B3443D913A6EAF800C89872 /* XADWinZipWavPackHandle.h in Headers */,
+				5530A4B02D4CCC3800CBD82D /* XADTypes.h in Headers */,
 				1B34443913A978AC00C89872 /* wavpack_local.h in Headers */,
 				1B34443B13A978AF00C89872 /* wavpack_version.h in Headers */,
 				1B31CB6013C2305100ED119E /* XADArParser.h in Headers */,
@@ -3389,6 +3396,7 @@
 				1B467A0815CD9A73001AB1DD /* XADISO9660Parser.h in Headers */,
 				1B467A0915CD9A73001AB1DD /* XADPaddedBlockHandle.h in Headers */,
 				1B467A0A15CD9A73001AB1DD /* XADWinZipWavPackHandle.h in Headers */,
+				5530A4AF2D4CCC3800CBD82D /* XADTypes.h in Headers */,
 				1B467A0C15CD9A73001AB1DD /* wavpack_local.h in Headers */,
 				1B467A0D15CD9A73001AB1DD /* wavpack_version.h in Headers */,
 				1B467A0E15CD9A73001AB1DD /* XADArParser.h in Headers */,
@@ -3467,6 +3475,7 @@
 				1B7451A913081B89008D80FE /* XADISO9660Parser.h in Headers */,
 				1B7F3CB613147CD6008238BF /* XADPaddedBlockHandle.h in Headers */,
 				1B3443DA13A6EAF800C89872 /* XADWinZipWavPackHandle.h in Headers */,
+				5530A4B22D4CCC3800CBD82D /* XADTypes.h in Headers */,
 				1B34443A13A978AD00C89872 /* wavpack_local.h in Headers */,
 				1B34443C13A978B000C89872 /* wavpack_version.h in Headers */,
 				1B31CB6113C2305100ED119E /* XADArParser.h in Headers */,
@@ -3727,6 +3736,7 @@
 				1B06CD1C145CFF36003907F9 /* XADCrunchHandles.h in Headers */,
 				1B5F3F82146A0962007BC5A6 /* XADAppleDouble.h in Headers */,
 				1BBEF8B014D8A31800790E4B /* XADArchiveParserDescriptions.h in Headers */,
+				5530A4B12D4CCC3800CBD82D /* XADTypes.h in Headers */,
 				1BBEFA5B14EF375400790E4B /* XADStuffItSplitParser.h in Headers */,
 				1B3581A715A4CFE90002A4C9 /* XADAppleSingleParser.h in Headers */,
 				1B3581D015A7ABE20002A4C9 /* XADPDFParser.h in Headers */,

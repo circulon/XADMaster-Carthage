@@ -18,7 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wquoted-include-in-framework-header"
 #import "XADString.h"
+#pragma clang diagnostic pop
 
 #define XADUnixPathSeparator "/"
 #define XADWindowsPathSeparator "\\"
@@ -116,13 +119,13 @@ separators:(const char *)pathseparators;
 // Subclass methods.
 -(BOOL)_isPartAbsolute;
 -(BOOL)_isPartEmpty;
--(int)_depthOfPartWithEncodingName:(NSString *)encoding;
--(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(NSString *)encoding;
--(NSString *)_lastPathComponentOfPartWithEncodingName:(NSString *)encoding;
--(NSString *)_firstPathComponentOfPartWithEncodingName:(NSString *)encoding;
--(XADPath *)_pathByDeletingLastPathComponentOfPartWithEncodingName:(NSString *)encoding;
--(XADPath *)_pathByDeletingFirstPathComponentOfPartWithEncodingName:(NSString *)encoding;
--(BOOL)_canDecodePartWithEncodingName:(NSString *)encoding;
+-(int)_depthOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(XADStringEncodingName)encoding;
+-(NSString *)_lastPathComponentOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(NSString *)_firstPathComponentOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(XADPath *)_pathByDeletingLastPathComponentOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(XADPath *)_pathByDeletingFirstPathComponentOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(BOOL)_canDecodePartWithEncodingName:(XADStringEncodingName)encoding;
 -(void)_appendPathForPartToData:(NSMutableData *)data;
 -(XADStringSource *)_sourceForPart;
 
@@ -141,13 +144,13 @@ separators:(const char *)pathseparators;
 
 -(BOOL)_isPartAbsolute;
 -(BOOL)_isPartEmpty;
--(int)_depthOfPartWithEncodingName:(NSString *)encoding;
--(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(NSString *)encoding;
--(NSString *)_lastPathComponentOfPartWithEncodingName:(NSString *)encoding;
--(NSString *)_firstPathComponentOfPartWithEncodingName:(NSString *)encoding;
--(XADPath *)_pathByDeletingLastPathComponentOfPartWithEncodingName:(NSString *)encoding;
--(XADPath *)_pathByDeletingFirstPathComponentOfPartWithEncodingName:(NSString *)encoding;
--(BOOL)_canDecodePartWithEncodingName:(NSString *)encoding;
+-(int)_depthOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(XADStringEncodingName)encoding;
+-(NSString *)_lastPathComponentOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(NSString *)_firstPathComponentOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(XADPath *)_pathByDeletingLastPathComponentOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(XADPath *)_pathByDeletingFirstPathComponentOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(BOOL)_canDecodePartWithEncodingName:(XADStringEncodingName)encoding;
 -(void)_appendPathForPartToData:(NSMutableData *)data;
 -(XADStringSource *)_sourceForPart;
 
@@ -172,13 +175,13 @@ separators:(const char *)pathseparators parent:(XADPath *)parentpath;
 
 -(BOOL)_isPartAbsolute;
 -(BOOL)_isPartEmpty;
--(int)_depthOfPartWithEncodingName:(NSString *)encoding;
--(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(NSString *)encoding;
--(NSString *)_lastPathComponentOfPartWithEncodingName:(NSString *)encoding;
--(NSString *)_firstPathComponentOfPartWithEncodingName:(NSString *)encoding;
--(XADPath *)_pathByDeletingLastPathComponentOfPartWithEncodingName:(NSString *)encoding;
--(XADPath *)_pathByDeletingFirstPathComponentOfPartWithEncodingName:(NSString *)encoding;
--(BOOL)_canDecodePartWithEncodingName:(NSString *)encoding;
+-(int)_depthOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(void)_addPathComponentsOfPartToArray:(NSMutableArray *)array encodingName:(XADStringEncodingName)encoding;
+-(NSString *)_lastPathComponentOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(NSString *)_firstPathComponentOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(XADPath *)_pathByDeletingLastPathComponentOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(XADPath *)_pathByDeletingFirstPathComponentOfPartWithEncodingName:(XADStringEncodingName)encoding;
+-(BOOL)_canDecodePartWithEncodingName:(XADStringEncodingName)encoding;
 -(void)_appendPathForPartToData:(NSMutableData *)data;
 -(XADStringSource *)_sourceForPart;
 

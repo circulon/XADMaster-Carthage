@@ -20,6 +20,10 @@
  */
 #import <Foundation/Foundation.h>
 #import <stdint.h>
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wquoted-include-in-framework-header"
+#import "XADTypes.h"
+#pragma clang diagnostic pop
 
 
 
@@ -38,10 +42,10 @@
 #endif
 
 
-extern NSString *CSOutOfMemoryException;
-extern NSString *CSEndOfFileException;
-extern NSString *CSNotImplementedException;
-extern NSString *CSNotSupportedException;
+extern NSExceptionName const CSOutOfMemoryException;
+extern NSExceptionName const CSEndOfFileException;
+extern NSExceptionName const CSNotImplementedException;
+extern NSExceptionName const CSNotSupportedException;
 
 
 

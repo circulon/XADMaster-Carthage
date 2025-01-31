@@ -24,7 +24,7 @@
 #import "CSZlibHandle.h"
 #import "CSBzip2Handle.h"
 
-NSString *XADExceptionName=@"XADException";
+NSString *const XADExceptionName=@"XADException";
 
 @implementation XADException
 

@@ -20,7 +20,10 @@
  */
 #import <Foundation/Foundation.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wquoted-include-in-framework-header"
 #import "XADArchiveParser.h"
+#pragma clang diagnostic pop
 
 //TODO: migrate to NS_ENUM
 #define XADIgnoredForkStyle 0
