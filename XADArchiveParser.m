@@ -807,7 +807,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	}
 }
 
--(BOOL)wasStopped { return shouldstop; }
+@synthesize wasStopped = shouldstop;
 
 -(BOOL)hasChecksum { return [sourcehandle hasChecksum]; }
 
@@ -916,6 +916,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 	}
 }
 
+@synthesize skipHandle = skiphandle;
 -(XADSkipHandle *)skipHandle
 {
 	if(!skiphandle) skiphandle=[[XADSkipHandle alloc] initWithHandle:sourcehandle];
@@ -1200,13 +1201,13 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 	return [XADPath decodedPathWithData:data encodingName:encoding separators:separators];
 }
 
--(XADPath *)XADPathWithBytes:(const void *)bytes length:(int)length separators:(const char *)separators
+-(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length separators:(const char *)separators
 {
 	NSData *data=[NSData dataWithBytes:bytes length:length];
 	return [XADPath analyzedPathWithData:data source:stringsource separators:separators];
 }
 
--(XADPath *)XADPathWithBytes:(const void *)bytes length:(int)length encodingName:(NSString *)encoding separators:(const char *)separators
+-(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length encodingName:(NSString *)encoding separators:(const char *)separators
 {
 	NSData *data=[NSData dataWithBytes:bytes length:length];
 	return [XADPath decodedPathWithData:data encodingName:encoding separators:separators];

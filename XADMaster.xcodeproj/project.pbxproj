@@ -1419,7 +1419,7 @@
 		734C13B921C79C8500917EAA /* unpack_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 734C13B621C79C8400917EAA /* unpack_utils.c */; };
 		734C13BA21C79C8500917EAA /* unpack_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 734C13B621C79C8400917EAA /* unpack_utils.c */; };
 		7378D98B21CCD04000A4B11F /* CRCCalculationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7378D98A21CCD04000A4B11F /* CRCCalculationTests.m */; };
-		7398C7AE2059248700D7B977 /* UniversalDetector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B06D3770DDA5C2600D9C000 /* UniversalDetector.framework */; };
+		7398C7AE2059248700D7B977 /* UniversalDetector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B06D3770DDA5C2600D9C000 /* UniversalDetector.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		73A91A542ADC64DE0059C423 /* StuffitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A91A4F2ADC64DE0059C423 /* StuffitTests.m */; };
 		73A91A562ADC64EB0059C423 /* StuffitFixtures in Resources */ = {isa = PBXBuildFile; fileRef = 73A91A552ADC64EB0059C423 /* StuffitFixtures */; };
 		73DA3468206B6BF1006ADB42 /* XADPlatformOSXTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 73DA3467206B6BF1006ADB42 /* XADPlatformOSXTests.m */; };
@@ -1778,8 +1778,8 @@
 		1B3581E415A7AC020002A4C9 /* PDFParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFParser.m; sourceTree = "<group>"; };
 		1B3581E515A7AC020002A4C9 /* PDFStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFStream.h; sourceTree = "<group>"; };
 		1B3581E615A7AC020002A4C9 /* PDFStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFStream.m; sourceTree = "<group>"; };
-		1B375D1C16ED72CB00773BB8 /* unar.bash_completion */ = {isa = PBXFileReference; lastKnownFileType = text; name = unar.bash_completion; path = ../Extra/unar.bash_completion; sourceTree = "<group>"; };
-		1B375D1F16ED72D100773BB8 /* lsar.bash_completion */ = {isa = PBXFileReference; lastKnownFileType = text; name = lsar.bash_completion; path = ../Extra/lsar.bash_completion; sourceTree = "<group>"; };
+		1B375D1C16ED72CB00773BB8 /* unar.bash_completion */ = {isa = PBXFileReference; lastKnownFileType = text; name = unar.bash_completion; path = Extra/unar.bash_completion; sourceTree = "<group>"; };
+		1B375D1F16ED72D100773BB8 /* lsar.bash_completion */ = {isa = PBXFileReference; lastKnownFileType = text; name = lsar.bash_completion; path = Extra/lsar.bash_completion; sourceTree = "<group>"; };
 		1B3A64B41015030700AE25A8 /* XADLZHSFXParsers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADLZHSFXParsers.h; sourceTree = "<group>"; };
 		1B3A64B51015030700AE25A8 /* XADLZHSFXParsers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XADLZHSFXParsers.m; sourceTree = "<group>"; };
 		1B3A64C610150DB600AE25A8 /* XADLZHOldHandles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADLZHOldHandles.h; sourceTree = "<group>"; };
@@ -2079,8 +2079,8 @@
 		1BD3832E125610C200FE08BD /* XADDiskDoublerMethod2Handle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XADDiskDoublerMethod2Handle.m; sourceTree = "<group>"; };
 		1BD3842A125A351400FE08BD /* XADNowCompressHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADNowCompressHandle.h; sourceTree = "<group>"; };
 		1BD3842B125A351400FE08BD /* XADNowCompressHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XADNowCompressHandle.m; sourceTree = "<group>"; };
-		1BDDC79513DE3D4200A8C079 /* lsar.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; name = lsar.1; path = ../Extra/lsar.1; sourceTree = "<group>"; };
-		1BDDC79613DE3D4200A8C079 /* unar.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; name = unar.1; path = ../Extra/unar.1; sourceTree = "<group>"; };
+		1BDDC79513DE3D4200A8C079 /* lsar.1 */ = {isa = PBXFileReference; explicitFileType = text.man; name = lsar.1; path = Extra/lsar.1; sourceTree = "<group>"; };
+		1BDDC79613DE3D4200A8C079 /* unar.1 */ = {isa = PBXFileReference; explicitFileType = text.man; name = unar.1; path = Extra/unar.1; sourceTree = "<group>"; };
 		1BDDC7EB13E0E78C00A8C079 /* XADSimpleUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADSimpleUnarchiver.h; sourceTree = "<group>"; };
 		1BDDC7EC13E0E78C00A8C079 /* XADSimpleUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XADSimpleUnarchiver.m; sourceTree = "<group>"; };
 		1BE07E6810C9953400B17F91 /* XADCABBlockReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADCABBlockReader.h; sourceTree = "<group>"; };

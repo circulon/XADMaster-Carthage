@@ -168,9 +168,8 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 @property (nonatomic, copy) NSString *password;
 @property (nonatomic, readonly) BOOL hasPassword;
 
--(XADStringEncodingName)encodingName;
+@property (nonatomic, copy) XADStringEncodingName encodingName;
 @property (nonatomic, readonly) float encodingConfidence;
--(void)setEncodingName:(XADStringEncodingName)encodingname;
 @property (readonly) BOOL caresAboutPasswordEncoding;
 @property (nonatomic, retain) XADStringEncodingName passwordEncodingName;
 @property (readonly, retain) XADStringSource *stringSource;
@@ -180,9 +179,9 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 -(NSDictionary *)extendedAttributesForDictionary:(NSDictionary *)dict;
 -(NSData *)finderInfoForDictionary:(NSDictionary *)dict;
 
--(BOOL)wasStopped;
+@property (readonly) BOOL wasStopped;
 
--(BOOL)hasChecksum;
+@property (nonatomic, readonly) BOOL hasChecksum;
 -(BOOL)testChecksum;
 -(XADError)testChecksumWithoutExceptions;
 
@@ -197,7 +196,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext;
 -(BOOL)shouldKeepParsing;
 
 -(CSHandle *)handleAtDataOffsetForDictionary:(NSDictionary *)dict;
--(XADSkipHandle *)skipHandle;
+@property (readonly, retain) XADSkipHandle *skipHandle;
 -(CSHandle *)zeroLengthHandleWithChecksum:(BOOL)checksum;
 -(CSHandle *)subHandleFromSolidStreamForEntryWithDictionary:(NSDictionary *)dict;
 
@@ -225,8 +224,8 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext;
 -(XADPath *)XADPathWithUnseparatedString:(NSString *)string;
 -(XADPath *)XADPathWithData:(NSData *)data separators:(const char *)separators;
 -(XADPath *)XADPathWithData:(NSData *)data encodingName:(XADStringEncodingName)encoding separators:(const char *)separators;
--(XADPath *)XADPathWithBytes:(const void *)bytes length:(int)length separators:(const char *)separators;
--(XADPath *)XADPathWithBytes:(const void *)bytes length:(int)length encodingName:(XADStringEncodingName)encoding separators:(const char *)separators;
+-(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length separators:(const char *)separators;
+-(XADPath *)XADPathWithBytes:(const void *)bytes length:(NSInteger)length encodingName:(XADStringEncodingName)encoding separators:(const char *)separators;
 -(XADPath *)XADPathWithCString:(const char *)cstring separators:(const char *)separators;
 -(XADPath *)XADPathWithCString:(const char *)cstring encodingName:(XADStringEncodingName)encoding separators:(const char *)separators;
 
