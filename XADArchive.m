@@ -75,7 +75,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		parser=nil;
 		unarchiver=nil;
 		delegate=nil;
-		lasterror=XADNoError;
+		lasterror=XADErrorNone;
 		immediatedestination=nil;
 		immediatefailed=NO;
 		immediatesize=0;
@@ -103,7 +103,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		{
 			if([self _parseWithErrorPointer:error]) return self;
 		}
-		else if(error) *error=XADDataFormatError;
+		else if(error) *error=XADErrorDataFormat;
 
 		[self release];
 	}
@@ -128,7 +128,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		{
 			if([self _parseWithErrorPointer:error]) return self;
 		}
-		else if(error) *error=XADDataFormatError;
+		else if(error) *error=XADErrorDataFormat;
 
 		[self release];
 	}
@@ -156,7 +156,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 			{
 				if([self _parseWithErrorPointer:error]) return self;
 			}
-			else if(error) *error=XADDataFormatError;
+			else if(error) *error=XADErrorDataFormat;
 		}
 
 		[self release];
@@ -207,7 +207,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 				return self;
 			}
 		}
-		else if(error) *error=XADSubArchiveError;
+		else if(error) *error=XADErrorSubArchive;
 
 		[self release];
 	}
@@ -251,7 +251,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	[namedict release];
 	namedict=nil;
 
-	return lasterror==XADNoError||[dataentries count]!=0;
+	return lasterror==XADErrorNone||[dataentries count]!=0;
 }
 
 -(void)archiveParser:(XADArchiveParser *)parser foundEntryWithDictionary:(NSDictionary *)dict
@@ -298,7 +298,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 						@try { res=[self extractArchiveEntry:n to:immediatedestination]; }
 						@catch(id e) { res=NO; }
 
-						if(!res&&lasterror==XADDataFormatError)
+						if(!res&&lasterror==XADErrorDataFormat)
 						{
 							if(![self extractEntry:n to:immediatedestination
 							deferDirectories:YES dataFork:YES resourceFork:NO])
@@ -346,7 +346,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 			if(!res)
 			{
-				if(lasterror==XADDataFormatError)
+				if(lasterror==XADErrorDataFormat)
 				{
 					if(![self extractEntry:n to:immediatedestination
 					deferDirectories:YES dataFork:YES resourceFork:YES])
@@ -459,7 +459,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 -(XADError)lastError { return lasterror; }
 
--(void)clearLastError { lasterror=XADNoError; }
+-(void)clearLastError { lasterror=XADErrorNone; }
 
 -(NSString *)describeLastError { return [XADException describeXADError:lasterror]; }
 
@@ -787,7 +787,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 			@try { res=[self extractArchiveEntry:i to:destination]; }
 			@catch(id e) { res=NO; }
 
-			if(!res&&lasterror==XADDataFormatError) // Retry as regular file if the archive format was not known
+			if(!res&&lasterror==XADErrorDataFormat) // Retry as regular file if the archive format was not known
 			{
 				res=[self extractEntry:i to:destination deferDirectories:YES];
 			}
@@ -838,13 +838,13 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 			if(action==XADActionSkip) return YES;
 			else if(action!=XADActionRetry)
 			{
-				lasterror=XADBreakError;
+				lasterror=XADErrorBreak;
 				return NO;
 			}
 		}
 		else
 		{
-			lasterror=XADEncodingError;
+			lasterror=XADErrorEncoding;
 			return NO;
 		}
 	}
@@ -854,7 +854,7 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 	NSString *destfile=[destination stringByAppendingPathComponent:name];
 	while(![self _extractEntry:n as:destfile deferDirectories:defer dataFork:datafork resourceFork:resfork])
 	{
-		if(lasterror==XADBreakError) return NO;
+		if(lasterror==XADErrorBreak) return NO;
 		else if(delegate&&datafork)
 		{
 			XADAction action=[delegate archive:self extractionOfEntryDidFail:n error:lasterror];
@@ -896,7 +896,7 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 		[subarchive release];
 
 		if(res) return YES;
-		else if(err==XADBreakError||err==XADDataFormatError) return NO;
+		else if(err==XADErrorBreak||err==XADErrorDataFormat) return NO;
 		else if(delegate)
 		{
 			XADAction action=[delegate archive:self extractionOfEntryDidFail:n error:err];
@@ -917,7 +917,7 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 	{
 		XADError error=[unarchiver _ensureDirectoryExists:[destfile stringByDeletingLastPathComponent]];
 
-		if(error==XADNoError)
+		if(error==XADErrorNone)
 		{
 			break;
 		}
@@ -927,7 +927,7 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 			if(action==XADActionSkip) return YES;
 			else if(action!=XADActionRetry)
 			{
-				lasterror=XADBreakError;
+				lasterror=XADErrorBreak;
 				return NO;
 			}
 		}
@@ -960,7 +960,7 @@ dataFork:(BOOL)datafork resourceFork:(BOOL)resfork
 		else if(action==XADActionRename) destfile=[[destfile stringByDeletingLastPathComponent] stringByAppendingPathComponent:newname];
 		else if(action!=XADActionRetry)
 		{
-			lasterror=XADBreakError;
+			lasterror=XADErrorBreak;
 			return NO;
 		}
 	}

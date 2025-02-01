@@ -103,8 +103,8 @@ unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath
 		if(S_ISLNK(st.st_mode))
 		{
 			NSNumber *sizenum=[dict objectForKey:XADFileSizeKey];
-			if(!sizenum) return XADNoError;
-			else if([sizenum longLongValue]==0) return XADNoError;
+			if(!sizenum) return XADErrorNone;
+			else if([sizenum longLongValue]==0) return XADErrorNone;
 		}
 
 		// Otherwise, try changing permissions.
@@ -113,7 +113,7 @@ unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath
 		chmod(cpath,0700);
 
 		fd=open(cpath,O_WRONLY|O_CREAT|O_NOFOLLOW,0666);
-		if(fd==-1) return XADOpenFileError; // TODO: Better error.
+		if(fd==-1) return XADErrorOpenFile; // TODO: Better error.
 	}
 
 	struct ResourceOutputArguments args={ .fd=fd, .offset=0 };
@@ -133,11 +133,11 @@ unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath
 {
 	struct ResourceOutputArguments *args=[pointerval pointerValue];
 	if(fsetxattr(args->fd,XATTR_RESOURCEFORK_NAME,bytes,length,
-	args->offset,0)) return XADOutputError;
+				 args->offset,0)) return XADErrorOutput;
 
 	args->offset+=length;
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 
@@ -151,7 +151,7 @@ preservePermissions:(BOOL)preservepermissions
 
 	// Read file permissions.
 	struct stat st;
-	if(lstat(cpath,&st)!=0) return XADOpenFileError; // TODO: better error
+	if(lstat(cpath,&st)!=0) return XADErrorOpenFile; // TODO: better error
 
 	// If the file does not have write permissions, change this temporarily.
 	if(!(st.st_mode&S_IWUSR)) chmod(cpath,0700);
@@ -233,7 +233,7 @@ preservePermissions:(BOOL)preservepermissions
 	// Finally, set all attributes.
 	setattrlist(cpath,&list,attrdata,attrptr-attrdata,FSOPT_NOFOLLOW);
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 +(void)setComment:(NSString *)comment forPath:(NSString *)path;
@@ -297,9 +297,9 @@ preservePermissions:(BOOL)preservepermissions
 	struct stat st;
 	const char *destcstr=[path fileSystemRepresentation];
 	if(lstat(destcstr,&st)==0) unlink(destcstr);
-	if(symlink([link fileSystemRepresentation],destcstr)!=0) return XADLinkError;
+	if(symlink([link fileSystemRepresentation],destcstr)!=0) return XADErrorLink;
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 

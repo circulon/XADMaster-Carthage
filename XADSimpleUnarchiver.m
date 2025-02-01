@@ -384,7 +384,7 @@
 		}
 	}
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 -(XADError)_setupSubArchiveForEntryWithDataFork:(NSDictionary *)datadict resourceFork:(NSDictionary *)resourcedict
@@ -396,9 +396,9 @@
 	if(!subunarchiver)
 	{
 		if(error) return error;
-		else return XADSubArchiveError;
+		else return XADErrorSubArchive;
 	}
-	return XADNoError;
+	return XADErrorNone;
 }
 
 
@@ -451,7 +451,7 @@
 
 		// Check for collision.
 		destpath=[self _checkPath:destpath forEntryWithDictionary:nil deferred:NO];
-		if(!destpath) return XADNoError;
+		if(!destpath) return XADErrorNone;
 	}
 	else
 	{
@@ -468,20 +468,20 @@
 	enumerator=[entries objectEnumerator];
 	while((entry=[enumerator nextObject]))
 	{
-		if([self _shouldStop]) return XADBreakError;
+		if([self _shouldStop]) return XADErrorBreak;
 
 		if(totalsize>=0) currsize=[[entry objectForKey:XADFileSizeKey] longLongValue];
 
 		XADError error=[unarchiver extractEntryWithDictionary:entry];
-		if(error==XADBreakError) return XADBreakError;
+		if(error==XADErrorBreak) return XADErrorBreak;
 
 		if(totalsize>=0) totalprogress+=currsize;
 	}
 
-	if([self _shouldStop]) return XADBreakError;
+	if([self _shouldStop]) return XADErrorBreak;
 
 	// If we ended up extracting nothing, give up.
-	if(!numextracted) return XADNoError;
+	if(!numextracted) return XADErrorNone;
 
 	return [self _finalizeExtraction];
 }
@@ -512,7 +512,7 @@
 		{
 			// Check for collision.
 			destpath=[self _checkPath:destpath forEntryWithDictionary:nil deferred:NO];
-			if(!destpath) return XADNoError;
+			if(!destpath) return XADErrorNone;
 		}
 	}
 	else
@@ -533,8 +533,8 @@
 	error=[subunarchiver parseAndUnarchive];
 
 	// Check if the caller wants to give up.
-	if(error==XADBreakError) return XADBreakError;
-	if([self _shouldStop]) return XADBreakError;
+	if(error==XADErrorBreak) return XADErrorBreak;
+	if([self _shouldStop]) return XADErrorBreak;
 
 	// If we ended up extracting nothing, give up.
 	if(!numextracted) return error;
@@ -576,7 +576,7 @@
 
 			// Move the item into place and delete the enclosing directory.
 			if(![self _recursivelyMoveItemAtPath:newitempath toPath:finalitempath overwrite:YES])
-			error=XADFileExistsError; // TODO: Better error handling.
+				error=XADErrorFileExists; // TODO: Better error handling.
 
 			[XADPlatform removeItemAtPath:newenclosingpath];
 
@@ -612,7 +612,7 @@
 					// new location selected. This may end up being the original
 					// path that caused the collision.
 					if(![self _recursivelyMoveItemAtPath:enclosingpath toPath:newenclosingpath overwrite:YES])
-					error=XADFileExistsError; // TODO: Better error handling.
+						error=XADErrorFileExists; // TODO: Better error handling.
 				}
 
 				// Remember where the items ended up.
@@ -665,7 +665,7 @@
 		}
 	}
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 -(void)_testForSoloItems:(NSDictionary *)entry
