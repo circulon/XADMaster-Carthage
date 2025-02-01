@@ -91,14 +91,14 @@ XADEXTERN XADStringEncodingName const XADMacOSCroatianStringEncodingName NS_SWIF
 
 @property (readonly, nonatomic) BOOL encodingIsKnown;
 @property (readonly, copy) XADStringEncodingName encodingName;
--(float)confidence;
+@property (readonly) float confidence;
 
--(XADStringSource *)source;
+@property (nonatomic, readonly, retain) XADStringSource *source;
 
 #ifdef __APPLE__
 -(BOOL)canDecodeWithEncoding:(NSStringEncoding)encoding;
 -(NSString *)stringWithEncoding:(NSStringEncoding)encoding;
--(NSStringEncoding)encoding;
+@property (readonly) NSStringEncoding encoding;
 #endif
 
 @end
@@ -130,11 +130,11 @@ XADEXPORT
 -(NSString *)stringWithEncodingName:(XADStringEncodingName)encoding;
 -(NSData *)data;
 
--(BOOL)encodingIsKnown;
--(XADStringEncodingName)encodingName;
--(float)confidence;
+@property (readonly, nonatomic) BOOL encodingIsKnown;
+@property (readonly, copy) XADStringEncodingName encodingName;
+@property (readonly) float confidence;
 
--(XADStringSource *)source;
+@property (readonly, retain) XADStringSource *source;
 
 -(BOOL)hasASCIIPrefix:(NSString *)asciiprefix;
 -(XADString *)XADStringByStrippingASCIIPrefixOfLength:(int)length;
@@ -143,7 +143,7 @@ XADEXPORT
 #ifdef __APPLE__
 -(BOOL)canDecodeWithEncoding:(NSStringEncoding)encoding;
 -(NSString *)stringWithEncoding:(NSStringEncoding)encoding;
--(NSStringEncoding)encoding;
+@property (readonly) NSStringEncoding encoding;
 #endif
 
 @end
@@ -193,7 +193,7 @@ XADEXPORT
 -(void)setPrefersMacEncodings:(BOOL)prefermac;
 
 #ifdef __APPLE__
--(NSStringEncoding)encoding;
+@property (readonly) NSStringEncoding encoding;
 -(void)setFixedEncoding:(NSStringEncoding)encoding;
 #endif
 

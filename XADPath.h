@@ -97,9 +97,9 @@ separators:(const char *)pathseparators;
 -(NSData *)data;
 -(void)_appendPathToData:(NSMutableData *)data;
 
--(BOOL)encodingIsKnown;
--(NSString *)encodingName;
--(float)confidence;
+@property (readonly, nonatomic) BOOL encodingIsKnown;
+@property (readonly, copy) XADStringEncodingName encodingName;
+@property (readonly) float confidence;
 
 -(XADStringSource *)source;
 
@@ -109,10 +109,6 @@ separators:(const char *)pathseparators;
 -(NSString *)sanitizedPathStringWithEncoding:(NSStringEncoding)encoding;
 -(NSStringEncoding)encoding;
 #endif
-
-// Other interfaces.
--(NSUInteger)hash;
--(id)copyWithZone:(NSZone *)zone;
 
 // Deprecated.
 -(XADPath *)safePath DEPRECATED_ATTRIBUTE; // Deprecated. Use sanitizedPathString: instead.

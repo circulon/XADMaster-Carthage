@@ -56,7 +56,7 @@ XADEXPORT
 	NSMutableSet *resourceforks;
 	id metadata;
 	NSString *unpackdestination,*finaldestination,*overridesoloitem;
-	int numextracted;
+	NSInteger numextracted;
 
 	NSString *toplevelname;
 	BOOL lookslikesolo;
@@ -105,8 +105,7 @@ XADEXPORT
 
 @property BOOL propagatesRelevantMetadata;
 
--(XADForkStyle)macResourceForkStyle;
--(void)setMacResourceForkStyle:(XADForkStyle)style;
+@property (nonatomic) XADForkStyle macResourceForkStyle;
 
 @property (nonatomic) BOOL preservesPermissions;
 -(void)setPreserevesPermissions:(BOOL)preserveflag API_DEPRECATED_WITH_REPLACEMENT("-setPreservesPermissions:", macosx(10.0, 10.8), ios(3.0, 8.0));
@@ -115,15 +114,15 @@ XADEXPORT
 
 -(void)addGlobFilter:(NSString *)wildcard;
 -(void)addRegexFilter:(XADRegex *)regex;
--(void)addIndexFilter:(int)index;
+-(void)addIndexFilter:(NSInteger)index;
 -(void)setIndices:(NSIndexSet *)indices;
 
 -(off_t)predictedTotalSize;
 -(off_t)predictedTotalSizeIgnoringUnknownFiles:(BOOL)ignoreunknown;
 
--(int)numberOfItemsExtracted;
--(BOOL)wasSoloItem;
--(NSString *)actualDestination;
+@property (readonly) NSInteger numberOfItemsExtracted;
+@property (readonly) BOOL wasSoloItem;
+@property (readonly, copy) NSString *actualDestination;
 -(NSString *)soloItem;
 -(NSString *)createdItem;
 -(NSString *)createdItemOrActualDestination;

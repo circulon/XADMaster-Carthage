@@ -240,7 +240,7 @@
 	[regexes addObject:regex];
 }
 
--(void)addIndexFilter:(int)index
+-(void)addIndexFilter:(NSInteger)index
 {
 	if(!indices) indices=[NSMutableIndexSet new];
 	[indices addIndex:index];
@@ -282,11 +282,11 @@
 
 
 
--(int)numberOfItemsExtracted { return numextracted; }
+@synthesize numberOfItemsExtracted = numextracted;
 
--(BOOL)wasSoloItem { return lookslikesolo; }
+@synthesize wasSoloItem = lookslikesolo;
 
--(NSString *)actualDestination { return finaldestination; }
+@synthesize actualDestination = finaldestination;
 
 -(NSString *)soloItem
 {

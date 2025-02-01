@@ -242,7 +242,7 @@ encodingName:(NSString *)encoding
 
 
 
--(XADStringSource *)source { return source; }
+@synthesize source;
 
 
 
