@@ -281,7 +281,7 @@ preservePermissions:(BOOL)preservepermissions
 
 +(CSHandle *)handleForReadingResourceForkAtPath:(NSString *)path { return nil; }
 
-
++(CSHandle *)handleForReadingResourceForkAtFileURL:(NSURL *)path { return nil; }
 
 //
 // Time functions.

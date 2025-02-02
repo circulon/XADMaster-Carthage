@@ -49,6 +49,11 @@ NSString *const XADExceptionReasonKey=@"XADExceptionReason";
 	forKey:@"XADError"]] autorelease] raise];
 }
 
++(void)raiseExceptionWithXADError:(XADError)errnum underlyingError:(NSError*)nsErr
+{
+	[[[[NSException alloc] initWithName:XADExceptionName reason:[self describeXADError:errnum]
+							   userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:errnum], @"XADError", nsErr, NSUnderlyingErrorKey, nil]] autorelease] raise];
+}
 
 
 +(XADError)parseException:(id)exception

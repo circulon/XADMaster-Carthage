@@ -557,6 +557,33 @@ preservePermissions:(BOOL)preservepermissions
 	return [CSMemoryHandle memoryHandleForReadingData:data];
 }
 
++(CSHandle *)handleForReadingResourceForkAtFileURL:(NSURL *)path
+{
+	// TODO: Make an actual CSHandle subclass? Possible but sort of useless.
+	NSMutableData *data=[NSMutableData data];
+
+	const char *cpath=[path fileSystemRepresentation];
+	int fd=open(cpath,O_RDONLY);
+	if(fd==-1) return nil;
+
+	uint32_t pos=0;
+	for(;;)
+	{
+		uint8_t buffer[16384];
+
+		ssize_t actual=fgetxattr(fd,XATTR_RESOURCEFORK_NAME,buffer,sizeof(buffer),pos,0);
+		if(actual<0) { close(fd); return nil; }
+		if(actual==0) break;
+
+		[data appendBytes:buffer length:actual];
+		pos+=actual;
+	}
+
+	close(fd);
+
+	return [CSMemoryHandle memoryHandleForReadingData:data];
+}
+
 
 
 //

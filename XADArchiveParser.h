@@ -148,6 +148,29 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 +(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum;
 +(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum error:(XADError *)errorptr;
  
+#pragma mark NSError functions
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name nserror:(NSError **)errorptr NS_SWIFT_NAME(archiveParser(for:name:));
++(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)entry
+archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum nserror:(NSError **)errorptr
+NS_SWIFT_NAME(archiveParser(with:archiveParser:wantChecksum:));
++(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry
+resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser
+wantChecksum:(BOOL)checksum nserror:(NSError **)errorptr
+NS_SWIFT_NAME(archiveParser(with:resourceForkDictionary:archiveParser:wantChecksum:));
++(XADArchiveParser *)archiveParserForPath:(NSString *)filename nserror:(NSError **)errorptr
+NS_SWIFT_NAME(archiveParser(forPath:));
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header
+resourceFork:(XADResourceFork *)fork name:(NSString *)name nserror:(NSError **)errorptr
+NS_SWIFT_NAME(archiveParser(for:firstBytes:resourceFork:name:));
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(XADResourceFork *)fork
+name:(NSString *)name nserror:(NSError **)errorptr
+NS_SWIFT_NAME(archiveParser(for:resourceFork:name:));
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header
+name:(NSString *)name nserror:(NSError **)errorptr
+NS_SWIFT_NAME(archiveParser(for:firstBytes:name:));
++(XADArchiveParser *)archiveParserForFileURL:(NSURL *)filename error:(NSError **)errorptr
+NS_SWIFT_NAME(archiveParser(for:));
+
 -(id)init;
 -(void)dealloc;
 
@@ -182,8 +205,9 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 @property (readonly) BOOL wasStopped;
 
 @property (nonatomic, readonly) BOOL hasChecksum;
--(BOOL)testChecksum;
+-(BOOL)testChecksum NS_SWIFT_UNAVAILABLE("throws exception");
 -(XADError)testChecksumWithoutExceptions;
+-(BOOL)testChecksumWithError:(NSError**)error NS_REFINED_FOR_SWIFT;
 
 
 
@@ -214,8 +238,8 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext;
 -(XADString *)XADStringWithString:(NSString *)string;
 -(XADString *)XADStringWithData:(NSData *)data;
 -(XADString *)XADStringWithData:(NSData *)data encodingName:(XADStringEncodingName)encoding;
--(XADString *)XADStringWithBytes:(const void *)bytes length:(int)length;
--(XADString *)XADStringWithBytes:(const void *)bytes length:(int)length encodingName:(XADStringEncodingName)encoding;
+-(XADString *)XADStringWithBytes:(const void *)bytes length:(NSInteger)length;
+-(XADString *)XADStringWithBytes:(const void *)bytes length:(NSInteger)length encodingName:(XADStringEncodingName)encoding;
 -(XADString *)XADStringWithCString:(const char *)cstring;
 -(XADString *)XADStringWithCString:(const char *)cstring encodingName:(XADStringEncodingName)encoding;
 
@@ -237,7 +261,9 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext;
 
 
 // Subclasses implement these:
-
+#if __has_feature(objc_class_property)
+@property (class, readonly) int requiredHeaderSize;
+#endif
 +(int)requiredHeaderSize;
 +(BOOL)recognizeFileWithHandle:(CSHandle *)handle firstBytes:(NSData *)data
 name:(NSString *)name;
@@ -258,6 +284,13 @@ name:(NSString *)name;
 
 -(XADError)parseWithoutExceptions;
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(XADError *)errorptr;
+
+//! Exception-free wrapper for subclass method.<br>
+//! Will, in addition, pass `XADErrorBreak` and return `NO` if the delegate
+//! requested parsing to stop.
+-(BOOL)parseWithError:(NSError**)error;
+//! Exception-free wrapper for subclass method.
+-(CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum nserror:(NSError **)errorptr ;
 
 @end
 

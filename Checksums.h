@@ -27,8 +27,8 @@
 
 @interface CSHandle (Checksums)
 
--(BOOL)hasChecksum;
--(BOOL)isChecksumCorrect;
+@property (nonatomic, readonly) BOOL hasChecksum;
+@property (nonatomic, readonly, getter=isChecksumCorrect) BOOL checksumCorrect;
 
 @end
 

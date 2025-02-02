@@ -26,8 +26,6 @@
 #import "ClangAnalyser.h"
 #pragma clang diagnostic pop
 
-NS_ASSUME_NONNULL_BEGIN
-
 XADEXTERN NSErrorDomain const XADErrorDomain;
 
 #if ((__cplusplus && __cplusplus >= 201103L && (__has_extension(cxx_strong_enums) || __has_feature(objc_fixed_enum))) || (!__cplusplus && __has_feature(objc_fixed_enum))) && __has_attribute(ns_error_domain)
@@ -87,6 +85,7 @@ XADEXPORT
 +(void)raiseDataFormatException CLANG_ANALYZER_NORETURN;
 +(void)raiseOutOfMemoryException CLANG_ANALYZER_NORETURN;
 +(void)raiseExceptionWithXADError:(XADError)errnum CLANG_ANALYZER_NORETURN;
++(void)raiseExceptionWithXADError:(XADError)errnum underlyingError:(NSError*)nsErr CLANG_ANALYZER_NORETURN;
 
 +(XADError)parseException:(id)exception;
 +(NSError*)parseExceptionReturningNSError:(id)exception;
@@ -123,5 +122,3 @@ static const XADError XADEncodingError API_DEPRECATED_WITH_REPLACEMENT("XADError
 static const XADError XADLinkError API_DEPRECATED_WITH_REPLACEMENT("XADErrorLink", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADErrorLink;
 
 static const XADError XADSubArchiveError API_DEPRECATED_WITH_REPLACEMENT("XADErrorSubArchive", macosx(10.0, 10.8), ios(3.0, 8.0)) = XADErrorSubArchive;
-
-NS_ASSUME_NONNULL_END

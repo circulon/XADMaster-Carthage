@@ -151,6 +151,10 @@ static NSComparisonResult CompareParserSignaturesLocations(id first,id second,vo
 	return [offset1 compare:offset2];
 }
 
+@interface XADArchiveParser ()
++ (void)throwExceptionFromError:(NSError*)error CLANG_ANALYZER_NORETURN;
+@end
+
 @implementation XADArchiveParser
 
 static NSMutableArray *parserclasses=nil;
@@ -518,7 +522,60 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 }
 
 
-
++(XADArchiveParser *)archiveParserForFileURL:(NSURL *)filename
+{
+	CSHandle *handle=[CSFileHandle fileHandleForReadingAtFileURL:filename];
+	NSData *header=[handle readDataOfLengthAtMost:maxheader];
+	
+	CSHandle *forkhandle=[XADPlatform handleForReadingResourceForkAtFileURL:filename];
+	XADResourceFork *fork=[XADResourceFork resourceForkWithHandle:forkhandle error:NULL];
+	
+	NSMutableDictionary *props=[NSMutableDictionary dictionary];
+	
+	Class parserclass=[self archiveParserClassForHandle:handle
+											 firstBytes:header resourceFork:fork name:filename.path propertiesToAdd:props];
+	if(!parserclass) return nil;
+	
+	// Attempt to create a multi-volume parser, if we can find the volumes.
+	@try
+	{
+		NSArray *volumes=[parserclass volumesForHandle:handle firstBytes:header name:filename.path];
+		[handle seekToFileOffset:0];
+		
+		if(volumes)
+		{
+			if(volumes.count>1)
+			{
+				CSHandle *multihandle=[CSMultiFileHandle handleWithPathArray:volumes];
+				
+				XADArchiveParser *parser=[parserclass new];
+				parser.handle = multihandle;
+				parser.resourceFork = fork;
+				parser.allFilenames = volumes;
+				[parser addPropertiesFromDictionary:props];
+				
+				return parser;
+			}
+			else if(volumes)
+			{
+				// An empty array means scanning failed. Set a flag to
+				// warn the caller, and fall through to single-file mode.
+				props[XADVolumeScanningFailedKey] = @YES;
+			}
+		}
+	}
+	@catch(id e) { } // Fall through to a single file instead.
+	
+	XADArchiveParser *parser=[[parserclass alloc] init];
+	parser.handle = handle;
+	parser.resourceFork = fork;
+	parser.filename = filename.path;
+	
+	props[XADVolumesKey] = @[filename.path];
+	[parser addPropertiesFromDictionary:props];
+	
+	return parser;
+}
 
 
 -(id)init
@@ -825,7 +882,25 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	return XADErrorNone;
 }
 
-
+-(BOOL)testChecksumWithError:(NSError**)error
+{
+	@try {
+		if(![self testChecksum]) {
+			if (error) {
+				*error = [NSError errorWithDomain:XADErrorDomain code:XADErrorChecksum userInfo:nil];
+			}
+			return NO;
+		}
+		
+	} @catch(id exception) {
+		if (error) {
+			*error = [XADException parseExceptionReturningNSError:exception];
+		}
+		return NO;
+		
+	}
+	return YES;
+}
 
 
 // Internal functions
@@ -986,7 +1061,20 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 -(void)setIsMacArchive:(BOOL)ismac { [stringsource setPrefersMacEncodings:ismac]; }
 
 
+// Hack: the current XADArchiveParser expects exceptions, and it'll take awhile to rewrite ALL the subclasses to work with NSErrors instead.
+// So we repackage the error as an exception.
++ (void)throwExceptionFromError:(NSError *)error
+{
+	if (![error.domain isEqualToString:XADErrorDomain]) {
+		[XADException raiseExceptionWithXADError:XADErrorDecrunch underlyingError:error];
+		return;
+	}
+	NSMutableDictionary *exceptionUserInfo = [error.userInfo mutableCopy];
+	exceptionUserInfo[@"XADError"] = @((XADError)error.code);
+	[[[NSException alloc] initWithName:XADExceptionName reason:[XADException describeXADError:(XADError)error.code]
+							  userInfo:exceptionUserInfo] raise];
 
+}
 
 -(void)addEntryWithDictionary:(NSMutableDictionary *)dict
 {
@@ -1150,13 +1238,13 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 	return [XADString decodedXADStringWithData:data encodingName:encoding];
 }
 
--(XADString *)XADStringWithBytes:(const void *)bytes length:(int)length
+-(XADString *)XADStringWithBytes:(const void *)bytes length:(NSInteger)length
 {
 	NSData *data=[NSData dataWithBytes:bytes length:length];
 	return [XADString analyzedXADStringWithData:data source:stringsource];
 }
 
--(XADString *)XADStringWithBytes:(const void *)bytes length:(int)length encodingName:(NSString *)encoding
+-(XADString *)XADStringWithBytes:(const void *)bytes length:(NSInteger)length encodingName:(NSString *)encoding
 {
 	NSData *data=[NSData dataWithBytes:bytes length:length];
 	return [XADString decodedXADStringWithData:data encodingName:encoding];
@@ -1297,6 +1385,25 @@ name:(NSString *)name { return nil; }
 	return XADErrorNone;
 }
 
+-(BOOL)parseWithError:(NSError**)error
+{
+	@try {
+		[self parse];
+	} @catch(id exception) {
+		if (error) {
+			*error = [XADException parseExceptionReturningNSError:exception];
+		}
+		return NO;
+	}
+	if(shouldstop) {
+		if (error) {
+			*error = [NSError errorWithDomain:XADErrorDomain code:XADErrorBreak userInfo:nil];
+		}
+		return NO;
+	}
+	return YES;
+}
+
 -(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum error:(XADError *)errorptr
 {
 	if(errorptr) *errorptr=XADErrorNone;
@@ -1311,6 +1418,197 @@ name:(NSString *)name { return nil; }
 		if(errorptr) *errorptr=[XADException parseException:exception];
 	}
 
+	return nil;
+}
+
+#pragma mark - NSError functions
+
++(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry
+resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser
+wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
+{
+	@try {
+		XADArchiveParser *tmpParse = [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:forkentry archiveParser:parser wantChecksum:checksum];
+		if (tmpParse) {
+			return tmpParse;
+		}
+	} @catch(id exception) {
+		if(errorptr) {
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		}
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
+	return nil;
+}
+
+-(XADString *)linkDestinationForDictionary:(NSDictionary *)dict nserror:(NSError *__autoreleasing __nullable*__nullable)errorptr
+{
+	@try {
+		XADString *tmpParse = [self linkDestinationForDictionary:dict];
+		if (tmpParse) {
+			return tmpParse;
+		}
+	} @catch(id exception) {
+		if(errorptr) {
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		}
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
+	return nil;
+}
+
++(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
+{
+	@try {
+		XADArchiveParser *tmpParse = [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:nil archiveParser:parser wantChecksum:checksum];
+		if (tmpParse) {
+			return tmpParse;
+		}
+	} @catch(id exception) {
+		if(errorptr) {
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		}
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
+	return nil;
+}
+
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
+{
+	@try {
+		XADArchiveParser *tmpParse = [self archiveParserForHandle:handle resourceFork:nil name:name];
+		if (tmpParse) {
+			return tmpParse;
+		}
+	} @catch(id exception) {
+		if(errorptr) {
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		}
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
+	return nil;
+}
+
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(XADResourceFork *)fork name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
+{
+	@try {
+		XADArchiveParser *tmpParse = [self archiveParserForHandle:handle firstBytes:header resourceFork:fork name:name];
+		if (tmpParse) {
+			return tmpParse;
+		}
+	} @catch(id exception) {
+		if(errorptr) {
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		}
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
+	return nil;
+}
+
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
+{
+	@try {
+		XADArchiveParser *tmpParse = [self archiveParserForHandle:handle firstBytes:header resourceFork:nil name:name];
+		if (tmpParse) {
+			return tmpParse;
+		}
+	} @catch(id exception) {
+		if(errorptr) {
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		}
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
+	return nil;
+}
+
++(XADArchiveParser *)archiveParserForFileURL:(NSURL *)filename error:(NSError * _Nullable *)errorptr
+{
+	@try {
+		XADArchiveParser *tmpParse = [self archiveParserForFileURL:filename];
+		if (tmpParse) {
+			return tmpParse;
+		}
+	} @catch(id exception) {
+		if(errorptr)
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:@{NSURLErrorKey: filename}];
+	}
+	return nil;
+}
+
++(XADArchiveParser *)archiveParserForPath:(NSString *)filename nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
+{
+	@try {
+		XADArchiveParser *tmpParse = [self archiveParserForPath:filename];
+		if (tmpParse) {
+			return tmpParse;
+		}
+	} @catch(id exception) {
+		if(errorptr)
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:@{NSFilePathErrorKey: filename}];
+	}
+	return nil;
+}
+
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(XADResourceFork *)fork name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
+{
+	@try {
+		XADArchiveParser *parser = [self archiveParserForHandle:handle resourceFork:fork name:name];
+		if (parser) {
+			return parser;
+		}
+	} @catch(id exception) {
+		if(errorptr) {
+			*errorptr=[XADException parseExceptionReturningNSError:exception];
+		}
+		return nil;
+	}
+	if (errorptr) {
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+	}
+	return nil;
+}
+
+-(XADHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum nserror:(NSError * _Nullable *)errorptr
+{
+	@try
+	{
+		CSHandle *handle=[self handleForEntryWithDictionary:dict wantChecksum:checksum];
+		if(!handle&&errorptr) *errorptr=[NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:nil];
+		return handle;
+	}
+	@catch(id exception)
+	{
+		if(errorptr) *errorptr=[XADException parseExceptionReturningNSError:exception];
+	}
+	
 	return nil;
 }
 

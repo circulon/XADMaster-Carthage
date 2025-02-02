@@ -18,8 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
+#import <Foundation/Foundation.h>
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wquoted-include-in-framework-header"
+#import "XADTypes.h"
 #import "XADUnarchiver.h"
 #import "CSHandle.h"
 #pragma clang diagnostic pop
@@ -52,8 +54,12 @@ preservePermissions:(BOOL)preservepermissions;
 
 // Resource forks
 +(CSHandle *)handleForReadingResourceForkAtPath:(NSString *)path;
++(CSHandle *)handleForReadingResourceForkAtFileURL:(NSURL *)path;
 
 // Time functions.
-+(double)currentTimeInSeconds;
+#if __has_feature(objc_class_property)
+@property (class, readonly) NSTimeInterval currentTimeInSeconds;
+#endif
++(NSTimeInterval)currentTimeInSeconds;
 
 @end
