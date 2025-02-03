@@ -260,19 +260,22 @@ preservePermissions:(BOOL)preservepermissions
 
 	NSAppleEventDescriptor *commentdesc=[NSAppleEventDescriptor descriptorWithString:comment];
 
-	FSRef ref;
-	bzero(&ref,sizeof(ref));
-	if(FSPathMakeRef((UInt8 *)[path fileSystemRepresentation],&ref,NULL)!=noErr) return;
+	NSURL *fileURL = [NSURL fileURLWithPath:path];
+	NSData *fileStrData = (NSData*)CFURLCreateData(kCFAllocatorDefault, (CFURLRef)fileURL, kCFStringEncodingUTF8, true);
 
+	// TODO: The alias manager has been deprecated for awhile: Use typeFileURL or
+	// typeBookmarkData instead… but that would most likely mean re-writing the eventformat
+	// string or migrating it to something else.
 	AEDesc filedesc;
 	AEInitializeDesc(&filedesc);
-	if(AECoercePtr(typeFSRef,&ref,sizeof(ref),typeAlias,&filedesc)!=noErr) return;
+	if(AECoercePtr(typeFileURL,[fileStrData bytes],[fileStrData length],typeAlias,&filedesc)!=noErr) {[fileStrData release]; return;}
 
 	AEDesc builtevent,replyevent;
 	AEInitializeDesc(&builtevent);
 	AEInitializeDesc(&replyevent);
+	[fileStrData release];
 
-	static OSType findersignature='MACS';
+	static const OSType findersignature='MACS';
 
 	OSErr err=AEBuildAppleEvent(kAECoreSuite,kAESetData,
 	typeApplSignature,&findersignature,sizeof(findersignature),
