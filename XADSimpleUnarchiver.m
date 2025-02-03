@@ -262,9 +262,7 @@
 {
 	off_t total=0;
 
-	NSEnumerator *enumerator=[entries objectEnumerator];
-	NSDictionary *dict;
-	while((dict=[enumerator nextObject]))
+	for(NSDictionary *dict in entries)
 	{
 		NSNumber *num=[dict objectForKey:XADFileSizeKey];
 		if(!num)
@@ -1126,9 +1124,7 @@ fileFraction:(double)fileratio estimatedTotalFraction:(double)totalratio
 			// If both source and destinaton are directories, iterate over the
 			// contents and recurse.
 			NSArray *files=[XADPlatform contentsOfDirectoryAtPath:src];
-			NSEnumerator *enumerator=[files objectEnumerator];
-			NSString *file;
-			while((file=[enumerator nextObject]))
+			for(NSString *file in files)
 			{
 				NSString *newsrc=[src stringByAppendingPathComponent:file];
 				NSString *newdest=[dest stringByAppendingPathComponent:file];

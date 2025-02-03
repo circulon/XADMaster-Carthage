@@ -160,9 +160,7 @@ preservePermissions:(BOOL)preservepermissions
 	NSDictionary *extattrs=[parser extendedAttributesForDictionary:dict];
 	if(extattrs)
 	{
-		NSEnumerator *enumerator=[extattrs keyEnumerator];
-		NSString *key;
-		while((key=[enumerator nextObject]))
+		for(NSString *key in extattrs)
 		{
 			NSData *data=[extattrs objectForKey:key];
 

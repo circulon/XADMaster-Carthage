@@ -938,10 +938,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 	NSArray *dircontents=[XADPlatform contentsOfDirectoryAtPath:dirpath];
 	if(!dircontents) return [NSArray array];
 
-	NSEnumerator *enumerator=[dircontents objectEnumerator];
-
-	NSString *direntry;
-	while((direntry=[enumerator nextObject]))
+	for(NSString *direntry in dircontents)
 	{
 		NSString *filename;
 		if(directory) filename=[directory stringByAppendingPathComponent:direntry];

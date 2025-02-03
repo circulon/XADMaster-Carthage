@@ -533,9 +533,7 @@ static NSComparisonResult SortDirectoriesByDepthAndResource(id entry1,id entry2,
 
 -(XADError)_fixDeferredLinks
 {
-	NSEnumerator *enumerator=[deferredlinks objectEnumerator];
-	NSArray *entry;
-	while((entry=[enumerator nextObject]))
+	for(NSArray *entry in deferredlinks)
 	{
 		NSString *path=[entry objectAtIndex:0];
 		NSString *linkdest=[entry objectAtIndex:1];
@@ -559,9 +557,7 @@ static NSComparisonResult SortDirectoriesByDepthAndResource(id entry1,id entry2,
 {
 	[deferreddirectories sortUsingFunction:SortDirectoriesByDepthAndResource context:NULL];
 
-	NSEnumerator *enumerator=[deferreddirectories objectEnumerator];
-	NSArray *entry;
-	while((entry=[enumerator nextObject]))
+	for(NSArray *entry in deferreddirectories)
 	{
 		NSString *path=[entry objectAtIndex:0];
 		NSDictionary *dict=[entry objectAtIndex:1];
