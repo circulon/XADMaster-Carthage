@@ -491,15 +491,11 @@
 
 -(XADError)_unarchiveRegularArchive
 {
-	NSEnumerator *enumerator;
-	NSDictionary *entry;
-
 	// Calculate total size and check if there is a single top-level item.
 	totalsize=0;
 	totalprogress=0;
 
-	enumerator=[entries objectEnumerator];
-	while((entry=[enumerator nextObject]))
+	for(NSDictionary *entry in entries)
 	{
 		NSNumber *dirnum=[entry objectForKey:XADIsDirectoryKey];
 		BOOL isdir=dirnum && [dirnum boolValue];
@@ -542,10 +538,9 @@
 	finaldestination=[destpath copy];
 
 	// Run unarchiver on all entries.
-	[unarchiver setDelegate:self];
+	unarchiver.delegate = self;
 
-	enumerator=[entries objectEnumerator];
-	while((entry=[enumerator nextObject]))
+	for(NSDictionary *entry in entries)
 	{
 		if([self _shouldStop]) return XADErrorBreak;
 
@@ -608,7 +603,7 @@
 	// Parse sub-archive and automatically unarchive its contents.
 	// At this stage, files are guaranteed to be written to unpackdestination
 	// and never outside it.
-	[subunarchiver setDelegate:self];
+	subunarchiver.delegate = self;
 	error=[subunarchiver parseAndUnarchive];
 
 	// Check if the caller wants to give up.
