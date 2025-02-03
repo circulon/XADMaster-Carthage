@@ -451,8 +451,10 @@ description:(NSString *)description argumentDescription:(NSString *)argdescripti
 -(void)_parseArguments:(NSArray *)arguments remainingArguments:(NSMutableArray *)remainingarguments
 errors:(NSMutableArray *)errors
 {
+	NSEnumerator *enumerator=[arguments objectEnumerator];
+	NSString *argument;
 	BOOL stillparsing=YES;
-	for(NSString *argument in arguments)
+	while((argument=[enumerator nextObject]))
 	{
 		// Check for options, unless we have seen a stop marker.
 		if(stillparsing && [argument length]>1 && [argument characterAtIndex:0]=='-')

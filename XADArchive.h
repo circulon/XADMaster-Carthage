@@ -143,13 +143,12 @@ immediateExtractionTo:(NSString *)destination subArchives:(BOOL)sub nserror:(NSE
 -(BOOL)isEncrypted;
 -(BOOL)isSolid;
 -(BOOL)isCorrupted;
--(int)numberOfEntries;
--(BOOL)immediateExtractionFailed;
+-(NSInteger)numberOfEntries;
+@property (readonly) BOOL immediateExtractionFailed;
 -(NSString *)commonTopDirectory;
 -(NSString *)comment;
 
--(void)setDelegate:(id<XADArchiveDelegate>)delegate;
--(id<XADArchiveDelegate>)delegate;
+@property (assign) id<XADArchiveDelegate> delegate;
 
 -(NSString *)password;
 -(void)setPassword:(NSString *)newpassword;
@@ -157,52 +156,50 @@ immediateExtractionTo:(NSString *)destination subArchives:(BOOL)sub nserror:(NSE
 -(NSStringEncoding)nameEncoding;
 -(void)setNameEncoding:(NSStringEncoding)encoding;
 
--(XADError)lastError;
+@property (readonly) XADError lastError;
 -(void)clearLastError;
 -(NSString *)describeLastError;
 -(NSString *)describeError:(XADError)error;
 
--(NSString *)description;
 
 
+-(NSDictionary *)dataForkParserDictionaryForEntry:(NSInteger)n;
+-(NSDictionary *)resourceForkParserDictionaryForEntry:(NSInteger)n;
+-(NSDictionary *)combinedParserDictionaryForEntry:(NSInteger)n;
 
--(NSDictionary *)dataForkParserDictionaryForEntry:(int)n;
--(NSDictionary *)resourceForkParserDictionaryForEntry:(int)n;
--(NSDictionary *)combinedParserDictionaryForEntry:(int)n;
-
--(NSString *)nameOfEntry:(int)n;
--(BOOL)entryHasSize:(int)n;
--(off_t)uncompressedSizeOfEntry:(int)n;
--(off_t)compressedSizeOfEntry:(int)n;
--(off_t)representativeSizeOfEntry:(int)n;
--(BOOL)entryIsDirectory:(int)n;
--(BOOL)entryIsLink:(int)n;
--(BOOL)entryIsEncrypted:(int)n;
--(BOOL)entryIsArchive:(int)n;
--(BOOL)entryHasResourceFork:(int)n;
--(NSString *)commentForEntry:(int)n;
--(NSDictionary *)attributesOfEntry:(int)n;
--(NSDictionary *)attributesOfEntry:(int)n withResourceFork:(BOOL)resfork;
--(CSHandle *)handleForEntry:(int)n;
--(CSHandle *)handleForEntry:(int)n error:(XADError *)error;
--(CSHandle *)resourceHandleForEntry:(int)n;
--(CSHandle *)resourceHandleForEntry:(int)n error:(XADError *)error;
--(NSData *)contentsOfEntry:(int)n;
+-(NSString *)nameOfEntry:(NSInteger)n;
+-(BOOL)entryHasSize:(NSInteger)n;
+-(off_t)uncompressedSizeOfEntry:(NSInteger)n;
+-(off_t)compressedSizeOfEntry:(NSInteger)n;
+-(off_t)representativeSizeOfEntry:(NSInteger)n;
+-(BOOL)entryIsDirectory:(NSInteger)n;
+-(BOOL)entryIsLink:(NSInteger)n;
+-(BOOL)entryIsEncrypted:(NSInteger)n;
+-(BOOL)entryIsArchive:(NSInteger)n;
+-(BOOL)entryHasResourceFork:(NSInteger)n;
+-(NSString *)commentForEntry:(NSInteger)n;
+-(NSDictionary *)attributesOfEntry:(NSInteger)n;
+-(NSDictionary *)attributesOfEntry:(NSInteger)n withResourceFork:(BOOL)resfork;
+-(CSHandle *)handleForEntry:(NSInteger)n;
+-(CSHandle *)handleForEntry:(NSInteger)n error:(XADError *)error;
+-(CSHandle *)resourceHandleForEntry:(NSInteger)n;
+-(CSHandle *)resourceHandleForEntry:(NSInteger)n error:(XADError *)error;
+-(NSData *)contentsOfEntry:(NSInteger)n;
 //-(NSData *)resourceContentsOfEntry:(int)n;
 
 -(BOOL)extractTo:(NSString *)destination;
 -(BOOL)extractTo:(NSString *)destination subArchives:(BOOL)sub;
 -(BOOL)extractEntries:(NSIndexSet *)entryset to:(NSString *)destination;
 -(BOOL)extractEntries:(NSIndexSet *)entryset to:(NSString *)destination subArchives:(BOOL)sub;
--(BOOL)extractEntry:(int)n to:(NSString *)destination;
--(BOOL)extractEntry:(int)n to:(NSString *)destination deferDirectories:(BOOL)defer;
--(BOOL)extractEntry:(int)n to:(NSString *)destination deferDirectories:(BOOL)defer
+-(BOOL)extractEntry:(NSInteger)n to:(NSString *)destination;
+-(BOOL)extractEntry:(NSInteger)n to:(NSString *)destination deferDirectories:(BOOL)defer;
+-(BOOL)extractEntry:(NSInteger)n to:(NSString *)destination deferDirectories:(BOOL)defer
 resourceFork:(BOOL)resfork;
--(BOOL)extractEntry:(int)n to:(NSString *)destination deferDirectories:(BOOL)defer
+-(BOOL)extractEntry:(NSInteger)n to:(NSString *)destination deferDirectories:(BOOL)defer
 dataFork:(BOOL)datafork resourceFork:(BOOL)resfork;
--(BOOL)extractArchiveEntry:(int)n to:(NSString *)destination;
+-(BOOL)extractArchiveEntry:(NSInteger)n to:(NSString *)destination;
 
--(BOOL)_extractEntry:(int)n as:(NSString *)destfile deferDirectories:(BOOL)defer
+-(BOOL)_extractEntry:(NSInteger)n as:(NSString *)destfile deferDirectories:(BOOL)defer
 dataFork:(BOOL)datafork resourceFork:(BOOL)resfork;
 
 -(void)updateAttributesForDeferredDirectories;
