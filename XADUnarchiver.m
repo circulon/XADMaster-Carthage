@@ -313,7 +313,7 @@
 
 	// Report success or failure
 	end:
-	if(delegate && [delegate respondsToSelector:@selector(unarchiver:didExtractEntryWithDictionary:to:error:)])
+	if([delegate respondsToSelector:@selector(unarchiver:didExtractEntryWithDictionary:to:error:)])
 	{
 		[delegate unarchiver:self didExtractEntryWithDictionary:dict to:path error:error];
 	}
@@ -878,7 +878,7 @@ deferDirectories:(BOOL)defer
     }
 	#else
     if([manager createDirectoryAtPath:path attributes:nil]) {
-        if (delegate) {
+        if ([delegate respondsToSelector:@selector(unarchiver:didCreateDirectory:)]) {
             [delegate unarchiver:self didCreateDirectory:path];
         }
         return XADNoError;
@@ -1205,7 +1205,7 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument error:(NSEr
 @end
 
 
-
+//TODO: remove all of these: migrate needed code to XADUnarchiver.
 @implementation NSObject (XADUnarchiverDelegate)
 
 -(NSString *)unarchiver:(XADUnarchiver *)unarchiver pathForExtractingEntryWithDictionary:(NSDictionary *)dict { return nil; }

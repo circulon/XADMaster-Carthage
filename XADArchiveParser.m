@@ -554,7 +554,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 				parser.allFilenames = volumes;
 				[parser addPropertiesFromDictionary:props];
 				
-				return parser;
+				return [parser autorelease];
 			}
 			else if(volumes)
 			{
@@ -574,7 +574,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	props[XADVolumesKey] = @[filename.path];
 	[parser addPropertiesFromDictionary:props];
 	
-	return parser;
+	return [parser autorelease];
 }
 
 

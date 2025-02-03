@@ -112,6 +112,23 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 }
 
 
+-(id)initWithFileURL:(NSURL *)file delegate:(id)del error:(NSError **)error
+{
+	if (self = [self init]) {
+		delegate = del;
+		
+		parser=[[XADArchiveParser archiveParserForFileURL:file error:error] retain];
+		if (parser) {
+			if ([self _parseWithNSErrorPointer:error]) {
+				return self;
+			}
+		}
+		[self release];
+	}
+	
+	return nil;
+}
+
 
 -(id)initWithData:(NSData *)data { return [self initWithData:data delegate:nil error:NULL]; }
 
@@ -137,11 +154,13 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 
 
--(id)initWithArchive:(XADArchive *)otherarchive entry:(int)n { return [self initWithArchive:otherarchive entry:n delegate:nil error:NULL]; }
+-(id)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n { return [self initWithArchive:otherarchive entry:n delegate:nil error:NULL]; }
 
--(id)initWithArchive:(XADArchive *)otherarchive entry:(int)n error:(XADError *)error { return [self initWithArchive:otherarchive entry:n delegate:nil error:error]; }
+-(id)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n error:(XADError *)error { return [self initWithArchive:otherarchive entry:n delegate:nil error:error]; }
 
--(id)initWithArchive:(XADArchive *)otherarchive entry:(int)n delegate:(id)del error:(XADError *)error
+-(id)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n nserror:(NSError **)error { return [self initWithArchive:otherarchive entry:n delegate:nil nserror:error]; }
+
+-(id)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n delegate:(id)del error:(XADError *)error
 {
 	if((self=[self init]))
 	{
@@ -165,14 +184,14 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	return nil;
 }
 
--(id)initWithArchive:(XADArchive *)otherarchive entry:(int)n
+-(id)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
      immediateExtractionTo:(NSString *)destination error:(XADError *)error
 {
 	return [self initWithArchive:otherarchive entry:n immediateExtractionTo:destination
 	subArchives:NO error:error];
 }
 
--(id)initWithArchive:(XADArchive *)otherarchive entry:(int)n
+-(id)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
      immediateExtractionTo:(NSString *)destination subArchives:(BOOL)sub error:(XADError *)error
 {
 	if((self=[self init]))
@@ -216,6 +235,54 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 }
 
 
+-(id)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
+	 immediateExtractionTo:(NSString *)destination subArchives:(BOOL)sub nserror:(NSError **)error
+{
+	if((self=[self init]))
+	{
+		parentarchive=[otherarchive retain];
+		immediatedestination=destination;
+		immediatesubarchives=sub;
+		delegate=otherarchive;
+
+		immediatesize=[otherarchive representativeSizeOfEntry:n];
+
+		parser=[[XADArchiveParser archiveParserForEntryWithDictionary:
+				[otherarchive dataForkParserDictionaryForEntry:n]
+														archiveParser:otherarchive->parser wantChecksum:YES nserror:error] retain];
+		if(parser)
+		{
+			if([self _parseWithNSErrorPointer:error])
+			{
+				if(!immediatefailed)
+				{
+					NSError *tmpErr = nil;
+					BOOL checksumerror=[parser testChecksumWithError:&tmpErr];
+					if(checksumerror)
+					{
+						if ([[tmpErr domain] isEqualToString:XADErrorDomain]) {
+							lasterror=(XADError)tmpErr.code;
+						} else {
+							lasterror=XADErrorChecksum;
+						}
+						if(error) *error=tmpErr;
+						immediatefailed=YES;
+					}
+				}
+
+				[self updateAttributesForDeferredDirectories];
+				immediatedestination=nil;
+				return self;
+			}
+		}
+		else if(error && *error == nil) *error=[NSError errorWithDomain:XADErrorDomain code:XADErrorSubArchive userInfo:nil];
+		[self release];
+	}
+
+	return nil;
+}
+
+
 -(void)dealloc
 {
 	[parser release];
@@ -232,12 +299,12 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 -(BOOL)_parseWithErrorPointer:(XADError *)error
 {
-	unarchiver=[[XADUnarchiver unarchiverForArchiveParser:parser] retain];
+	unarchiver=[[XADUnarchiver alloc] initWithArchiveParser:parser];
 
 	[parser setDelegate:self];
 	[unarchiver setDelegate:self];
 
-	namedict=[[NSMutableDictionary dictionary] retain];
+	namedict=[[NSMutableDictionary alloc] init];
 
 	XADError parseerror=[parser parseWithoutExceptions];
 	if(parseerror)
@@ -247,6 +314,37 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	}
 
 	if(immediatefailed&&error) *error=lasterror;
+
+	[namedict release];
+	namedict=nil;
+
+	return lasterror==XADErrorNone||[dataentries count]!=0;
+}
+
+-(BOOL)_parseWithNSErrorPointer:(NSError **)error
+{
+	NSError *tmpErr;
+	unarchiver=[[XADUnarchiver alloc] initWithArchiveParser:parser];
+
+	parser.delegate = self;
+	unarchiver.delegate = self;
+
+	namedict=[[NSMutableDictionary alloc] init];
+
+	BOOL parseerror=[parser parseWithError:&tmpErr];
+	if(!parseerror)
+	{
+		if ([tmpErr.domain isEqualToString:XADErrorDomain]) {
+			lasterror = (XADError)tmpErr.code;
+		} else {
+			lasterror = XADErrorUnknown;
+		}
+		if(error) *error=tmpErr;
+	}
+
+	if (immediatefailed && error && !parseerror) {
+		*error=[NSError errorWithDomain:XADErrorDomain code:lasterror userInfo:nil];
+	}
 
 	[namedict release];
 	namedict=nil;
@@ -332,11 +430,11 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 		[resourceentries addObject:[NSNull null]];
 	}
 
-	[namedict setObject:[NSNumber numberWithInt:[dataentries count]-1] forKey:name];
+	[namedict setObject:[NSNumber numberWithInteger:[dataentries count]-1] forKey:name];
 
 	if(immediatedestination)
 	{
-		int n=[dataentries count]-1;
+		NSInteger n=[dataentries count]-1;
 		if(immediatesubarchives&&[self entryIsArchive:n])
 		{
 			// Try to extract as archive, if the format is unknown, extract as regular file
@@ -371,7 +469,9 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 
 -(void)archiveParserNeedsPassword:(XADArchiveParser *)parser
 {
-	[delegate archiveNeedsPassword:self];
+	if ([delegate respondsToSelector:@selector(archiveNeedsPassword:)]) {
+		[delegate archiveNeedsPassword:self];
+	}
 }
 
 

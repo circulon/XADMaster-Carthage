@@ -113,14 +113,27 @@ XADEXPORT
 -(id)initWithData:(NSData *)data;
 -(id)initWithData:(NSData *)data error:(XADError *)error;
 -(id)initWithData:(NSData *)data delegate:(id<XADArchiveDelegate>)del error:(XADError *)error;
--(id)initWithArchive:(XADArchive *)archive entry:(int)n;
--(id)initWithArchive:(XADArchive *)archive entry:(int)n error:(XADError *)error;
--(id)initWithArchive:(XADArchive *)otherarchive entry:(int)n delegate:(id<XADArchiveDelegate>)del error:(XADError *)error;
--(id)initWithArchive:(XADArchive *)otherarchive entry:(int)n
+-(id)initWithArchive:(XADArchive *)archive entry:(NSInteger)n;
+-(id)initWithArchive:(XADArchive *)archive entry:(NSInteger)n error:(XADError *)error;
+-(id)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n delegate:(id<XADArchiveDelegate>)del error:(XADError *)error;
+-(id)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
      immediateExtractionTo:(NSString *)destination error:(XADError *)error;
--(id)initWithArchive:(XADArchive *)otherarchive entry:(int)n
+-(id)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
      immediateExtractionTo:(NSString *)destination subArchives:(BOOL)sub error:(XADError *)error;
 -(void)dealloc;
+
+-(id)initWithFile:(NSString *)file nserror:(NSError **)error;
+-(id)initWithFile:(NSString *)file delegate:(id<XADArchiveDelegate>)del nserror:(NSError **)error;
+-(id)initWithData:(NSData *)data nserror:(NSError **)error;
+-(id)initWithData:(NSData *)data delegate:(id<XADArchiveDelegate>)del nserror:(NSError **)error;
+-(id)initWithArchive:(XADArchive *)archive entry:(NSInteger)n nserror:(NSError **)error;
+-(id)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n delegate:(id<XADArchiveDelegate>)del nserror:(NSError **)error;
+-(id)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
+immediateExtractionTo:(NSString *)destination nserror:(NSError **)error;
+-(id)initWithArchive:(XADArchive *)otherarchive entry:(NSInteger)n
+immediateExtractionTo:(NSString *)destination subArchives:(BOOL)sub nserror:(NSError **)error;
+
+-(id)initWithFileURL:(NSURL *)file delegate:(id<XADArchiveDelegate>)del error:(NSError **)error;
 
 -(BOOL)_parseWithErrorPointer:(XADError *)error;
 
