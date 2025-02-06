@@ -84,6 +84,18 @@
 #define __has_extension(...) 0
 #endif
 
+#if !defined(NS_REQUIRES_NIL_TERMINATION)
+	#if __has_attribute(attribute_sentinel)
+		#if defined(__APPLE_CC__) && (__APPLE_CC__ >= 5549)
+			#define NS_REQUIRES_NIL_TERMINATION __attribute__((sentinel(0,1)))
+		#else
+			#define NS_REQUIRES_NIL_TERMINATION __attribute__((sentinel))
+		#endif
+	#else
+		#define NS_REQUIRES_NIL_TERMINATION
+	#endif
+#endif
+
 #ifndef NS_ENUM
 #if __has_attribute(enum_extensibility)
 #define __XAD_ENUM_ATTRIBUTES __attribute__((enum_extensibility(open)))
@@ -145,7 +157,7 @@
 
 #ifndef API_DEPRECATED_WITH_REPLACEMENT
 #if __has_attribute(attribute_deprecated_with_replacement)
-#define API_DEPRECATED_WITH_REPLACEMENT(X, ...) __attribute__((deprecated("Use " #X " instead" ,X)))
+#define API_DEPRECATED_WITH_REPLACEMENT(X, ...) __attribute__((deprecated("Use " #X " instead", X)))
 #else
 #define API_DEPRECATED_WITH_REPLACEMENT(...) DEPRECATED_ATTRIBUTE
 #endif
