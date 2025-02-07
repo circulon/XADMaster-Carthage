@@ -1422,7 +1422,7 @@ name:(NSString *)name { return nil; }
 
 +(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry
 resourceForkDictionary:(NSDictionary *)forkentry archiveParser:(XADArchiveParser *)parser
-wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
+wantChecksum:(BOOL)checksum nserror:(NSError **)errorptr
 {
 	@try {
 		XADArchiveParser *tmpParse = [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:forkentry archiveParser:parser wantChecksum:checksum];
@@ -1441,7 +1441,7 @@ wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullab
 	return nil;
 }
 
--(XADString *)linkDestinationForDictionary:(NSDictionary *)dict nserror:(NSError *__autoreleasing __nullable*__nullable)errorptr
+-(XADString *)linkDestinationForDictionary:(NSDictionary *)dict nserror:(NSError **)errorptr
 {
 	@try {
 		XADString *tmpParse = [self linkDestinationForDictionary:dict];
@@ -1460,7 +1460,7 @@ wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullab
 	return nil;
 }
 
-+(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
++(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum nserror:(NSError **)errorptr
 {
 	@try {
 		XADArchiveParser *tmpParse = [self archiveParserForEntryWithDictionary:entry resourceForkDictionary:nil archiveParser:parser wantChecksum:checksum];
@@ -1479,7 +1479,7 @@ wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullab
 	return nil;
 }
 
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name nserror:(NSError **)errorptr
 {
 	@try {
 		XADArchiveParser *tmpParse = [self archiveParserForHandle:handle resourceFork:nil name:name];
@@ -1498,7 +1498,7 @@ wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullab
 	return nil;
 }
 
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(XADResourceFork *)fork name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header resourceFork:(XADResourceFork *)fork name:(NSString *)name nserror:(NSError **)errorptr
 {
 	@try {
 		XADArchiveParser *tmpParse = [self archiveParserForHandle:handle firstBytes:header resourceFork:fork name:name];
@@ -1517,7 +1517,7 @@ wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullab
 	return nil;
 }
 
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle firstBytes:(NSData *)header name:(NSString *)name nserror:(NSError **)errorptr
 {
 	@try {
 		XADArchiveParser *tmpParse = [self archiveParserForHandle:handle firstBytes:header resourceFork:nil name:name];
@@ -1536,7 +1536,7 @@ wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullab
 	return nil;
 }
 
-+(XADArchiveParser *)archiveParserForFileURL:(NSURL *)filename error:(NSError * _Nullable *)errorptr
++(XADArchiveParser *)archiveParserForFileURL:(NSURL *)filename error:(NSError **)errorptr
 {
 	@try {
 		XADArchiveParser *tmpParse = [self archiveParserForFileURL:filename];
@@ -1555,7 +1555,7 @@ wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullab
 	return nil;
 }
 
-+(XADArchiveParser *)archiveParserForPath:(NSString *)filename nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
++(XADArchiveParser *)archiveParserForPath:(NSString *)filename nserror:(NSError **)errorptr
 {
 	@try {
 		XADArchiveParser *tmpParse = [self archiveParserForPath:filename];
@@ -1574,7 +1574,7 @@ wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullab
 	return nil;
 }
 
-+(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(XADResourceFork *)fork name:(NSString *)name nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
++(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle resourceFork:(XADResourceFork *)fork name:(NSString *)name nserror:(NSError **)errorptr
 {
 	@try {
 		XADArchiveParser *parser = [self archiveParserForHandle:handle resourceFork:fork name:name];
@@ -1593,7 +1593,7 @@ wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullab
 	return nil;
 }
 
--(XADHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum nserror:(NSError * _Nullable *)errorptr
+-(XADHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum nserror:(NSError **)errorptr
 {
 	@try
 	{

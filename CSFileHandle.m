@@ -67,13 +67,13 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 	return nil;
 }
 
-+(CSFileHandle *)fileHandleForReadingAtFileURL:(NSURL *)path error:(NSError *__autoreleasing *)outErr
++(CSFileHandle *)fileHandleForReadingAtFileURL:(NSURL *)path error:(NSError **)outErr
 { return [self fileHandleForFileURL:path modes:@"rb" error:outErr]; }
 
-+(CSFileHandle *)fileHandleForWritingAtFileURL:(NSURL *)path error:(NSError *__autoreleasing *)outErr
++(CSFileHandle *)fileHandleForWritingAtFileURL:(NSURL *)path error:(NSError **)outErr
 { return [self fileHandleForFileURL:path modes:@"wb" error:outErr]; }
 
-+(CSFileHandle *)fileHandleForFileURL:(NSURL *)path modes:(NSString *)modes error:(NSError *__autoreleasing *)outErr
++(CSFileHandle *)fileHandleForFileURL:(NSURL *)path modes:(NSString *)modes error:(NSError **)outErr
 {
 	if(!path) {
 		if (outErr) {
@@ -94,7 +94,7 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 	
 	if(!fileh) {
 		if (outErr) {
-			*outErr = [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:@{NSURLErrorKey: path}];
+			*outErr = [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:[NSDictionary dictionaryWithObjectsAndKeys:path, NSURLErrorKey, nil]];
 		}
 		return nil;
 	}
@@ -104,7 +104,7 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 	
 	fclose(fileh);
 	if (outErr) {
-		*outErr = [NSError errorWithDomain:XADErrorDomain code:XADErrorUnknown userInfo:@{NSURLErrorKey: path}];
+		*outErr = [NSError errorWithDomain:XADErrorDomain code:XADErrorUnknown userInfo:[NSDictionary dictionaryWithObjectsAndKeys:path, NSURLErrorKey, nil]];
 	}
 	return nil;
 }

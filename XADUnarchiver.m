@@ -43,7 +43,7 @@
 	return [[[self alloc] initWithArchiveParser:archiveparser] autorelease];
 }
 
-+(XADUnarchiver *)unarchiverForPath:(NSString *)path nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
++(XADUnarchiver *)unarchiverForPath:(NSString *)path nserror:(NSError **)errorptr
 {
 	XADArchiveParser *archiveparser=[XADArchiveParser archiveParserForPath:path nserror:errorptr];
 	if(!archiveparser) return nil;
@@ -324,7 +324,7 @@
 }
 
 // FIXME: Improve extractEntryWithDictionary:as:forceDirectories:error: with an NSError value.
--(BOOL)extractEntryWithDictionary:(NSDictionary *)dict as:(nullable NSString *)path forceDirectories:(BOOL)force error:(NSError*__autoreleasing*)outErr
+-(BOOL)extractEntryWithDictionary:(NSDictionary *)dict as:(nullable NSString *)path forceDirectories:(BOOL)force error:(NSError**)outErr
 {
 	__strong NSError *tmpErr = nil;
 	BOOL okay;
@@ -574,7 +574,7 @@ static NSComparisonResult SortDirectoriesByDepthAndResource(id entry1,id entry2,
 
 
 -(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
-wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
+wantChecksum:(BOOL)checksum nserror:(NSError **)errorptr
 {
 	return [self unarchiverForEntryWithDictionary:dict resourceForkDictionary:nil
 	wantChecksum:checksum nserror:errorptr];
@@ -608,7 +608,7 @@ resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum erro
 
 
 -(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
-							resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullable)errorptr
+							resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum nserror:(NSError **)errorptr
 {
 	XADArchiveParser *subparser=[XADArchiveParser
 								 archiveParserForEntryWithDictionary:dict
@@ -1006,7 +1006,7 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument
 	return XADErrorNone;
 }
 
--(BOOL)runExtractorWithDictionary:(NSDictionary *)dict outputHandle:(CSHandle *)handle error:(NSError *__autoreleasing  _Nullable * _Nullable)outError
+-(BOOL)runExtractorWithDictionary:(NSDictionary *)dict outputHandle:(CSHandle *)handle error:(NSError **)outError
 {
 	return [self runExtractorWithDictionary:dict outputTarget:self
 	selector:@selector(_outputToHandle:bytes:length:) argument:handle error:outError];
