@@ -58,12 +58,12 @@ extern NSExceptionName const CSFileErrorException;
 -(void)close;
 
 // Public methods
-@property (NS_NONATOMIC_IOSONLY, readonly) FILE *filePointer NS_RETURNS_INNER_POINTER;
+@property (readonly) FILE *filePointer NS_RETURNS_INNER_POINTER;
 
 // Implemented by this class
-@property (NS_NONATOMIC_IOSONLY, readonly) off_t fileSize;
-@property (NS_NONATOMIC_IOSONLY, readonly) off_t offsetInFile;
-@property (NS_NONATOMIC_IOSONLY, readonly) BOOL atEndOfFile;
+@property (readonly) off_t fileSize;
+@property (readonly) off_t offsetInFile;
+@property (readonly) BOOL atEndOfFile;
 
 -(void)seekToFileOffset:(off_t)offs;
 -(void)seekToEndOfFile;

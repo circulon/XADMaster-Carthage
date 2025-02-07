@@ -68,12 +68,16 @@
 #define NS_REFINED_FOR_SWIFT
 #endif
 
-#ifndef NS_NONATOMIC_IOSONLY
-#define NS_NONATOMIC_IOSONLY atomic
+#ifndef NS_SWIFT_UNAVAILABLE
+#define NS_SWIFT_UNAVAILABLE(...)
 #endif
 
 #ifndef NS_DESIGNATED_INITIALIZER
 #define NS_DESIGNATED_INITIALIZER
+#endif
+
+#ifndef NS_RETURNS_INNER_POINTER
+#define NS_RETURNS_INNER_POINTER
 #endif
 
 // To make other compilers happy

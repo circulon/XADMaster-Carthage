@@ -224,9 +224,9 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext;
 -(CSHandle *)zeroLengthHandleWithChecksum:(BOOL)checksum;
 -(CSHandle *)subHandleFromSolidStreamForEntryWithDictionary:(NSDictionary *)dict;
 
-@property (NS_NONATOMIC_IOSONLY, readonly) BOOL hasVolumes;
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *volumeSizes;
-@property (NS_NONATOMIC_IOSONLY, readonly, retain) CSHandle *currentHandle;
+@property (readonly) BOOL hasVolumes;
+@property (readonly, copy) NSArray *volumeSizes;
+@property (readonly, retain) CSHandle *currentHandle;
 
 -(void)setObject:(id)object forPropertyKey:(XADArchiveKeys)key;
 -(void)addPropertiesFromDictionary:(NSDictionary *)dict;
@@ -243,7 +243,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext;
 -(XADString *)XADStringWithCString:(const char *)cstring;
 -(XADString *)XADStringWithCString:(const char *)cstring encodingName:(XADStringEncodingName)encoding;
 
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) XADPath *XADPath;
+@property (readonly, copy) XADPath *XADPath;
 -(XADPath *)XADPathWithString:(NSString *)string;
 -(XADPath *)XADPathWithUnseparatedString:(NSString *)string;
 -(XADPath *)XADPathWithData:(NSData *)data separators:(const char *)separators;
