@@ -110,6 +110,7 @@ nserror:(NSError **)errorptr;
 -(XADError)_updateFileAttributesAtPath:(NSString *)path forEntryWithDictionary:(NSDictionary *)dict
 deferDirectories:(BOOL)defer;
 -(XADError)_ensureDirectoryExists:(NSString *)path;
+-(BOOL)_ensureDirectoryExists:(NSString *)path error:(NSError**)outError;
 
 -(XADError)runExtractorWithDictionary:(NSDictionary *)dict outputHandle:(CSHandle *)handle;
 -(XADError)runExtractorWithDictionary:(NSDictionary *)dict

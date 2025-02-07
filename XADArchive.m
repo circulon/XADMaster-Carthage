@@ -868,7 +868,7 @@ NSString *const XADFinderFlags=@"XADFinderFlags";
 	return nil;
 }
 
--(nullable NSData *)contentsOfEntry:(NSInteger)n error:(NSError**)error
+-(NSData *)contentsOfEntry:(NSInteger)n error:(NSError**)error
 {
 	NSDictionary *dict=[self dataForkParserDictionaryForEntry:n];
 	if(!dict) return [NSData data]; // Special case for files with only a resource fork
@@ -1464,7 +1464,7 @@ fileFraction:(double)fileprogress estimatedTotalFraction:(double)totalprogress
 		}
 		return nil;
 	}
-	NSNumber *isdir=resdict[XADIsDirectoryKey];
+	NSNumber *isdir=[resdict objectForKey:XADIsDirectoryKey];
 	if(isdir&&isdir.boolValue) {
 		if (error) {
 			*error = [NSError errorWithDomain:XADErrorDomain code:XADErrorFileDirectory userInfo:nil];

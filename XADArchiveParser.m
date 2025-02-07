@@ -560,7 +560,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 			{
 				// An empty array means scanning failed. Set a flag to
 				// warn the caller, and fall through to single-file mode.
-				props[XADVolumeScanningFailedKey] = @YES;
+				[props setValue:[NSNumber numberWithBool:YES] forKey:XADVolumeScanningFailedKey];
 			}
 		}
 	}
@@ -571,7 +571,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
 	parser.resourceFork = fork;
 	parser.filename = filename.path;
 	
-	props[XADVolumesKey] = @[filename.path];
+	[props setValue:[NSArray arrayWithObject:filename.path] forKey:XADVolumesKey];
 	[parser addPropertiesFromDictionary:props];
 	
 	return [parser autorelease];
@@ -1067,7 +1067,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext
 		return;
 	}
 	NSMutableDictionary *exceptionUserInfo = [error.userInfo mutableCopy];
-	exceptionUserInfo[@"XADError"] = @((XADError)error.code);
+	[exceptionUserInfo setValue:[NSNumber numberWithInt:(XADError)error.code] forKey:@"XADError"];
 	[[[NSException alloc] initWithName:XADExceptionName reason:[XADException describeXADError:(XADError)error.code]
 							  userInfo:exceptionUserInfo] raise];
 
@@ -1550,7 +1550,7 @@ wantChecksum:(BOOL)checksum nserror:(NSError **)errorptr
 		return nil;
 	}
 	if (errorptr) {
-		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:@{NSURLErrorKey: filename}];
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:[NSDictionary dictionaryWithObjectsAndKeys:filename, NSURLErrorKey, nil]];
 	}
 	return nil;
 }
@@ -1569,7 +1569,7 @@ wantChecksum:(BOOL)checksum nserror:(NSError **)errorptr
 		return nil;
 	}
 	if (errorptr) {
-		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:@{NSFilePathErrorKey: filename}];
+		*errorptr = [NSError errorWithDomain:XADErrorDomain code:XADErrorNotSupported userInfo:[NSDictionary dictionaryWithObjectsAndKeys:filename, NSFilePathErrorKey, nil]];
 	}
 	return nil;
 }

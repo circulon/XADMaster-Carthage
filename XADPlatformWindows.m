@@ -97,7 +97,7 @@ preservePermissions:(BOOL)preservepermissions
 		SetFileAttributesW(wpath,newattributes);
 	}
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 +(XADError)createLinkAtPath:(NSString *)path withDestinationPath:(NSString *)link

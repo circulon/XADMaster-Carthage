@@ -131,6 +131,7 @@ XADEXPORT
 
 -(XADError)parse;
 -(XADError)_setupSubArchiveForEntryWithDataFork:(NSDictionary *)datadict resourceFork:(NSDictionary *)resourcedict;
+-(BOOL)_setupSubArchiveForEntryWithDataFork:(NSDictionary *)datadict resourceFork:(NSDictionary *)resourcedict error:(NSError**)outError;
 
 -(XADError)unarchive;
 -(XADError)_unarchiveRegularArchive;

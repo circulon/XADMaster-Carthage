@@ -121,7 +121,7 @@ preservePermissions:(BOOL)preservepermissions
 	// Finally, set all attributes.
 	setattrlist(cpath,&list,attrdata,attrptr-attrdata,FSOPT_NOFOLLOW);
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 +(XADError)createLinkAtPath:(NSString *)path withDestinationPath:(NSString *)link
@@ -131,7 +131,7 @@ preservePermissions:(BOOL)preservepermissions
 	if(lstat(destcstr,&st)==0) unlink(destcstr);
 	if(symlink([link fileSystemRepresentation],destcstr)!=0) return XADLinkError;
 
-	return XADNoError;
+	return XADErrorNone;
 }
 
 

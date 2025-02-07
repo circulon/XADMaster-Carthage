@@ -79,22 +79,22 @@ NSString *const XADExceptionReasonKey=@"XADExceptionReason";
 	return XADErrorUnknown;
 }
 
-+(NSError*)parseExceptionReturningNSError:(nonnull id)exception
++(NSError*)parseExceptionReturningNSError:(id)exception
 {
 	if([exception isKindOfClass:[NSException class]])
 	{
 		NSException *e=exception;
 		NSString *name=[e name];
-		NSMutableDictionary *usrInfo = [NSMutableDictionary dictionaryWithDictionary:e.userInfo ?: @{}];
-		usrInfo[XADExceptionReasonKey] = e.reason;
+		NSMutableDictionary *usrInfo = [NSMutableDictionary dictionaryWithDictionary:e.userInfo ?: [NSDictionary dictionary]];
+		[usrInfo setValue:e.reason forKey:XADExceptionReasonKey];
 		if ([name isEqualToString:XADExceptionName]) {
-			XADError errVal = [[e userInfo][@"XADError"] intValue];
+			XADError errVal = [[[e userInfo] objectForKey:@"XADError"] intValue];
 			return [NSError errorWithDomain:XADErrorDomain code:errVal userInfo:usrInfo];
 		} else if([name isEqualToString:CSCannotOpenFileException]) {
 			return [NSError errorWithDomain:XADErrorDomain code:XADErrorOpenFile userInfo:usrInfo];
 		} else if([name isEqualToString:CSFileErrorException]) {
 			if (usrInfo && [usrInfo objectForKey:@"ErrNo"]) {
-				int errNo = [usrInfo[@"ErrNo"] intValue];
+				int errNo = [[usrInfo objectForKey:@"ErrNo"] intValue];
 				[usrInfo removeObjectForKey:@"ErrNo"];
 				return [NSError errorWithDomain:NSPOSIXErrorDomain code:errNo userInfo:usrInfo];
 			}

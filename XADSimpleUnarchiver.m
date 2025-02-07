@@ -328,7 +328,7 @@
 {
 	if(entries.count) {
 		if (error) {
-			*error = [NSError errorWithDomain:XADErrorDomain code:XADErrorBadParameters userInfo:@{NSLocalizedDescriptionKey: @"You can not call parseAndUnarchive twice", NSDebugDescriptionErrorKey: @"You can not call parseAndUnarchive twice"}];
+			*error = [NSError errorWithDomain:XADErrorDomain code:XADErrorBadParameters userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"You can not call parseAndUnarchive twice", NSLocalizedDescriptionKey, nil]];
 		}
 		
 		return NO;
@@ -344,8 +344,8 @@
 	if (extractsubarchives) {
 		// Check if we have a single entry, which is an archive.
 		if (entries.count==1) {
-			NSDictionary *entry=entries[0];
-			NSNumber *archnum=entry[XADIsArchiveKey];
+			NSDictionary *entry=[entries objectAtIndex:0];
+			NSNumber *archnum=[entry objectForKey:XADIsArchiveKey];
 			BOOL isarc=archnum&&archnum.boolValue;
 			if(isarc) return [self _setupSubArchiveForEntryWithDataFork:entry resourceFork:nil error:error];
 		}
@@ -353,17 +353,17 @@
 		// Check if we have two entries, which are data and resource forks
 		// of the same archive.
 		if (entries.count==2) {
-			NSDictionary *first=entries[0];
-			NSDictionary *second=entries[1];
-			XADPath *name1=first[XADFileNameKey];
-			XADPath *name2=second[XADFileNameKey];
-			NSNumber *archnum1=first[XADIsArchiveKey];
-			NSNumber *archnum2=second[XADIsArchiveKey];
+			NSDictionary *first=[entries objectAtIndex:0];
+			NSDictionary *second=[entries objectAtIndex:1];
+			XADPath *name1=[first objectForKey:XADFileNameKey];
+			XADPath *name2=[second objectForKey:XADFileNameKey];
+			NSNumber *archnum1=[first objectForKey:XADIsArchiveKey];
+			NSNumber *archnum2=[second objectForKey:XADIsArchiveKey];
 			BOOL isarc1=archnum1&&archnum1.boolValue;
 			BOOL isarc2=archnum2&&archnum2.boolValue;
 
 			if ([name1 isEqual:name2] && (isarc1||isarc2)) {
-				NSNumber *resnum=first[XADIsResourceForkKey];
+				NSNumber *resnum=[first objectForKey:XADIsResourceForkKey];
 				NSDictionary *datafork,*resourcefork;
 				if (resnum&&resnum.boolValue) {
 					datafork=second;
@@ -374,7 +374,7 @@
 				}
 
 				// TODO: Handle resource forks for archives that require them.
-				NSNumber *archnum=datafork[XADIsArchiveKey];
+				NSNumber *archnum=[datafork objectForKey:XADIsArchiveKey];
 				if(archnum&&archnum.boolValue) {
 					return [self _setupSubArchiveForEntryWithDataFork:datafork resourceFork:resourcefork error:error];
 				}

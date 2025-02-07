@@ -324,16 +324,16 @@
 }
 
 // FIXME: Improve extractEntryWithDictionary:as:forceDirectories:error: with an NSError value.
--(BOOL)extractEntryWithDictionary:(NSDictionary *)dict as:(nullable NSString *)path forceDirectories:(BOOL)force error:(NSError**)outErr
+-(BOOL)extractEntryWithDictionary:(NSDictionary *)dict as:(NSString *)path forceDirectories:(BOOL)force error:(NSError**)outErr
 {
-	__strong NSError *tmpErr = nil;
+	NSError *tmpErr = nil;
 	BOOL okay;
-	@autoreleasepool {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-	NSNumber *dirnum=dict[XADIsDirectoryKey];
-	NSNumber *linknum=dict[XADIsLinkKey];
-	NSNumber *resnum=dict[XADIsResourceForkKey];
-	NSNumber *archivenum=dict[XADIsArchiveKey];
+	NSNumber *dirnum=[dict objectForKey:XADIsDirectoryKey];
+	NSNumber *linknum=[dict objectForKey:XADIsLinkKey];
+	NSNumber *resnum=[dict objectForKey:XADIsResourceForkKey];
+	NSNumber *archivenum=[dict objectForKey:XADIsArchiveKey];
 	BOOL isdir=dirnum&&dirnum.boolValue;
 	BOOL islink=linknum&&linknum.boolValue;
 	BOOL isres=resnum&&resnum.boolValue;
@@ -342,7 +342,7 @@
 	// If we were not given a path, pick one ourselves.
 	if(!path)
 	{
-		XADPath *name=dict[XADFileNameKey];
+		XADPath *name=[dict objectForKey:XADFileNameKey];
 		NSString *namestring=name.sanitizedPathString;
 
 		if(destination) path=[destination stringByAppendingPathComponent:namestring];
@@ -367,6 +367,7 @@
 	XADError error=0;
 	
 	okay=[self _ensureDirectoryExists:path.stringByDeletingLastPathComponent error:&tmpErr];
+	[tmpErr retain];
 	if(!okay) goto end;
 
 	// Attempt to extract embedded archives if requested.
@@ -377,6 +378,7 @@
 		if([delegate unarchiver:self shouldExtractArchiveEntryWithDictionary:dict to:unarchiverpath])
 		{
 			okay=[self _extractArchiveEntryWithDictionary:dict to:unarchiverpath name:path.lastPathComponent error:&tmpErr];
+			[tmpErr retain];
 			// If extraction was attempted, and succeeded for failed, skip everything else.
 			// Otherwise, if the archive couldn't be opened, fall through and extract normally.
 			if(!okay && ([tmpErr.domain isEqualToString:XADErrorDomain] && tmpErr.code != XADErrorSubArchive)) goto end;
@@ -399,7 +401,7 @@
 						tmpErr = nil;
 					} else {
 						okay = NO;
-						tmpErr = [NSError errorWithDomain:XADErrorDomain code:error userInfo:nil];
+						tmpErr = [[NSError alloc] initWithDomain:XADErrorDomain code:error userInfo:nil];
 					}
 				}
 			break;
@@ -413,7 +415,7 @@
 					tmpErr = nil;
 				} else {
 					okay = NO;
-					tmpErr = [NSError errorWithDomain:XADErrorDomain code:error userInfo:nil];
+					tmpErr = [[NSError alloc] initWithDomain:XADErrorDomain code:error userInfo:nil];
 				}
 			}
 			break;
@@ -443,7 +445,7 @@
 					tmpErr = nil;
 				} else {
 					okay = NO;
-					tmpErr = [NSError errorWithDomain:XADErrorDomain code:error userInfo:nil];
+					tmpErr = [[NSError alloc] initWithDomain:XADErrorDomain code:error userInfo:nil];
 				}
 			break;
 
@@ -451,7 +453,7 @@
 				// TODO: better error
 				error=XADErrorBadParameters;
 				okay = NO;
-				tmpErr = [NSError errorWithDomain:XADErrorDomain code:XADErrorBadParameters userInfo:nil];
+				tmpErr = [[NSError alloc] initWithDomain:XADErrorDomain code:XADErrorBadParameters userInfo:nil];
 
 			break;
 		}
@@ -479,18 +481,21 @@
 		tmpErr = nil;
 	} else {
 		okay = NO;
-		tmpErr = [NSError errorWithDomain:XADErrorDomain code:error userInfo:nil];
+		tmpErr = [[NSError alloc] initWithDomain:XADErrorDomain code:error userInfo:nil];
 	}
 
 	// Report success or failure
 	end:
-	if(delegate && [delegate respondsToSelector:@selector(unarchiver:didExtractEntryWithDictionary:to:error:)])
+	if([delegate respondsToSelector:@selector(unarchiver:didExtractEntryWithDictionary:to:error:)])
 	{
 		[delegate unarchiver:self didExtractEntryWithDictionary:dict to:path nserror:okay ? nil : tmpErr];
 	}
-	}
+	[pool release];
+	
 	if (outErr && tmpErr) {
-		*outErr = tmpErr;
+		*outErr = [tmpErr autorelease];
+	} else if (tmpErr) {
+		[tmpErr release];
 	}
 
 	return okay;
@@ -877,7 +882,7 @@ deferDirectories:(BOOL)defer
         if ([delegate respondsToSelector:@selector(unarchiver:didCreateDirectory:)]) {
             [delegate unarchiver:self didCreateDirectory:path];
         }
-        return XADNoError;
+        return XADErrorNone;
     }
 	#endif
 	else return XADErrorMakeDirectory;
@@ -1029,7 +1034,7 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument error:(NSEr
 		}
 
 		// Try to find the size of this entry.
-		NSNumber *sizenum=dict[XADFileSizeKey];
+		NSNumber *sizenum=[dict objectForKey:XADFileSizeKey];
 		off_t size=0;
 		if(sizenum != nil)
 		{
@@ -1105,7 +1110,7 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument error:(NSEr
 
 		// Check if the file has already been marked as corrupt, and
 		// give up without testing checksum if so.
-		NSNumber *iscorrupt=dict[XADIsCorruptedKey];
+		NSNumber *iscorrupt=[dict objectForKey:XADIsCorruptedKey];
 		if(iscorrupt&&iscorrupt.boolValue) {
 			if (outError) {
 				*outError = [NSError errorWithDomain:XADErrorDomain code:XADErrorDecrunch userInfo:nil];
