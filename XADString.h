@@ -134,7 +134,7 @@ XADEXPORT
 @property (readonly, copy) XADStringEncodingName encodingName;
 @property (readonly) float confidence;
 
-@property (readonly, retain) XADStringSource *source;
+@property (nonatomic, readonly, retain) XADStringSource *source;
 
 -(BOOL)hasASCIIPrefix:(NSString *)asciiprefix;
 -(XADString *)XADStringByStrippingASCIIPrefixOfLength:(int)length;

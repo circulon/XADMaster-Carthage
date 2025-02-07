@@ -163,7 +163,7 @@
 #if __has_attribute(attribute_deprecated_with_replacement)
 #define API_DEPRECATED_WITH_REPLACEMENT(X, ...) __attribute__((deprecated("Use " #X " instead", X)))
 #else
-#define API_DEPRECATED_WITH_REPLACEMENT(...) DEPRECATED_ATTRIBUTE
+#define API_DEPRECATED_WITH_REPLACEMENT(X, ...) DEPRECATED_MSG_ATTRIBUTE("Use " #X " instead")
 #endif
 #endif
 

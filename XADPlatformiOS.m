@@ -38,7 +38,7 @@
 +(XADError)extractResourceForkEntryWithDictionary:(NSDictionary *)dict
 unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath
 {
-	return XADNotSupportedError;
+	return XADErrorNotSupported;
 }
 
 +(XADError)updateFileAttributesAtPath:(NSString *)path
@@ -49,7 +49,7 @@ preservePermissions:(BOOL)preservepermissions
 
 	// Read file permissions.
 	struct stat st;
-	if(lstat(cpath,&st)!=0) return XADOpenFileError; // TODO: better error
+	if(lstat(cpath,&st)!=0) return XADErrorOpenFile; // TODO: better error
 
 	// If the file does not have write permissions, change this temporarily.
 	if(!(st.st_mode&S_IWUSR)) chmod(cpath,0700);

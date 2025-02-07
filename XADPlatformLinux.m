@@ -38,7 +38,7 @@
 +(XADError)extractResourceForkEntryWithDictionary:(NSDictionary *)dict
 unarchiver:(XADUnarchiver *)unarchiver toPath:(NSString *)destpath
 {
-	return XADNotSupportedError;
+	return XADErrorNotSupported;
 }
 
 +(XADError)updateFileAttributesAtPath:(NSString *)path
@@ -51,7 +51,7 @@ preservePermissions:(BOOL)preservepermissions
 	BOOL islink=linknum&&[linknum boolValue];
 
 	struct stat st;
-	if(lstat(cpath,&st)!=0) return XADOpenFileError; // TODO: better error
+	if(lstat(cpath,&st)!=0) return XADErrorOpenFile; // TODO: better error
 
 	// If the file does not have write permissions, change this temporarily
 	// and remember to change back.
@@ -77,7 +77,7 @@ preservePermissions:(BOOL)preservepermissions
 		if(modification) times[1]=[modification timevalStruct];
 
 		int res=lutimes(cpath,times);
-		if(res!=0&&res!=ENOSYS) return XADUnknownError; // TODO: better error
+		if(res!=0&&res!=ENOSYS) return XADErrorUnknown; // TODO: better error
 	}
 
 	// Handle permissions (or change back to original permissions if they were changed).
@@ -102,7 +102,7 @@ preservePermissions:(BOOL)preservepermissions
 		}
 
 		if(!islink)
-		if(chmod(cpath,mode&~S_IFMT)!=0) return XADUnknownError; // TODO: bette error
+		if(chmod(cpath,mode&~S_IFMT)!=0) return XADErrorUnknown; // TODO: bette error
 	}
 
 	return XADErrorNone;
