@@ -554,7 +554,7 @@ static int TestEntry(XADSimpleUnarchiver *unarchiver,NSDictionary *dict)
 	if(!handle)
 	{
 		returncode=1;
-		if(error==XADPasswordError) return EntryHasWrongPasswordResult;
+		if(error==XADErrorPassword) return EntryHasWrongPasswordResult;
 		else return EntryIsNotSupportedResult;
 	}
 
