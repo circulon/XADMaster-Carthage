@@ -51,14 +51,12 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 	FILE *fileh=_wfopen((const wchar_t *)[path fileSystemRepresentation],
 						(const wchar_t *)[modes cStringUsingEncoding:NSUnicodeStringEncoding]);
 #else // Cocoa or GNUstep under Linux
-	FILE *fileh=fopen(path.fileSystemRepresentation,modes.UTF8String);
+	FILE *fileh=fopen([path fileSystemRepresentation],modes.UTF8String);
 #endif
 	
 	if(!fileh) [[NSException exceptionWithName:CSCannotOpenFileException
 										reason: [NSString stringWithFormat:@"Error attempting to open file \"%@\" in mode \"%@\" (%d).",path,modes, (int)errno]
-									  userInfo:@{NSUnderlyingErrorKey: [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil],
-												 NSURLErrorKey: path
-												 }] raise];
+									  userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil], NSUnderlyingErrorKey, path, NSURLErrorKey, nil]] raise];
 	
 	CSFileHandle *handle=[[CSFileHandle alloc] initWithFilePointer:fileh closeOnDealloc:YES path:path.path];
 	if(handle) return handle;
@@ -89,7 +87,7 @@ NSString *const CSFileErrorException=@"CSFileErrorException";
 	FILE *fileh=_wfopen((const wchar_t *)[path fileSystemRepresentation],
 						(const wchar_t *)[modes cStringUsingEncoding:NSUnicodeStringEncoding]);
 #else // Cocoa or GNUstep under Linux
-	FILE *fileh=fopen(path.fileSystemRepresentation,modes.UTF8String);
+	FILE *fileh=fopen([path fileSystemRepresentation],modes.UTF8String);
 #endif
 	
 	if(!fileh) {
