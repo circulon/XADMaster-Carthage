@@ -324,7 +324,7 @@
 }
 
 // FIXME: Improve extractEntryWithDictionary:as:forceDirectories:error: with an NSError value.
--(BOOL)extractEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict as:(nullable NSString *)path forceDirectories:(BOOL)force error:(NSError*__autoreleasing*)outErr
+-(BOOL)extractEntryWithDictionary:(NSDictionary *)dict as:(nullable NSString *)path forceDirectories:(BOOL)force error:(NSError*__autoreleasing*)outErr
 {
 	__strong NSError *tmpErr = nil;
 	BOOL okay;
@@ -1012,7 +1012,7 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument
 	selector:@selector(_outputToHandle:bytes:length:) argument:handle error:outError];
 }
 
--(BOOL)runExtractorWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
+-(BOOL)runExtractorWithDictionary:(NSDictionary *)dict
 outputTarget:(id)target selector:(SEL)selector argument:(id)argument error:(NSError**)outError;
 {
 	XADError (*outputfunc)(id,SEL,id,uint8_t *,int);
@@ -1230,7 +1230,7 @@ outputTarget:(id)target selector:(SEL)selector argument:(id)argument error:(NSEr
 	}
 }
 
--(void)unarchiver:(XADUnarchiver *)unarchiver didExtractEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict to:(NSString *)path error:(XADError)error
+-(void)unarchiver:(XADUnarchiver *)unarchiver didExtractEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path error:(XADError)error
 {
 	if ([self respondsToSelector:@selector(unarchiver:didExtractEntryWithDictionary:to:nserror:)]) {
 		[(NSObject<XADUnarchiverDelegate>*)self unarchiver:unarchiver didExtractEntryWithDictionary:dict to:path nserror:error == XADErrorNone ? nil : [NSError errorWithDomain:XADErrorDomain code:error userInfo:nil]];

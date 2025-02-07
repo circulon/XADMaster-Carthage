@@ -150,7 +150,7 @@ resourceFork:(XADResourceFork *)fork name:(NSString *)name propertiesToAdd:(NSMu
  
 #pragma mark NSError functions
 +(XADArchiveParser *)archiveParserForHandle:(CSHandle *)handle name:(NSString *)name nserror:(NSError **)errorptr NS_SWIFT_NAME(archiveParser(for:name:));
-+(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)entry
++(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry
 archiveParser:(XADArchiveParser *)parser wantChecksum:(BOOL)checksum nserror:(NSError **)errorptr
 NS_SWIFT_NAME(archiveParser(with:archiveParser:wantChecksum:));
 +(XADArchiveParser *)archiveParserForEntryWithDictionary:(NSDictionary *)entry
@@ -225,7 +225,7 @@ regex:(XADRegex *)regex firstFileExtension:(NSString *)firstext;
 -(CSHandle *)subHandleFromSolidStreamForEntryWithDictionary:(NSDictionary *)dict;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL hasVolumes;
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray<NSNumber*> *volumeSizes;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *volumeSizes;
 @property (NS_NONATOMIC_IOSONLY, readonly, retain) CSHandle *currentHandle;
 
 -(void)setObject:(id)object forPropertyKey:(XADArchiveKeys)key;
@@ -291,7 +291,7 @@ name:(NSString *)name;
 //! requested parsing to stop.
 -(BOOL)parseWithError:(NSError**)error;
 //! Exception-free wrapper for subclass method.
--(CSHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum nserror:(NSError **)errorptr ;
+-(CSHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum nserror:(NSError **)errorptr ;
 
 @end
 

@@ -85,7 +85,7 @@ XADEXPORT
 -(XADError)extractEntryWithDictionary:(NSDictionary *)dict forceDirectories:(BOOL)force;
 -(XADError)extractEntryWithDictionary:(NSDictionary *)dict as:(NSString *)path;
 -(XADError)extractEntryWithDictionary:(NSDictionary *)dict as:(NSString *)path forceDirectories:(BOOL)force;
--(BOOL)extractEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict as:(NSString *)path forceDirectories:(BOOL)force error:(NSError **)outErr;
+-(BOOL)extractEntryWithDictionary:(NSDictionary *)dict as:(NSString *)path forceDirectories:(BOOL)force error:(NSError **)outErr;
 
 -(XADError)finishExtractions;
 -(XADError)_fixDeferredLinks;
@@ -95,10 +95,10 @@ XADEXPORT
 wantChecksum:(BOOL)checksum error:(XADError *)errorptr;
 -(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
 resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum error:(XADError *)errorptr;
--(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
+-(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
 wantChecksum:(BOOL)checksum nserror:(NSError **)errorptr;
--(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
-resourceForkDictionary:(NSDictionary<XADArchiveKeys,id> *)forkdict wantChecksum:(BOOL)checksum
+-(XADUnarchiver *)unarchiverForEntryWithDictionary:(NSDictionary *)dict
+resourceForkDictionary:(NSDictionary *)forkdict wantChecksum:(BOOL)checksum
 nserror:(NSError **)errorptr;
 
 -(XADError)_extractFileEntryWithDictionary:(NSDictionary *)dict as:(NSString *)destpath;
@@ -114,9 +114,9 @@ deferDirectories:(BOOL)defer;
 -(XADError)runExtractorWithDictionary:(NSDictionary *)dict outputHandle:(CSHandle *)handle;
 -(XADError)runExtractorWithDictionary:(NSDictionary *)dict
 outputTarget:(id)target selector:(SEL)sel argument:(id)arg;
--(BOOL)runExtractorWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
+-(BOOL)runExtractorWithDictionary:(NSDictionary *)dict
 outputHandle:(CSHandle *)handle error:(NSError**)outError;
--(BOOL)runExtractorWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict
+-(BOOL)runExtractorWithDictionary:(NSDictionary *)dict
 outputTarget:(id)target selector:(SEL)sel argument:(id)arg error:(NSError**)outError;
 
 -(NSString *)adjustPathString:(NSString *)path forEntryWithDictionary:(NSDictionary *)dict;
@@ -136,7 +136,7 @@ outputTarget:(id)target selector:(SEL)sel argument:(id)arg error:(NSError**)outE
 -(BOOL)unarchiver:(XADUnarchiver *)unarchiver shouldExtractEntryWithDictionary:(NSDictionary *)dict suggestedPath:(NSString **)pathptr;
 -(void)unarchiver:(XADUnarchiver *)unarchiver willExtractEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path;
 -(void)unarchiver:(XADUnarchiver *)unarchiver didExtractEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path error:(XADError)error;
--(void)unarchiver:(XADUnarchiver *)unarchiver didExtractEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict to:(NSString *)path nserror:(NSError*)error;
+-(void)unarchiver:(XADUnarchiver *)unarchiver didExtractEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path nserror:(NSError*)error;
 
 @required
 -(BOOL)unarchiver:(XADUnarchiver *)unarchiver shouldCreateDirectory:(NSString *)directory;
@@ -148,7 +148,7 @@ outputTarget:(id)target selector:(SEL)sel argument:(id)arg error:(NSError**)outE
 -(BOOL)unarchiver:(XADUnarchiver *)unarchiver shouldExtractArchiveEntryWithDictionary:(NSDictionary *)dict to:(NSString *)path;
 -(void)unarchiver:(XADUnarchiver *)unarchiver willExtractArchiveEntryWithDictionary:(NSDictionary *)dict withUnarchiver:(XADUnarchiver *)subunarchiver to:(NSString *)path;
 -(void)unarchiver:(XADUnarchiver *)unarchiver didExtractArchiveEntryWithDictionary:(NSDictionary *)dict withUnarchiver:(XADUnarchiver *)subunarchiver to:(NSString *)path error:(XADError)error;
--(void)unarchiver:(XADUnarchiver *)unarchiver didExtractArchiveEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict withUnarchiver:(XADUnarchiver *)subunarchiver to:(NSString *)path nserror:(NSError*)error;
+-(void)unarchiver:(XADUnarchiver *)unarchiver didExtractArchiveEntryWithDictionary:(NSDictionary *)dict withUnarchiver:(XADUnarchiver *)subunarchiver to:(NSString *)path nserror:(NSError*)error;
 
 @required
 -(NSString *)unarchiver:(XADUnarchiver *)unarchiver destinationForLink:(XADString *)link from:(NSString *)path;

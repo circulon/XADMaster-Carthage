@@ -165,6 +165,7 @@
 
 #if !defined(NSFoundationVersionNumber10_11_Max) && !defined(NSFoundationVersionNumber_iOS_9_x_Max)
 typedef NSString * NSExceptionName NS_TYPED_EXTENSIBLE_ENUM;
+typedef NSString * NSErrorUserInfoKey NS_TYPED_EXTENSIBLE_ENUM;
 #endif
 
 #endif /* XADTypes_h */

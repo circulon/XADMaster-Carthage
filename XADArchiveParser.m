@@ -1593,7 +1593,7 @@ wantChecksum:(BOOL)checksum nserror:(NSError *_Nullable __autoreleasing *_Nullab
 	return nil;
 }
 
--(XADHandle *)handleForEntryWithDictionary:(NSDictionary<XADArchiveKeys,id> *)dict wantChecksum:(BOOL)checksum nserror:(NSError * _Nullable *)errorptr
+-(XADHandle *)handleForEntryWithDictionary:(NSDictionary *)dict wantChecksum:(BOOL)checksum nserror:(NSError * _Nullable *)errorptr
 {
 	@try
 	{
