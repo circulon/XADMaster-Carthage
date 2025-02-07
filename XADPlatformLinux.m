@@ -113,7 +113,7 @@ preservePermissions:(BOOL)preservepermissions
 	struct stat st;
 	const char *destcstr=[path fileSystemRepresentation];
 	if(lstat(destcstr,&st)==0) unlink(destcstr);
-	if(symlink([link fileSystemRepresentation],destcstr)!=0) return XADLinkError;
+	if(symlink([link fileSystemRepresentation],destcstr)!=0) return XADErrorLink;
 
 	return XADErrorNone;
 }
