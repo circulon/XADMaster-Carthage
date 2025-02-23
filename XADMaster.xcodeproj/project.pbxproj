@@ -1370,6 +1370,8 @@
 		5530A4B02D4CCC3800CBD82D /* XADTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 5530A4AE2D4CCC3800CBD82D /* XADTypes.h */; };
 		5530A4B12D4CCC3800CBD82D /* XADTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 5530A4AE2D4CCC3800CBD82D /* XADTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5530A4B22D4CCC3800CBD82D /* XADTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 5530A4AE2D4CCC3800CBD82D /* XADTypes.h */; };
+		55E7B1EE2D6BCCAD00064932 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E7B1EB2D6BCCAD00064932 /* libc++.tbd */; };
+		55E7B1EF2D6BCCBC00064932 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E7B1EB2D6BCCAD00064932 /* libc++.tbd */; };
 		73032E6C2626D3DD000C2751 /* XADWARCParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 73032E6B2626D3DD000C2751 /* XADWARCParserTests.m */; };
 		73032E6E2626DB7C000C2751 /* WARCFixtures in Resources */ = {isa = PBXBuildFile; fileRef = 73032E6D2626DB7C000C2751 /* WARCFixtures */; };
 		7318A41D248C67E400D327B9 /* XADRARParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7318A41C248C67E400D327B9 /* XADRARParserTests.m */; };
@@ -2130,6 +2132,7 @@
 		1BF3BA8F13EE08A300BE7400 /* XADPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADPlatform.h; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* XADMaster_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XADMaster_Prefix.pch; sourceTree = "<group>"; };
 		5530A4AE2D4CCC3800CBD82D /* XADTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XADTypes.h; sourceTree = "<group>"; };
+		55E7B1EB2D6BCCAD00064932 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		56FBC8DC0A57531D00BE98CF /* UniversalDetector.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UniversalDetector.xcodeproj; path = ../UniversalDetector/UniversalDetector.xcodeproj; sourceTree = SOURCE_ROOT; };
 		56FBC92B0A57541300BE98CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 		73032E6B2626D3DD000C2751 /* XADWARCParserTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XADWARCParserTests.m; sourceTree = "<group>"; };
@@ -2167,6 +2170,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55E7B1EE2D6BCCAD00064932 /* libc++.tbd in Frameworks */,
 				1B34AA7211C30B3600396C26 /* libbz2.tbd in Frameworks */,
 				1B34AA7411C30B3A00396C26 /* Foundation.framework in Frameworks */,
 				1B34AA7511C30B3D00396C26 /* Carbon.framework in Frameworks */,
@@ -2216,6 +2220,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55E7B1EF2D6BCCBC00064932 /* libc++.tbd in Frameworks */,
 				1B91D18411E1677B0081E40A /* libbz2.tbd in Frameworks */,
 				1B91D18611E1677B0081E40A /* Foundation.framework in Frameworks */,
 				1B91D18711E1677B0081E40A /* Carbon.framework in Frameworks */,
@@ -2307,6 +2312,7 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				55E7B1EB2D6BCCAD00064932 /* libc++.tbd */,
 				1B3FABA70EC52532006D2F06 /* libz.tbd */,
 				1BBCC54C0EE73B7F006C3AE2 /* libbz2.tbd */,
 				1B3FAC5C0EC5255A006D2F06 /* Foundation.framework */,
